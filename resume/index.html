@@ -8,113 +8,180 @@
   <meta name="keywords" content="雷雨, 简历, 嵌入式开发, Linux, 网络协议栈">
   <meta property="og:title" content="简历 | 雷雨">
   <meta property="og:description" content="嵌入式软件开发方向 · 计算机技术硕士在读">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f8f9fa;
-      --card-bg: #fff;
-      --text: #333;
-      --text-secondary: #666;
-      --text-muted: #999;
-      --accent: #667eea;
-      --border: #e8e8e8;
-      --tag-bg: #eef0ff;
-      --tag-text: #5a67d8;
+      --bg: oklch(97.5% 0.005 80);
+      --text: oklch(22% 0.02 60);
+      --text-secondary: oklch(45% 0.015 60);
+      --text-muted: oklch(58% 0.01 60);
+      --accent: oklch(45% 0.12 25);
+      --border: oklch(88% 0.008 60);
+      --serif: "Fraunces", "Noto Serif SC", Georgia, serif;
+      --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0f0f0f;
-        --card-bg: #1a1a1a;
-        --text: #e0e0e0;
-        --text-secondary: #aaa;
-        --text-muted: #777;
-        --accent: #7c8cf0;
-        --border: #2a2a2a;
-        --tag-bg: #1e2040;
-        --tag-text: #8b9cf7;
+        --bg: oklch(14% 0.01 60);
+        --text: oklch(92% 0.01 70);
+        --text-secondary: oklch(72% 0.01 60);
+        --text-muted: oklch(55% 0.01 60);
+        --accent: oklch(72% 0.1 30);
+        --border: oklch(28% 0.01 60);
       }
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", sans-serif;
+      font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.8;
-      min-height: 100vh;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
     }
-    .container {
-      max-width: 800px;
+
+    /* ── Header ── */
+    header {
+      padding: 2rem 2rem 0;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 3rem 2rem;
+      width: 100%;
     }
-    .back-link {
-      display: inline-block;
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .site-name {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.75rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-      transition: color 0.2s;
+      transition: color 150ms ease;
     }
-    .back-link:hover { color: var(--accent); }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Main ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      width: 100%;
+    }
+
+    /* ── Name & Title ── */
+    .name-section {
+      margin-bottom: 3rem;
+    }
     h1 {
-      font-size: 2.4rem;
-      margin-bottom: 0.25rem;
-      letter-spacing: 0.02em;
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2rem, 4vw + 1rem, 2.75rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
     }
     .subtitle {
-      color: var(--text-secondary);
       font-size: 1rem;
-      margin-bottom: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
     }
     .intro {
-      color: var(--text-secondary);
       font-size: 0.95rem;
-      margin-bottom: 2.5rem;
-      padding: 1rem;
-      background: var(--card-bg);
-      border-radius: 8px;
-      border-left: 3px solid var(--accent);
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 60ch;
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--accent);
+    }
+    .intro strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 2.75rem;
     }
     h2 {
-      font-size: 1.25rem;
-      margin: 2rem 0 0.75rem;
-      padding-bottom: 0.4rem;
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
       border-bottom: 1px solid var(--border);
     }
     h3 {
-      font-size: 1.05rem;
-      margin: 1.25rem 0 0.4rem;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin: 1.5rem 0 0.25rem;
     }
-    .grid {
+    h3:first-of-type { margin-top: 0; }
+    .meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Skills Grid ── */
+    .skills-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 1.5rem 2rem;
       margin: 0.75rem 0;
     }
-    .grid > div {
-      background: var(--card-bg);
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-    .grid strong {
+    .skill-group strong {
       display: block;
-      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
       color: var(--accent);
+      margin-bottom: 0.4rem;
     }
-    ul {
-      padding-left: 1.5rem;
-      margin: 0.4rem 0;
+    .skill-group ul {
+      padding-left: 1.1rem;
+      margin: 0;
     }
-    li {
-      margin-bottom: 0.3rem;
-      font-size: 0.92rem;
-      color: var(--text-secondary);
-    }
-    .meta {
+    .skill-group li {
       font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-bottom: 0.3rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.25rem;
+      line-height: 1.65;
     }
+
+    /* ── Experience ── */
+    .exp-item {
+      margin-bottom: 1.75rem;
+    }
+    .exp-item:last-child { margin-bottom: 0; }
+    .exp-item ul {
+      padding-left: 1.1rem;
+      margin: 0.4rem 0 0;
+    }
+    .exp-item li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.3rem;
+      line-height: 1.7;
+    }
+
+    /* ── Tags ── */
     .tags {
       display: flex;
       gap: 0.5rem;
@@ -122,116 +189,196 @@
       margin-top: 0.5rem;
     }
     .tag {
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      padding: 0.2rem 0.7rem;
-      border-radius: 12px;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.6rem;
     }
+
+    /* ── Lists ── */
+    ul.plain {
+      padding-left: 1.1rem;
+      margin: 0.4rem 0;
+    }
+    ul.plain li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.3rem;
+      line-height: 1.7;
+    }
+    ul.plain li strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Self Summary ── */
+    .summary {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 60ch;
+    }
+    .summary strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 0 2rem 2rem;
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .footer-inner {
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
     @media (max-width: 640px) {
-      .container { padding: 2rem 1rem; }
-      h1 { font-size: 1.8rem; }
-      .grid { grid-template-columns: 1fr; }
+      header { padding: 1.5rem 1.25rem 0; }
+      main { padding: 2rem 1.25rem 3rem; }
+      footer { padding: 0 1.25rem 1.5rem; }
+      .skills-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.75rem; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a href="/" class="back-link">← 返回主页</a>
-    <h1>雷雨</h1>
-    <p class="subtitle">嵌入式软件开发方向 · 计算机技术硕士在读 · 兼顾系统实现与工程落地</p>
+  <header>
+    <nav>
+      <a href="/" class="site-name">LeiSHOW</a>
+      <ul class="nav-links">
+        <li><a href="/blog/">博客</a></li>
+        <li><a href="/resume/">简历</a></li>
+        <li><a href="https://github.com/leiSHOW" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <div class="intro">
-      目前就读于成都理工大学计算机技术专业，持续聚焦于嵌入式系统、Linux 平台开发、网络协议栈实现与工程化落地。
-      在研究与实践中，重点关注<strong>协议设计、系统适配、内核态驱动开发、仿真平台搭建</strong>等方向，
-      希望逐步沉淀出从方案设计、功能实现到系统联调的完整能力。
-    </div>
-
-    <h2>教育经历</h2>
-    <ul>
-      <li><strong>成都理工大学｜计算机与网络安全学院｜计算机技术</strong>（2024 年 9 月 - 至今）</li>
-      <li><strong>成都理工大学｜计算机与网络安全学院｜物联网工程</strong>（2020 年 9 月 - 2024 年 6 月）</li>
-    </ul>
-
-    <h2>专业技能</h2>
-    <div class="grid">
-      <div>
-        <strong>嵌入式与系统基础</strong>
-        <ul>
-          <li>熟悉嵌入式设备基本组成原理，掌握最小系统、总线架构、存储层次、I/O 控制、中断与 DMA 等核心内容</li>
-          <li>具备协议移植、定制化开发能力，可根据项目需求完成协议栈逻辑实现与调试</li>
-        </ul>
-      </div>
-      <div>
-        <strong>Qt 与应用开发</strong>
-        <ul>
-          <li>熟悉 Qt 跨平台开发，包括信号槽、数据库连接与操作等常见机制</li>
-          <li>具备简单桌面应用与 WebServer 项目的开发、调试经验</li>
-        </ul>
-      </div>
-      <div>
-        <strong>Linux 与工程环境</strong>
-        <ul>
-          <li>熟悉 Linux 文件系统、磁盘管理、进程监控、网络抓包与 Shell 脚本开发</li>
-          <li>具备 OpenWrt 系统环境搭建、开发与问题排查的完整项目落地能力</li>
-        </ul>
-      </div>
-      <div>
-        <strong>开发方向关键词</strong>
-        <ul>
-          <li>C / C++</li>
-          <li>Linux 内核驱动开发</li>
-          <li>网络协议栈设计与实现</li>
-          <li>仿真平台开发与联调</li>
-        </ul>
+  <main>
+    <div class="name-section">
+      <h1>雷雨</h1>
+      <p class="subtitle">嵌入式软件开发方向 · 计算机技术硕士在读 · 兼顾系统实现与工程落地</p>
+      <div class="intro">
+        目前就读于成都理工大学计算机技术专业，持续聚焦于嵌入式系统、Linux 平台开发、网络协议栈实现与工程化落地。
+        在研究与实践中，重点关注<strong>协议设计、系统适配、内核态驱动开发、仿真平台搭建</strong>等方向，
+        希望逐步沉淀出从方案设计、功能实现到系统联调的完整能力。
       </div>
     </div>
 
-    <h2>实习经历</h2>
-    <h3>中国科学院（北京）信息安全研究所｜算法工程师、嵌入式开发工程师</h3>
-    <p class="meta">2025 年 9 月 - 2026 年 3 月</p>
-    <ul>
-      <li>负责空天异构组网仿真平台、大规模半实物仿真平台的网络协议栈开发，以及 Linux 内核态 KO 驱动模块开发。</li>
-      <li>根据实际仿真需求开发协议组件库，并通过接口封装方式构建协议栈架构。</li>
-      <li>设计并实现两种基于地理位置坐标的路由协议，以及两种基于加权融合的分簇算法，逐步形成仿真平台中的网络协议库。</li>
-      <li>开发 Linux 内核态设备间通信协议栈 KO 驱动程序，并根据硬件寄存器文档完成 AXI4-Lite 接口物理层寄存器配置驱动封装。</li>
-      <li>设计协议层与物理层之间通过 DMA 通道进行空口数据交互的逻辑，实现 DMA 通道发送与接收回调函数。</li>
-      <li>基于网桥与 veth 网络技术搭建用户数据通道，使用 Linux 内核接口封装网卡间数据收发函数，完成协议层接管用户数据网卡的数据通道构建。</li>
-    </ul>
+    <section>
+      <h2>教育经历</h2>
+      <ul class="plain">
+        <li><strong>成都理工大学｜计算机与网络安全学院｜计算机技术</strong>（2024 年 9 月 - 至今）</li>
+        <li><strong>成都理工大学｜计算机与网络安全学院｜物联网工程</strong>（2020 年 9 月 - 2024 年 6 月）</li>
+      </ul>
+    </section>
 
-    <h3>四川新梦创想科技有限责任公司｜服务器运维支持</h3>
-    <p class="meta">2022 年 5 月 - 2022 年 12 月</p>
-    <ul>
-      <li>负责云服务器环境配置、域名申请、CDN 加速等基础环境搭建工作。</li>
-      <li>参与代码仓库、数据库以及前后端部署环境的搭建与日常维护。</li>
-    </ul>
+    <section>
+      <h2>专业技能</h2>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <strong>嵌入式与系统基础</strong>
+          <ul>
+            <li>熟悉嵌入式设备基本组成原理，掌握最小系统、总线架构、存储层次、I/O 控制、中断与 DMA 等核心内容</li>
+            <li>具备协议移植、定制化开发能力，可根据项目需求完成协议栈逻辑实现与调试</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <strong>Qt 与应用开发</strong>
+          <ul>
+            <li>熟悉 Qt 跨平台开发，包括信号槽、数据库连接与操作等常见机制</li>
+            <li>具备简单桌面应用与 WebServer 项目的开发、调试经验</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <strong>Linux 与工程环境</strong>
+          <ul>
+            <li>熟悉 Linux 文件系统、磁盘管理、进程监控、网络抓包与 Shell 脚本开发</li>
+            <li>具备 OpenWrt 系统环境搭建、开发与问题排查的完整项目落地能力</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <strong>开发方向关键词</strong>
+          <ul>
+            <li>C / C++</li>
+            <li>Linux 内核驱动开发</li>
+            <li>网络协议栈设计与实现</li>
+            <li>仿真平台开发与联调</li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-    <h2>项目经历</h2>
-    <h3>大规模半实物仿真平台开发</h3>
-    <p class="meta">网络协议栈开发 · 内核态驱动程序开发</p>
-    <div class="tags"><span class="tag">C/C++</span><span class="tag">NS3</span><span class="tag">Linux 内核</span><span class="tag">Shell</span></div>
+    <section>
+      <h2>实习经历</h2>
+      <div class="exp-item">
+        <h3>中国科学院（北京）信息安全研究所｜算法工程师、嵌入式开发工程师</h3>
+        <p class="meta">2025 年 9 月 - 2026 年 3 月</p>
+        <ul>
+          <li>负责空天异构组网仿真平台、大规模半实物仿真平台的网络协议栈开发，以及 Linux 内核态 KO 驱动模块开发。</li>
+          <li>根据实际仿真需求开发协议组件库，并通过接口封装方式构建协议栈架构。</li>
+          <li>设计并实现两种基于地理位置坐标的路由协议，以及两种基于加权融合的分簇算法，逐步形成仿真平台中的网络协议库。</li>
+          <li>开发 Linux 内核态设备间通信协议栈 KO 驱动程序，并根据硬件寄存器文档完成 AXI4-Lite 接口物理层寄存器配置驱动封装。</li>
+          <li>设计协议层与物理层之间通过 DMA 通道进行空口数据交互的逻辑，实现 DMA 通道发送与接收回调函数。</li>
+          <li>基于网桥与 veth 网络技术搭建用户数据通道，使用 Linux 内核接口封装网卡间数据收发函数，完成协议层接管用户数据网卡的数据通道构建。</li>
+        </ul>
+      </div>
+      <div class="exp-item">
+        <h3>四川新梦创想科技有限责任公司｜服务器运维支持</h3>
+        <p class="meta">2022 年 5 月 - 2022 年 12 月</p>
+        <ul>
+          <li>负责云服务器环境配置、域名申请、CDN 加速等基础环境搭建工作。</li>
+          <li>参与代码仓库、数据库以及前后端部署环境的搭建与日常维护。</li>
+        </ul>
+      </div>
+    </section>
 
-    <p style="margin-top: 0.75rem;"><strong>主要贡献：</strong></p>
-    <ul>
-      <li>负责大规模半实物仿真平台在 NS3 验证阶段、虚拟仿真平台阶段、实物适配阶段的 0-1 搭建。</li>
-      <li>设计并实现协议栈中各层之间的交互框架，完成自研网络协议栈中的网络层路由与分簇逻辑。</li>
-      <li>负责内核态驱动程序适配全过程，包括内核态函数替换、浮点数处理、设备间时间同步、交叉编译等关键环节。</li>
-    </ul>
+    <section>
+      <h2>项目经历</h2>
+      <div class="exp-item">
+        <h3>大规模半实物仿真平台开发</h3>
+        <p class="meta">网络协议栈开发 · 内核态驱动程序开发</p>
+        <div class="tags">
+          <span class="tag">C/C++</span>
+          <span class="tag">NS3</span>
+          <span class="tag">Linux 内核</span>
+          <span class="tag">Shell</span>
+        </div>
+        <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>主要贡献：</strong></p>
+        <ul>
+          <li>负责大规模半实物仿真平台在 NS3 验证阶段、虚拟仿真平台阶段、实物适配阶段的 0-1 搭建。</li>
+          <li>设计并实现协议栈中各层之间的交互框架，完成自研网络协议栈中的网络层路由与分簇逻辑。</li>
+          <li>负责内核态驱动程序适配全过程，包括内核态函数替换、浮点数处理、设备间时间同步、交叉编译等关键环节。</li>
+        </ul>
+        <p style="margin-top: 0.75rem; font-size: 0.9rem;"><strong>项目成果：</strong></p>
+        <ul>
+          <li>自研协议栈支持低时延、多优先级传输。</li>
+          <li>仿真节点规模可支持千节点仿真场景。</li>
+          <li>内核态程序适配后，实物间单跳通信延迟优化至 150ms 以内。</li>
+          <li>项目已通过内部验收，协议部分组件成为研究所仿真平台核心组件。</li>
+        </ul>
+      </div>
+    </section>
 
-    <p style="margin-top: 0.75rem;"><strong>项目成果：</strong></p>
-    <ul>
-      <li>自研协议栈支持低时延、多优先级传输。</li>
-      <li>仿真节点规模可支持千节点仿真场景。</li>
-      <li>内核态程序适配后，实物间单跳通信延迟优化至 150ms 以内。</li>
-      <li>项目已通过内部验收，协议部分组件成为研究所仿真平台核心组件。</li>
-    </ul>
+    <section>
+      <h2>自我概述</h2>
+      <p class="summary">
+        我更偏向系统型、工程型的成长路径：既重视底层原理，也重视在真实平台中的适配与落地。
+        相比只停留在单点功能实现，我更希望持续提升自己在<strong>协议设计、驱动开发、系统联调、问题定位与工程交付</strong>方面的综合能力，
+        并把每一次实践逐渐沉淀为可复用的方法与经验。
+      </p>
+    </section>
+  </main>
 
-    <h2>自我概述</h2>
-    <p style="color: var(--text-secondary); font-size: 0.95rem;">
-      我更偏向系统型、工程型的成长路径：既重视底层原理，也重视在真实平台中的适配与落地。
-      相比只停留在单点功能实现，我更希望持续提升自己在<strong>协议设计、驱动开发、系统联调、问题定位与工程交付</strong>方面的综合能力，
-      并把每一次实践逐渐沉淀为可复用的方法与经验。
-    </p>
-  </div>
+  <footer>
+    <div class="footer-inner">
+      &copy; 2026 LeiSHOW
+    </div>
+  </footer>
 </body>
 </html>
