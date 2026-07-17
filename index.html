@@ -7,77 +7,81 @@
   <meta name="description" content="雷樱者的个人主页。计算机技术硕士在读，研究方向为无人自组织网络。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: oklch(97.5% 0.005 80);
-      --text: oklch(22% 0.02 60);
-      --text-secondary: oklch(45% 0.015 60);
-      --text-muted: oklch(58% 0.01 60);
-      --accent: oklch(45% 0.12 25);
-      --border: oklch(88% 0.008 60);
-      --serif: "Fraunces", "Noto Serif SC", Georgia, serif;
-      --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --bg: oklch(96% 0.005 250);
+      --card-bg: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(249,251,255,0.94));
+      --text: #1a1a2e;
+      --text-secondary: rgba(60,72,88,0.88);
+      --text-muted: rgba(60,72,88,0.55);
+      --accent: #4c6fff;
+      --accent-soft: rgba(76,111,255,0.12);
+      --accent-gradient: linear-gradient(135deg, #5d7bff, #6aa8ff);
+      --border: rgba(76,111,255,0.12);
+      --shadow: 0 18px 45px rgba(15,23,42,0.06);
+      --radius: 22px;
+      --sans: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Noto Sans SC", "Segoe UI", sans-serif;
+      --serif-display: "ZCOOL XiaoWei", "Noto Serif SC", serif;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: oklch(14% 0.01 60);
-        --text: oklch(92% 0.01 70);
-        --text-secondary: oklch(72% 0.01 60);
-        --text-muted: oklch(55% 0.01 60);
-        --accent: oklch(72% 0.1 30);
-        --border: oklch(28% 0.01 60);
+        --bg: oklch(12% 0.01 250);
+        --card-bg: linear-gradient(180deg, rgba(30,32,44,0.95), rgba(28,32,45,0.94));
+        --text: #e8edf4;
+        --text-secondary: rgba(200,208,224,0.88);
+        --text-muted: rgba(180,190,210,0.5);
+        --accent: #6aa8ff;
+        --accent-soft: rgba(106,168,255,0.12);
+        --accent-gradient: linear-gradient(135deg, #6aa8ff, #8dc6ff);
+        --border: rgba(106,168,255,0.12);
+        --shadow: 0 18px 45px rgba(0,0,0,0.25);
       }
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Header ── */
-    header {
-      padding: 2rem 2rem 0;
-      max-width: 720px;
-      margin: 0 auto;
-      width: 100%;
-    }
+    /* ── Nav ── */
     nav {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
+      align-items: center;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+      width: 100%;
     }
-    .site-name {
-      font-family: var(--serif);
-      font-weight: 500;
-      font-size: 1.1rem;
-      letter-spacing: 0.02em;
-      color: var(--text);
+    .logo {
+      font-family: var(--serif-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--accent);
       text-decoration: none;
+      letter-spacing: 0.03em;
     }
     .nav-links {
       display: flex;
-      gap: 1.75rem;
+      gap: 2rem;
       list-style: none;
     }
     .nav-links a {
-      font-size: 0.875rem;
-      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
       text-decoration: none;
       transition: color 150ms ease;
+      padding: 0.3rem 0;
     }
-    .nav-links a:hover {
-      color: var(--accent);
-    }
+    .nav-links a:hover { color: var(--accent); }
 
     /* ── Main ── */
     main {
@@ -85,142 +89,206 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 3rem 2rem;
+      padding: 1rem 2rem 3rem;
     }
-    .hero {
-      max-width: 720px;
+
+    /* ── Hero Card ── */
+    .hero-card {
+      max-width: 860px;
       width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 3.5rem 3rem;
     }
-    .hero-label {
-      font-size: 0.8rem;
+    .hero-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1.75rem;
+      border: 2px solid var(--border);
+    }
+    .greeting {
+      font-size: 0.85rem;
       font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.25rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
     }
     h1 {
-      font-family: var(--serif);
+      font-family: var(--serif-display);
+      font-size: clamp(1.8rem, 3vw + 1rem, 2.4rem);
       font-weight: 400;
-      font-size: clamp(2.25rem, 5vw + 1rem, 3.5rem);
-      line-height: 1.15;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+      line-height: 1.3;
     }
     .hero-desc {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-secondary);
-      max-width: 52ch;
+      line-height: 1.85;
+      max-width: 56ch;
       margin-bottom: 2.5rem;
-      line-height: 1.75;
     }
     .hero-desc strong {
-      color: var(--text);
+      color: var(--accent);
       font-weight: 500;
     }
 
     /* ── Links ── */
-    .links {
+    .hero-links {
       display: flex;
-      gap: 1.25rem;
+      gap: 1rem;
       flex-wrap: wrap;
+      margin-bottom: 2rem;
     }
-    .links a {
+    .hero-links a {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
       font-size: 0.9rem;
       font-weight: 500;
       text-decoration: none;
-      padding: 0.55rem 1.1rem;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      transition: border-color 150ms ease, color 150ms ease;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      transition: transform 150ms ease, box-shadow 150ms ease;
     }
-    .links a:hover {
-      border-color: var(--accent);
+    .hero-links a.primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(76,111,255,0.22);
+    }
+    .hero-links a.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(76,111,255,0.3);
+    }
+    .hero-links a.secondary {
       color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
     }
-    .links a.primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: var(--text);
+    .hero-links a.secondary:hover {
+      background: rgba(76,111,255,0.18);
+      transform: translateY(-1px);
     }
-    .links a.primary:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: oklch(97% 0.005 80);
-    }
-    .links a svg {
-      width: 14px;
-      height: 14px;
+    .hero-links a svg {
+      width: 15px;
+      height: 15px;
       flex-shrink: 0;
+    }
+
+    /* ── Stats ── */
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stats div { text-align: left; }
+    .hero-stats .num {
+      font-family: var(--serif-display);
+      font-size: 1.5rem;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .hero-stats .label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
     }
 
     /* ── Footer ── */
     footer {
-      padding: 0 2rem 2rem;
-      max-width: 720px;
+      padding: 0 2.5rem 2.5rem;
+      max-width: 860px;
       margin: 0 auto;
       width: 100%;
     }
     .footer-inner {
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
       color: var(--text-muted);
+    }
+    .footer-inner .heart {
+      color: var(--accent);
     }
 
     @media (max-width: 640px) {
-      header { padding: 1.5rem 1.25rem 0; }
-      main { padding: 2rem 1.25rem; }
-      footer { padding: 0 1.25rem 1.5rem; }
+      nav { padding: 1.5rem 1.25rem; }
       .nav-links { gap: 1.25rem; }
-      h1 { font-size: 2rem; }
+      main { padding: 0.5rem 1rem 2rem; }
+      .hero-card { padding: 2rem 1.5rem; border-radius: 18px; }
+      .hero-stats { gap: 2rem; }
+      footer { padding: 0 1.25rem 1.5rem; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <a href="/" class="site-name">LeiSHOW</a>
-      <ul class="nav-links">
-        <li><a href="/blog/">博客</a></li>
-        <li><a href="/resume/">简历</a></li>
-        <li><a href="https://github.com/leiSHOW" target="_blank" rel="noopener">GitHub</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav>
+    <a href="/" class="logo">LeiSHOW</a>
+    <ul class="nav-links">
+      <li><a href="/blog/">博客</a></li>
+      <li><a href="/resume/">简历</a></li>
+      <li><a href="https://github.com/leiSHOW" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </nav>
 
   <main>
-    <div class="hero">
-      <p class="hero-label">Personal Homepage</p>
+    <div class="hero-card">
+      <img
+        class="hero-avatar"
+        src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/avatar1.jpg"
+        alt="avatar"
+        onerror="this.style.display='none'"
+      />
+      <p class="greeting">Hello, I'm</p>
       <h1>雷樱者</h1>
       <p class="hero-desc">
-        计算机技术硕士在读，研究方向为<strong>无人自组织网络</strong>。
+        计算机技术硕士在读，研究方向为<strong>无人自组织网络</strong>。<br />
         关注嵌入式系统、Linux 平台开发、网络协议栈实现与工程化落地，
         持续构建从方案设计到系统联调的完整能力。
       </p>
-      <div class="links">
+
+      <div class="hero-links">
         <a href="/blog/" class="primary">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2zm2 1v2h8V3H4zm0 4v1h8V7H4zm0 3v1h5v-1H4z"/></svg>
           阅读博客
         </a>
-        <a href="/resume/">
+        <a href="/resume/" class="secondary">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M4 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm1 3v1h6V5H5zm0 3v1h6V8H5zm0 3v1h4v-1H5z"/></svg>
           查看简历
         </a>
-        <a href="https://github.com/leiSHOW" target="_blank" rel="noopener">
+        <a href="https://github.com/leiSHOW" target="_blank" rel="noopener" class="secondary">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
           GitHub
         </a>
+      </div>
+
+      <div class="hero-stats">
+        <div>
+          <div class="num">15</div>
+          <div class="label">技术文章</div>
+        </div>
+        <div>
+          <div class="num">计算机技术</div>
+          <div class="label">硕士研究生</div>
+        </div>
+        <div>
+          <div class="num">1</div>
+          <div class="label">自研协议栈</div>
+        </div>
       </div>
     </div>
   </main>
 
   <footer>
     <div class="footer-inner">
-      &copy; 2026 LeiSHOW
+      <span>&copy; 2026 LeiSHOW</span>
+      <span>Built with <span class="heart">♥</span> &amp; curiosity</span>
     </div>
   </footer>
 </body>
