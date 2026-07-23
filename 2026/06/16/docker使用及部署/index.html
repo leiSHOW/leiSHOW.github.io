@@ -1,0 +1,328 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>docker使用及部署 | LEI-SITE</title><meta name="author" content="ThunderLEI,leiyuzi81@gmail.com"><meta name="copyright" content="ThunderLEI"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="整理 Docker 与 docker-compose 的基础概念、常用命令和部署要点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker使用及部署">
+<meta property="og:url" content="https://leishow.github.io/blog/2026/06/16/docker%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="LEI-SITE">
+<meta property="og:description" content="整理 Docker 与 docker-compose 的基础概念、常用命令和部署要点。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg">
+<meta property="article:published_time" content="2026-06-16T12:18:00.000Z">
+<meta property="article:modified_time" content="2026-06-16T12:15:14.902Z">
+<meta property="article:author" content="ThunderLEI">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="docker-compose">
+<meta property="article:tag" content="部署">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg"><link rel="shortcut icon" href="/blog/img/heart_icon.png"><link rel="canonical" href="https://leishow.github.io/blog/2026/06/16/docker%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%83%A8%E7%BD%B2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//hm.baidu.com"/><link rel="stylesheet" href="/blog/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?4599357e60c4b27612dff50bc9dd1d4a";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-RMWPXGRFSF"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-RMWPXGRFSF');
+</script><script>const GLOBAL_CONFIG = { 
+  root: '/blog/',
+  algolia: undefined,
+  localSearch: {"path":"/blog/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'docker使用及部署',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-06-16 20:15:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/leiBlog.github.io/css/custom.css"><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/blog/atom.xml" title="LEI-SITE" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/avatar1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/blog/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/blog/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/blog/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/blog/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/blog/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/blog/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/blog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/blog/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/blog/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/blog/">LEI-SITE</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/blog/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/blog/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/blog/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/blog/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/blog/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/blog/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">docker使用及部署</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-16T12:18:00.000Z" title="发表于 2026-06-16 20:18:00">2026-06-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-16T12:15:14.902Z" title="更新于 2026-06-16 20:15:14">2026-06-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/blog/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="docker-和-docker-compose-部署应用"><a href="#docker-和-docker-compose-部署应用" class="headerlink" title="docker 和 docker compose 部署应用"></a>docker 和 docker compose 部署应用</h1><h2 id="docker-和-docker-compose-是什么"><a href="#docker-和-docker-compose-是什么" class="headerlink" title="docker 和 docker compose 是什么"></a>docker 和 docker compose 是什么</h2><p><strong>Docker</strong>，可以理解为是一种轻型的虚拟机，只需虚拟你所需要使用的软件的运行环境，即可保证软件能够正常运行，且这种虚拟是建立在一个个容器中的，是<strong>与宿主机器的环境隔离开</strong>的，并不会影响宿主机器已经配置好的环境，且能够十分方便地将项目在各种环境下进行<strong>迁移、部署</strong>。</p>
+<p>这里与虚拟机进行一个对比，会有更加直观的理解：</p>
+<table>
+<thead>
+<tr>
+<th>特点</th>
+<th>普通虚拟机</th>
+<th>Docker</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>跨平台</td>
+<td>不一定支持在不带有桌面系统的服务器上运行</td>
+<td>各类 windows 和 Linux 都支持</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>内存占用高，各项不需要的服务也有包含，不纯粹</td>
+<td>只虚拟软件所需的运行环境，减少软件不需要的服务</td>
+</tr>
+<tr>
+<td>安装难度</td>
+<td>需要手动部署环境</td>
+<td>一个命令就可自动部署好软件所需环境</td>
+</tr>
+<tr>
+<td>稳定性</td>
+<td>不同系统之间存在差异</td>
+<td>稳定性好</td>
+</tr>
+</tbody></table>
+<p>然而，在使用docker部署项目的时候，我们经常会发现一个项目往往不是独立运行的，需要多个软件协同工作，这就需要我们运行多个容器，并且让这些容器之间能够互相通信，当然，我们可以使用docker在这些容器之间构建起虚拟网络，但这无疑增加了部署的难度，因此，我们需要使用 <strong>docker-compose</strong> ，把项目的多个服务集合到一起，并一键运行。</p>
+<h2 id="docker-原理"><a href="#docker-原理" class="headerlink" title="docker 原理"></a>docker 原理</h2><p>首先，我们需要知道作为容器，需要哪些服务？</p>
+<p>简单来说，容器可以理解为一个专用某服务的独立操作系统，即：精简linux操作系统+某个软件服务 的组合。</p>
+<p>因此，它必须包含运行某个软件所需的所有内容，包括：代码、运行所需要调用的库文件、环境变量、配置文件等。</p>
+<h2 id="docker-使用"><a href="#docker-使用" class="headerlink" title="docker 使用"></a>docker 使用</h2><blockquote>
+<ul>
+<li><strong>镜像【image】</strong>：可以理解为官方、开发者发布的能够提供不同服务的软件安装包。一般的镜像都可以去 <a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a> 找到。</li>
+<li><strong>容器【container】</strong>：软件安装并运行之后的状态，每个软件运行环境都是独立且隔离的，可能存在由一个镜像运行的多个容器的情况。</li>
+</ul>
+</blockquote>
+<h2 id="docker安装及镜像更换"><a href="#docker安装及镜像更换" class="headerlink" title="docker安装及镜像更换"></a>docker安装及镜像更换</h2><p>安装docker只需要参照官网的文档：</p>
+<ul>
+<li>桌面版：<a target="_blank" rel="noopener" href="https://docs.docker.com/desktop/install/linux-install/">Install Docker Desktop on Linux | Docker Docs</a></li>
+<li>服务器版：<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/">Install Docker Engine | Docker Docs</a></li>
+</ul>
+<p>至于镜像更换，建议直接<strong>登录</strong>阿里云使用其提供的镜像进行更换：<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors">容器镜像服务 (aliyun.com)</a></p>
+<p>也可以直接按照这个老哥提供的脚本一键安装：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wavemap/article/details/139373367">docker和docker compose、docker更换国内源</a></p>
+<h2 id="docker相关命令"><a href="#docker相关命令" class="headerlink" title="docker相关命令"></a>docker相关命令</h2><h3 id="辅助命令"><a href="#辅助命令" class="headerlink" title="辅助命令"></a>辅助命令</h3><ul>
+<li><code>docker version</code> 查看docker客户端引擎、服务端引擎版本信息</li>
+<li><code>docker info</code> 查看docker引擎详细信息</li>
+<li><code>docker --help</code> 查看命令帮助信息</li>
+</ul>
+<h3 id="镜像相关操作命令"><a href="#镜像相关操作命令" class="headerlink" title="镜像相关操作命令"></a>镜像相关操作命令</h3><h4 id="查看本地仓库中的镜像"><a href="#查看本地仓库中的镜像" class="headerlink" title="查看本地仓库中的镜像"></a>查看本地仓库中的镜像</h4><ul>
+<li><code>docker images</code>：查看本地仓库中的所有镜像</li>
+<li><code>docker images 镜像名称</code>：查看本地仓库中所有与指定”镜像名称”相关的镜像</li>
+</ul>
+<p>执行之后返回结果如图： <img src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/image-20240726153413139.png" alt="image-20240726153413139"></p>
+<p>显示信息的构成：</p>
+<ul>
+<li>REPOSITORY：镜像名称</li>
+<li>TAG：镜像版本</li>
+<li>IMAGE ID：镜像ID【唯一标识】，在实际运用中，一般来说，前三位就能确定一个镜像</li>
+<li>CREATED：该镜像官方创建的时间</li>
+<li>SIZE：镜像大小</li>
+</ul>
+<h4 id="下载远端仓库中的镜像"><a href="#下载远端仓库中的镜像" class="headerlink" title="下载远端仓库中的镜像"></a>下载远端仓库中的镜像</h4><ul>
+<li><code>docker pull 某个镜像的名称</code>：这样使用默认拉取的是最新版本，&lt;&#x3D;&#x3D;&gt; <code>docker pull 镜像名称:latest</code></li>
+<li><code>docker pull 镜像名称:版本号</code>：这样可以获取指定版本的镜像</li>
+</ul>
+<h4 id="搜索镜像"><a href="#搜索镜像" class="headerlink" title="搜索镜像"></a>搜索镜像</h4><p><code>docker search 镜像名称</code>：在docker hub中镜像搜索，并返回符合用户搜索的结果，并不会显示版本，需要到docker hub网页中去查看具体的版本号</p>
+<h4 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h4><ul>
+<li><code>docker image rm 镜像id</code>：&lt;&#x3D;&#x3D;&gt;<code>docker rmi 镜像id</code>，这种方式只能删除没用运行过的镜像，不然就只能强制删除</li>
+<li><code>docker image rm -f 镜像id</code>：这种方式是强制删除，会将镜像和基于该镜像运行的容器全都删除</li>
+<li><code>docker image rm $(docker images 镜像名称 -q)</code>：组合式删除所有指定镜像名称的镜像，参数 <code>-q</code> 代表仅显示id</li>
+</ul>
+<h3 id="容器相关操作命令"><a href="#容器相关操作命令" class="headerlink" title="容器相关操作命令"></a>容器相关操作命令</h3><p><strong>基本格式：<code>docker 命令 [选项]</code></strong></p>
+<h4 id="查看正在运行的容器"><a href="#查看正在运行的容器" class="headerlink" title="查看正在运行的容器"></a>查看正在运行的容器</h4><ul>
+<li><code>docker ps</code>：查看正在运行的容器</li>
+<li><code>docker ps -a</code>：查看所有的容器，包括没有运行的容器</li>
+</ul>
+<p>执行之后返回结果如图： </p>
+<p><img src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/image-20240726161331485.png" alt="image-20240726161331485"></p>
+<p>其中：</p>
+<ul>
+<li>CONTAINER ID：代表容器ID【唯一标识】</li>
+<li>IMAGE：基于哪个镜像</li>
+<li>COMMAND：容器内启动服务的命令</li>
+<li>CREATED：容器的创建时间</li>
+<li>STATUS：容器当前状态</li>
+<li>PORTS：容器内该服务监听的端口号</li>
+<li>NAMES：容器名称，若在启动时未指定名称，docker自动分配容器的名称</li>
+</ul>
+<h4 id="运行容器命令"><a href="#运行容器命令" class="headerlink" title="运行容器命令"></a>运行容器命令</h4><ul>
+<li><code>docker run 镜像id</code>：将镜像id对应的镜像运行起来，<em><strong>注意每运行一次镜像就会生成一个容器</strong></em></li>
+<li><code>docker run -p 宿主机端口号:容器内服务端口号 镜像id</code>：运行容器，并同时设置容器与宿主机端口的映射关系，这样才能外部访问得到该容器的对应端口，注意：使用这种方式时，支持映射多个端口，增加 <code>-p 宿主机端口号:容器内服务端口号</code> 即可</li>
+<li><code>docker run -d 镜像id</code>：代表后台运行该容器</li>
+<li><code>docker run --name 容器名称 镜像id </code>：指定启动容器的名称</li>
+</ul>
+<h4 id="停止、重启、暂停、恢复容器"><a href="#停止、重启、暂停、恢复容器" class="headerlink" title="停止、重启、暂停、恢复容器"></a>停止、重启、暂停、恢复容器</h4><ul>
+<li><code>docker stop 容器id</code>：停止，在容器启动之后可以使用</li>
+<li><code>docker restart 容器id </code>：重启，在容器启动之后可以使用</li>
+<li><code>docker start 容器id </code>：启动，在容器被停止之后可以使用</li>
+<li><code>docker pause 容器id</code>：暂停，在容器启动之后可以使用</li>
+<li><code>docker unpause 容器id</code>：重新开启，在容器暂停之后可以使用</li>
+</ul>
+<h4 id="杀死容器"><a href="#杀死容器" class="headerlink" title="杀死容器"></a>杀死容器</h4><p><code>docker kill 容器id</code>：将容器进程直接杀死</p>
+<h4 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h4><ul>
+<li><code>docker rm 容器id</code>：只能删除处于停止状态的容器，运行状态中的容器用这种方式不能删除</li>
+<li><code>docker rm -f 容器id</code>：强制删除，即使该容器处于运行状态</li>
+<li><code>docker rm $(docker ps -qa)</code>：组合式方式，删除所有容器</li>
+</ul>
+<h4 id="查看容器日志"><a href="#查看容器日志" class="headerlink" title="查看容器日志"></a>查看容器日志</h4><ul>
+<li><code>docker logs 容器id</code>：查看某个容器的日志</li>
+<li><code>docker logs -f 容器id</code>：查看某个容器的实时日志</li>
+<li><code>docker logs -t 容器id</code>：查看容器标注宿主机时间的日志</li>
+</ul>
+<h4 id="进入容器内部"><a href="#进入容器内部" class="headerlink" title="进入容器内部"></a>进入容器内部</h4><ul>
+<li><p><code>docker exec -it 容器id bash</code>：进入指定容器中并使用交互模式在容器中的bash窗口进行操作</p>
+<p>之后再退出容器：</p>
+<ul>
+<li><code>exit</code>：退出后，该容器也许就被停止了【不一定，但可能就会停止】</li>
+<li>ctrl+p+q：退出后，该容器依然在运行中</li>
+</ul>
+</li>
+</ul>
+<h4 id="容器与宿主机之间的文件拷贝"><a href="#容器与宿主机之间的文件拷贝" class="headerlink" title="容器与宿主机之间的文件拷贝"></a>容器与宿主机之间的文件拷贝</h4><ul>
+<li><code>docker cp 容器id:容器内资源路径 宿主机目录路径</code>：将容器中的指定文件和目录拷贝到宿主机中</li>
+<li><code>docker cp 主机内资源路径 容器id:容器路径 </code>：将宿主机中指定文件复制到容器内部</li>
+</ul>
+<h4 id="查看容器内信息"><a href="#查看容器内信息" class="headerlink" title="查看容器内信息"></a>查看容器内信息</h4><ul>
+<li><code>docker top 容器id</code>：查看容器内运行的进程</li>
+<li><code>docker inspect 容器id</code>：<strong>展示容器内的其他信息</strong></li>
+</ul>
+<h4 id="容器数据卷"><a href="#容器数据卷" class="headerlink" title="容器数据卷"></a>容器数据卷</h4><p>生产条件下，这是最重要的，因为只有进行了容器数据卷的映射，才能实现<strong>数据的持久化管理</strong>。</p>
+<h5 id="数据卷是什么？"><a href="#数据卷是什么？" class="headerlink" title="数据卷是什么？"></a>数据卷是什么？</h5><p>数据卷即：Data Volume</p>
+<p>作用：用来实现容器中数据和宿主机中数据进行映射的【从而实现挂载并实时同步某些文件 or 文件夹的作用】</p>
+<p><strong>【注意：数据卷的绑定使用必须在容器首次启动的时候设置】</strong></p>
+<h5 id="数据卷的使用"><a href="#数据卷的使用" class="headerlink" title="数据卷的使用"></a>数据卷的使用</h5><ul>
+<li><code>docker run -v 宿主机某目录:容器内某目录 容器id</code></li>
+</ul>
+<!-- 在容器内的路径后加上 :ro 则表示在容器内仅可读 -->
+
+<blockquote>
+<p><strong>慎用</strong>&#x3D;&#x3D;》使用绝对路径时，如果按照如下操作进行：<code>docker run -v 宿主机绝对路径:容器内路径</code></p>
+<p>则：这种方式会将容器内路径的原本存在的内容全部清空，并始终按照宿主机的路径作为自己的路径</p>
+</blockquote>
+<ul>
+<li><code>docker run -v aa:/usr/local/tomcat/webapps 容器id</code>：使用别名的方式设置数据卷</li>
+</ul>
+<blockquote>
+<p>aa是什么？【可以通过 <code>find / -name aa</code> 对宿主机中从根目录开始查找名为aa的文件夹 】</p>
+<p>1、aa代表的是某个容器对应的数据卷的别名</p>
+<p>2、这个别名如果存在，则容器在启动的时候就直接启动；如果不存在则自动创建</p>
+<p>3、使用别名方式可以保留容器中所映射路径的原始内容</p>
+<p>【但是前提条件是在宿主机中创建起来的别名所对应的路径下不能存在有内容】</p>
+</blockquote>
+<h4 id="打包容器为一个镜像"><a href="#打包容器为一个镜像" class="headerlink" title="打包容器为一个镜像"></a>打包容器为一个镜像</h4><h5 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h5><ul>
+<li>镜像：仅可读</li>
+<li>容器：可读可写</li>
+</ul>
+<p>意义：将修改配置好的容器打包成一个新的镜像，以后在生产环境下，就可以基于这个镜像在<strong>不同的宿主机下</strong>运行成容器</p>
+<h5 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h5><ul>
+<li><code>docker commit -m &quot;描述信息&quot; -a &quot;作者信息&quot; 容器id 打包的镜像名称:标签</code>：将容器打包为新的镜像，其中标签一般为版本号</li>
+</ul>
+<h5 id="备份为tar及恢复"><a href="#备份为tar及恢复" class="headerlink" title="备份为tar及恢复"></a>备份为tar及恢复</h5><ul>
+<li><code>docker save 镜像名:标签 -o 目录/名称.tar</code>：将某个镜像打包为tar以便于传输，标签一般为版本</li>
+<li><code>docker load -i 名称.tar</code>：将打包好的tar文件中的镜像载入</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://leishow.github.io/blog">ThunderLEI</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://leishow.github.io/blog/2026/06/16/docker%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%83%A8%E7%BD%B2/">https://leishow.github.io/blog/2026/06/16/docker%E4%BD%BF%E7%94%A8%E5%8F%8A%E9%83%A8%E7%BD%B2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://leishow.github.io/blog" target="_blank">LEI-SITE</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/blog/tags/Docker/">Docker</a><a class="post-meta__tags" href="/blog/tags/docker-compose/">docker-compose</a><a class="post-meta__tags" href="/blog/tags/%E9%83%A8%E7%BD%B2/">部署</a></div><div class="post_share"><div class="social-share" data-image="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/blog/2026/06/16/QT%E4%B9%8B%E4%BA%8C%E8%BF%9B%E9%97%A8/"><img class="prev-cover" src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg" onerror="onerror=null;src='/blog/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">QT之二进门</div></div></a></div><div class="next-post pull-right"><a href="/blog/2026/06/16/npm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/"><img class="next-cover" src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/orage1.jpg" onerror="onerror=null;src='/blog/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">npm简单介绍</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/avatar1.jpg" onerror="this.onerror=null;this.src='/blog/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ThunderLEI</div><div class="author-info__description">聚焦无人自组织网络，也持续记录开发、部署与学习实践。</div></div><div class="card-info-data site-data is-center"><a href="/blog/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/blog/tags/"><div class="headline">标签</div><div class="length-num">20</div></a><a href="/blog/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/leiSHOW"><i class="fab fa-github"></i><span>GitHub 主页</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="mailto:leiyuzi81@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这里记录研究方向、技术实践，以及一步一步沉淀下来的成长轨迹。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#docker-%E5%92%8C-docker-compose-%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">docker 和 docker compose 部署应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-%E5%92%8C-docker-compose-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.</span> <span class="toc-text">docker 和 docker compose 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">docker 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">docker 使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E5%AE%89%E8%A3%85%E5%8F%8A%E9%95%9C%E5%83%8F%E6%9B%B4%E6%8D%A2"><span class="toc-number">1.4.</span> <span class="toc-text">docker安装及镜像更换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.</span> <span class="toc-text">docker相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.1.</span> <span class="toc-text">辅助命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.2.</span> <span class="toc-text">镜像相关操作命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.2.1.</span> <span class="toc-text">查看本地仓库中的镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E8%BF%9C%E7%AB%AF%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.2.2.</span> <span class="toc-text">下载远端仓库中的镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.2.3.</span> <span class="toc-text">搜索镜像</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.2.4.</span> <span class="toc-text">删除镜像</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.3.</span> <span class="toc-text">容器相关操作命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">查看正在运行的容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.3.2.</span> <span class="toc-text">运行容器命令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%81%9C%E6%AD%A2%E3%80%81%E9%87%8D%E5%90%AF%E3%80%81%E6%9A%82%E5%81%9C%E3%80%81%E6%81%A2%E5%A4%8D%E5%AE%B9%E5%99%A8"><span class="toc-number">1.5.3.3.</span> <span class="toc-text">停止、重启、暂停、恢复容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%80%E6%AD%BB%E5%AE%B9%E5%99%A8"><span class="toc-number">1.5.3.4.</span> <span class="toc-text">杀死容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="toc-number">1.5.3.5.</span> <span class="toc-text">删除容器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97"><span class="toc-number">1.5.3.6.</span> <span class="toc-text">查看容器日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8"><span class="toc-number">1.5.3.7.</span> <span class="toc-text">进入容器内部</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B9%8B%E9%97%B4%E7%9A%84%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D"><span class="toc-number">1.5.3.8.</span> <span class="toc-text">容器与宿主机之间的文件拷贝</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E5%86%85%E4%BF%A1%E6%81%AF"><span class="toc-number">1.5.3.9.</span> <span class="toc-text">查看容器内信息</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="toc-number">1.5.3.10.</span> <span class="toc-text">容器数据卷</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.5.3.10.1.</span> <span class="toc-text">数据卷是什么？</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.3.10.2.</span> <span class="toc-text">数据卷的使用</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%8C%85%E5%AE%B9%E5%99%A8%E4%B8%BA%E4%B8%80%E4%B8%AA%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.3.11.</span> <span class="toc-text">打包容器为一个镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%84%8F%E4%B9%89"><span class="toc-number">1.5.3.11.1.</span> <span class="toc-text">意义</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.3.11.2.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%BAtar%E5%8F%8A%E6%81%A2%E5%A4%8D"><span class="toc-number">1.5.3.11.3.</span> <span class="toc-text">备份为tar及恢复</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 - 2026 By ThunderLEI</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/blog/js/utils.js"></script><script src="/blog/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/blog/js/search/local-search.js"></script><div class="js-pjax"></div><script src="/leiBlog.github.io/js/fishes.js"></script></div></body></html>
