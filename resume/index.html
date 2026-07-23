@@ -13,18 +13,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* 密码验证通过前彻底隐藏 body */
-    body { display: none !important; }
-    body.unlocked { display: block !important; }
-    body.denied-block {
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      color: #999;
-      font-size: 1.1rem;
-    }
+    /* 密码验证通过前彻底隐藏所有内容 */
+    body { display: none; }
+    body.unlocked { display: block; }
   </style>
   <style>
     :root {
@@ -324,15 +315,21 @@
 <body>
   <script>
     (function() {
-      if (sessionStorage.getItem('_resume_granted') === '1') {
+      var GRANTED = sessionStorage.getItem('_resume_granted') === '1';
+      if (GRANTED) {
         document.body.classList.add('unlocked');
         return;
       }
 
       var p = prompt('此页面需要密码才能访问，请输入密码：');
-      if (!p) {
-        document.body.classList.add('denied-block');
-        document.body.textContent = '需要密码才能访问此页面。';
+
+      function showDenied() {
+        // 彻底清空整个文档，只显示拒绝提示
+        document.documentElement.innerHTML = '<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>需要密码</title><style>body{display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:#999;font-size:1.1rem;background:#f5f5f5}</style></head><body>需要密码才能访问此页面。</body>';
+      }
+
+      if (p === null || p === '') {
+        showDenied();
         return;
       }
 
@@ -340,8 +337,7 @@
         var hex = Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
         if (hex !== 'a8191acd177dcfc6b110b95de965da60ccb88e95e58c56c66d6a95debde5cbe1') {
           alert('密码错误，访问被拒绝。');
-          document.body.classList.add('denied-block');
-          document.body.textContent = '需要密码才能访问此页面。';
+          showDenied();
           return;
         }
         sessionStorage.setItem('_resume_granted', '1');
