@@ -12,23 +12,7 @@
   <rights>All rights reserved 2026, ThunderLEI</rights>
   <subtitle>雷樱者的网站</subtitle>
   <title>LEI-SITE</title>
-  <updated>2026-06-16T12:15:14.896Z</updated>
-  <entry>
-    <author>
-      <name>ThunderLEI</name>
-      <email>leiyuzi81@gmail.com</email>
-    </author>
-    <category term="开发学习" scheme="https://leishow.github.io/blog/categories/%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/"/>
-    <category term="Qt" scheme="https://leishow.github.io/blog/tags/Qt/"/>
-    <category term="C++" scheme="https://leishow.github.io/blog/tags/C/"/>
-    <category term="实训" scheme="https://leishow.github.io/blog/tags/%E5%AE%9E%E8%AE%AD/"/>
-    <id>https://leishow.github.io/blog/2026/06/16/QT%E4%B9%8B%E4%BA%8C%E8%BF%9B%E9%97%A8/</id>
-    <link href="https://leishow.github.io/blog/2026/06/16/QT%E4%B9%8B%E4%BA%8C%E8%BF%9B%E9%97%A8/"/>
-    <published>2026-06-16T12:18:00.000Z</published>
-    <summary>记录 Qt 实训过程中的环境搭建、TCP 通信、百度识图与语音接口调用等内容。</summary>
-    <title>QT之二进门</title>
-    <updated>2026-06-16T12:15:14.896Z</updated>
-  </entry>
+  <updated>2026-06-16T12:15:14.902Z</updated>
   <entry>
     <author>
       <name>ThunderLEI</name>
@@ -44,6 +28,22 @@
     <summary>整理 Docker 与 docker-compose 的基础概念、常用命令和部署要点。</summary>
     <title>docker使用及部署</title>
     <updated>2026-06-16T12:15:14.902Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>ThunderLEI</name>
+      <email>leiyuzi81@gmail.com</email>
+    </author>
+    <category term="开发学习" scheme="https://leishow.github.io/blog/categories/%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/"/>
+    <category term="Qt" scheme="https://leishow.github.io/blog/tags/Qt/"/>
+    <category term="C++" scheme="https://leishow.github.io/blog/tags/C/"/>
+    <category term="实训" scheme="https://leishow.github.io/blog/tags/%E5%AE%9E%E8%AE%AD/"/>
+    <id>https://leishow.github.io/blog/2026/06/16/QT%E4%B9%8B%E4%BA%8C%E8%BF%9B%E9%97%A8/</id>
+    <link href="https://leishow.github.io/blog/2026/06/16/QT%E4%B9%8B%E4%BA%8C%E8%BF%9B%E9%97%A8/"/>
+    <published>2026-06-16T12:18:00.000Z</published>
+    <summary>记录 Qt 实训过程中的环境搭建、TCP 通信、百度识图与语音接口调用等内容。</summary>
+    <title>QT之二进门</title>
+    <updated>2026-06-16T12:15:14.896Z</updated>
   </entry>
   <entry>
     <author>
