@@ -12,21 +12,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
-  <script>
-    (async function() {
-      if (sessionStorage.getItem('_resume_granted') === '1') return;
-      var p = prompt('此页面需要密码才能访问，请输入密码：');
-      if (!p) { document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#666;font-size:1.1rem">需要密码才能访问此页面。</div>'; return; }
-      var h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
-      var hex = Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
-      if (hex !== 'a8191acd177dcfc6b110b95de965da60ccb88e95e58c56c66d6a95debde5cbe1') {
-        alert('密码错误，访问被拒绝。');
-        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#666;font-size:1.1rem">需要密码才能访问此页面。</div>';
-        return;
-      }
-      sessionStorage.setItem('_resume_granted', '1');
-    })();
-  </script>
+  <style>
+    /* 密码验证通过前彻底隐藏 body */
+    body { display: none !important; }
+    body.unlocked { display: block !important; }
+    body.denied-block {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #999;
+      font-size: 1.1rem;
+    }
+  </style>
   <style>
     :root {
       --bg: oklch(96% 0.005 250);
@@ -323,6 +322,33 @@
   </style>
 </head>
 <body>
+  <script>
+    (function() {
+      if (sessionStorage.getItem('_resume_granted') === '1') {
+        document.body.classList.add('unlocked');
+        return;
+      }
+
+      var p = prompt('此页面需要密码才能访问，请输入密码：');
+      if (!p) {
+        document.body.classList.add('denied-block');
+        document.body.textContent = '需要密码才能访问此页面。';
+        return;
+      }
+
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(p)).then(function(h) {
+        var hex = Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+        if (hex !== 'a8191acd177dcfc6b110b95de965da60ccb88e95e58c56c66d6a95debde5cbe1') {
+          alert('密码错误，访问被拒绝。');
+          document.body.classList.add('denied-block');
+          document.body.textContent = '需要密码才能访问此页面。';
+          return;
+        }
+        sessionStorage.setItem('_resume_granted', '1');
+        document.body.classList.add('unlocked');
+      });
+    })();
+  </script>
   <nav>
     <a href="/" class="logo">LeiSHOW</a>
     <ul class="nav-links">
