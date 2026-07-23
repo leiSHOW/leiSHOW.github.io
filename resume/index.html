@@ -5,12 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>简历 | 雷雨 | LeiSHOW</title>
   <meta name="description" content="雷雨的个人简历，涵盖教育背景、专业技能、实习经历与项目经历。">
+  <meta name="robots" content="noindex">
   <meta name="keywords" content="雷雨, 简历, 嵌入式开发, Linux, 网络协议栈">
   <meta property="og:title" content="简历 | 雷雨">
   <meta property="og:description" content="嵌入式软件开发方向 · 计算机技术硕士在读">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    (async function() {
+      if (sessionStorage.getItem('_resume_granted') === '1') return;
+      var p = prompt('此页面需要密码才能访问，请输入密码：');
+      if (!p) { document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#666;font-size:1.1rem">需要密码才能访问此页面。</div>'; return; }
+      var h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(p));
+      var hex = Array.from(new Uint8Array(h)).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+      if (hex !== 'a8191acd177dcfc6b110b95de965da60ccb88e95e58c56c66d6a95debde5cbe1') {
+        alert('密码错误，访问被拒绝。');
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#666;font-size:1.1rem">需要密码才能访问此页面。</div>';
+        return;
+      }
+      sessionStorage.setItem('_resume_granted', '1');
+    })();
+  </script>
   <style>
     :root {
       --bg: oklch(96% 0.005 250);
