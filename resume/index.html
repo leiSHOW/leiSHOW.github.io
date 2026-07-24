@@ -114,6 +114,22 @@
       text-transform: uppercase;
       margin-bottom: 0.3rem;
     }
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.4rem 1.1rem;
+      text-decoration: none;
+      transition: all 150ms ease;
+      margin-bottom: 0.8rem;
+    }
+    .download-btn:hover { background: var(--accent); color: #fff; }
     h1 {
       font-family: var(--serif-display);
       font-size: clamp(2.2rem, 4vw + 1rem, 2.8rem);
@@ -357,6 +373,10 @@
   <main>
     <!-- Name Card -->
     <div class="name-card">
+      <a href="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/lydl/resume_leiyu1.pdf"
+         class="download-btn" download title="下载简历 PDF">
+        ⬇ 下载 PDF 简历
+      </a>
       <p class="greeting">Resume</p>
       <h1>雷雨</h1>
       <p class="subtitle">嵌入式软件开发方向 · 计算机技术硕士在读 · 兼顾系统实现与工程落地</p>

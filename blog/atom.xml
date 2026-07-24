@@ -34,6 +34,21 @@
       <name>ThunderLEI</name>
       <email>leiyuzi81@gmail.com</email>
     </author>
+    <category term="前端学习" scheme="https://leishow.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/"/>
+    <category term="npm" scheme="https://leishow.github.io/blog/tags/npm/"/>
+    <category term="Node.js" scheme="https://leishow.github.io/blog/tags/Node-js/"/>
+    <id>https://leishow.github.io/blog/2026/06/16/npm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</id>
+    <link href="https://leishow.github.io/blog/2026/06/16/npm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/"/>
+    <published>2026-06-16T12:18:00.000Z</published>
+    <summary>介绍 npm 的基本用途、安装方式、常用命令和镜像配置。</summary>
+    <title>npm简单介绍</title>
+    <updated>2026-06-16T12:15:14.909Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>ThunderLEI</name>
+      <email>leiyuzi81@gmail.com</email>
+    </author>
     <category term="开发工具" scheme="https://leishow.github.io/blog/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     <category term="Docker" scheme="https://leishow.github.io/blog/tags/Docker/"/>
     <category term="docker-compose" scheme="https://leishow.github.io/blog/tags/docker-compose/"/>
@@ -44,21 +59,6 @@
     <summary>整理 Docker 与 docker-compose 的基础概念、常用命令和部署要点。</summary>
     <title>docker使用及部署</title>
     <updated>2026-06-16T12:15:14.902Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>ThunderLEI</name>
-      <email>leiyuzi81@gmail.com</email>
-    </author>
-    <category term="前端学习" scheme="https://leishow.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%AD%A6%E4%B9%A0/"/>
-    <category term="npm" scheme="https://leishow.github.io/blog/tags/npm/"/>
-    <category term="Node.js" scheme="https://leishow.github.io/blog/tags/Node-js/"/>
-    <id>https://leishow.github.io/blog/2026/06/16/npm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</id>
-    <link href="https://leishow.github.io/blog/2026/06/16/npm%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/"/>
-    <published>2026-06-16T12:18:00.000Z</published>
-    <summary>介绍 npm 的基本用途、安装方式、常用命令和镜像配置。</summary>
-    <title>npm简单介绍</title>
-    <updated>2026-06-16T12:15:14.909Z</updated>
   </entry>
   <entry>
     <author>
