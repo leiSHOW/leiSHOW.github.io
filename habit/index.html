@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1219">
+  <meta name="description" content="雷雨的算法练习手记：C++ 解题笔记与 15 天练习路线。">
+  <link rel="canonical" href="https://leishow.github.io/habit/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2215%22%20fill%3D%22%23101922%22%2F%3E%3Cpath%20d%3D%22M20%2016v32m24-32v32M20%2032h24%22%20stroke%3D%22%238fd3c3%22%20stroke-width%3D%226%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+  <link rel="stylesheet" href="/habit/style.css">
+  <title>算法手记 · LeiSHOW</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到内容</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="返回 LeiSHOW 主页"><span class="brand-mark">H</span><span>LeiSHOW <i>/</i> habit</span></a>
+      <nav aria-label="页面导航">
+        <a href="#notes">解题笔记</a>
+        <a href="#plan">练习路线</a>
+        <a href="/blog/">博客</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-title">
+        <p class="eyebrow">ALGORITHM JOURNAL / C++</p>
+        <h1 id="page-title">算法手记<span class="title-line" aria-hidden="true"></span></h1>
+        <p class="intro-copy">把做过的题、试过的写法和需要回看的边界条件，留在同一个地方。</p>
+      </div>
+      <div class="intro-meta" aria-label="记录概况">
+        <div><strong>24</strong><span>篇已有笔记</span></div>
+        <div><strong>15</strong><span>天练习路线</span></div>
+      </div>
+    </section>
+
+    <div class="scope-note">原始笔记没有标注具体练习日期，以下按主题整理；右侧的 15 天路线是计划，不代表已完成。</div>
+    <nav class="topic-nav" aria-label="笔记主题"><a href="#strings">字符串与模拟 <span>4</span></a>
+<a href="#arrays">数组与常用技巧 <span>8</span></a>
+<a href="#trees">树与链表 <span>8</span></a>
+<a href="#greedy">贪心与区间 <span>4</span></a></nav>
+
+    <div class="page-grid">
+      <section id="notes" class="notes" aria-labelledby="notes-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">NOTEBOOK</p><h2 id="notes-title">解题笔记</h2></div>
+          <span>点开条目查看思路与代码</span>
+        </div>
+        <section class="note-group" id="strings"><h2>字符串与模拟<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">01</span><span class="entry-heading"><strong>大数加法</strong><span>从低位逐位相加，记录进位后反转结果。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    string a, b;
+    while (cin &gt;&gt; a &gt;&gt; b) {
+        string res;
+        int i = a.size() - 1;
+        int j = b.size() - 1;
+        int carry = 0;
+
+        while (i &gt;= 0 || j &gt;= 0 || carry) {
+            int x = (i &gt;= 0) ? a[i] - &#x27;0&#x27; : 0;
+            int y = (j &gt;= 0) ? b[j] - &#x27;0&#x27; : 0;
+            int sum = x + y + carry;
+
+            res.push_back(sum % 10 + &#x27;0&#x27;);
+            carry = sum / 10;
+
+            i--;
+            j--;
+        }
+
+        reverse(res.begin(), res.end());
+        cout &lt;&lt; res &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">02</span><span class="entry-heading"><strong>回文串判断</strong><span>两端指针向中间收缩，遇到不同字符就停止。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+bool isPalindrome(char* s) {
+    int left = 0;
+    int right = strlen(s) - 1;
+
+    while (left &lt; right) {
+        if (s[left] != s[right]) {
+            return false;
+        }
+        left++;
+        right--;
+    }
+    return true;
+}
+
+int main() {
+    string str;
+    cin &gt;&gt; str;
+
+    char s[1005];
+    strcpy_s(s, str.c_str());
+
+    if (isPalindrome(s)) {
+        cout &lt;&lt; &quot;Yes&quot; &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;No&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">03</span><span class="entry-heading"><strong>字符最大公约数</strong><span>先检查拼接顺序，再取两个长度的最大公约数。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>/*
+重点在于
+*/
+class Solution {
+public:
+    string gcdOfStrings(string str1, string str2) {
+        int sizex = (int)str1.size();
+        int sizey = (int)str2.size();
+        int i = 0, j = 0;
+        int g = gcd(sizex,sizey);
+        string temp = &quot;&quot;;
+        if(str1+str2 != str2+str1) return temp;
+        temp.append(str1.substr(0,g));
+        return temp;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">04</span><span class="entry-heading"><strong>回文串</strong><span>从枚举子串改为由中心向两侧扩展。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 回文串（及子字符串）问题，但是这样解的时间复杂度较高，O(n^3)
+class Solution {
+public:
+    int countSubstrings(string s) {
+     int cnt = 0;
+     for(int i=0; i&lt;s.size(); i++){
+        for(int j=i; j&lt;s.size(); j++){
+            string tmp =s.substr(i,j-i+1);
+            if(iscircle(tmp)) cnt++;
+        }
+     }
+     return cnt;
+    }
+
+private:
+    bool iscircle(string tmp){
+        int l = 0;
+        int r = tmp.size()-1;
+        while(l&lt;r){
+            if(tmp[l]!=tmp[r]) return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>/*
+利用回文串的特性来解：从中心向两边扩展，如果两边字符相同，就是回文
+【任何回文串，都有一个中心。我们枚举了所有可能的中心，并且从每个中心尽可能向两边扩展，所以每个回文串都会被找到一次。】
+*/
+class Solution {
+public:
+    int countSubstrings(string s) {
+     int cnt = 0;
+     for(int i=0; i&lt;s.size(); i++){
+        cnt += subcnt(s,i,i);
+        cnt += subcnt(s,i,i+1);
+     }
+     return cnt;
+    }
+
+private:
+    int subcnt(string tmp, int l, int r){
+        int cnt = 0;
+        while(l&gt;=0 &amp;&amp; r&lt;tmp.size()){
+            if(tmp[l]==tmp[r]){
+                cnt++;
+                l--;
+                r++;
+            }else{
+                break;
+            }
+        }
+        return cnt;
+    }
+};</code></pre></div></div></details></section>
+<section class="note-group" id="arrays"><h2>数组与常用技巧<span>8 篇</span></h2><details class="entry"><summary><span class="entry-number">05</span><span class="entry-heading"><strong>双指针（其中一个用法）</strong><span>盛水问题中收缩较短的一边，持续更新最大面积。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>统计水池的最大面积</blockquote>
+<div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>class Solution {
+public:
+    int maxArea(vector&lt;int&gt;&amp; height) {
+        int maxarea = 0;
+        int l = 0;
+        int r = height.size()-1;
+        while(l&lt;r){
+            int curarea = (r-l)*min(height[l], height[r]);
+            maxarea = max(curarea, maxarea);
+            if(height[l]&lt;height[r]){
+               l++;
+            }else{
+                r--;
+            }
+        }
+        return maxarea;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">06</span><span class="entry-heading"><strong>移动窗口</strong><span>固定长度窗口移出左端、加入右端，维护区间和。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    double findMaxAverage(vector&lt;int&gt;&amp; nums, int k) {
+        // 求最大sum即可
+        int sum = 0;
+        int maxx = 0;
+        // 先算出第一个窗口的sum
+        for(int i=0; i&lt;k; i++){
+            sum += nums[i];
+        }
+        maxx = sum;
+        //依次减去前面的值，再加上后面的值
+        for(int j=k; j&lt;nums.size(); j++){
+            sum += nums[j];
+            sum -= nums[j-k];
+            maxx = max(sum, maxx);
+        }
+        return (double)maxx/k;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">07</span><span class="entry-heading"><strong>二分最基础题目（递归）</strong><span>猜数字题中的递归二分与边界收缩。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+ * Forward declaration of guess API.
+ * @param  num   your guess
+ * @return 	     -1 if num is higher than the picked number
+ *			      1 if num is lower than the picked number
+ *               otherwise return 0
+ * int guess(int num);
+ */
+
+class Solution {
+public:
+    int guessNumber(int n) {
+        int lnum = 1;
+        int rnum = n;
+        // 等于的情况，直接选中pick
+        if(guess(lnum)==0) return lnum;
+        if(guess(rnum)==0) return rnum;
+        int pick = jugnumber(lnum, rnum);
+        return pick;
+    }
+private:
+    int jugnumber(int ln, int rn){
+        // 避免越界问题
+        int mid = ln + (rn-ln)/2;
+        int guessmid = guess(mid);
+        // 实际数字更大
+        if(guessmid&gt;0){
+            return jugnumber(mid+1, rn);
+        }
+        // 实际数字更小
+        if(guessmid&lt;0){
+            return jugnumber(ln, mid-1);
+        }
+        // 等于的情况，直接返回
+        return mid;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">08</span><span class="entry-heading"><strong>二分搜索典型题（常规暴力会超时）</strong><span>先排序药剂，再找到第一个满足条件的位置；保留了多版尝试。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 常规暴力搜索，直接超时
+class Solution {
+public:
+    vector&lt;int&gt; successfulPairs(vector&lt;int&gt;&amp; spells, vector&lt;int&gt;&amp; potions, long long success) {
+        int spsize = spells.size();
+        int posize = potions.size();
+        vector&lt;int&gt; tmp(spsize);
+        for(int i=0; i&lt;spsize; i++){
+            for(int j=0; j&lt;posize; j++){
+                long long tmpspells = (long long)spells[i]*potions[j];
+                if(tmpspells&gt;=success) tmp[i]++;
+            }
+        }
+        return tmp;
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 二分查找最小的（递归）
+// 其实可以考虑迭代来做，递归有点做复杂了
+class Solution {
+public:
+    vector&lt;int&gt; successfulPairs(vector&lt;int&gt;&amp; spells, vector&lt;int&gt;&amp; potions, long long success) {
+        int spsize = spells.size();
+        int posize = potions.size();
+        vector&lt;int&gt; tmp(spsize);
+        // 对potions先从小到大进行排序
+        sort(potions.begin(), potions.end());
+        // 再传入二分查找函数中找出当前法术下满足条件的药剂个数是多少
+        for(int i=0; i&lt;spsize; i++){
+            int pos = successfulNode(spells[i], potions, success, 0, potions.size()-1);
+            // 找到了则说明比这个下标更大的下标所代表的值都是满足的
+            tmp[i] =  (posize - pos);
+        }
+        return tmp;
+    }
+
+private:
+    int successfulNode(int spells, vector&lt;int&gt;&amp; potions, long long success, int left, int right){
+        // 递归出口，在已经二分搜索完毕之后发现全都符合要求，那就返回输入的左值0，让外部知道全都满足要求
+        if (left &gt; right) return left;
+        int mid = left + (right-left)/2;
+        // 大于等于最小需求值，在左半边继续寻找更小但满足需求的值
+        if( success&lt;=(long long)spells*potions[mid] ) return successfulNode(spells, potions, success, left, mid-1);
+        // 其余情况则在右半边 继续进行迭代搜索
+        return successfulNode(spells, potions, success, mid+1, right);
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>// 同样的思路，只是用迭代来做的。关键在于while循环
+class Solution {
+public:
+    vector&lt;int&gt; successfulPairs(vector&lt;int&gt;&amp; spells, vector&lt;int&gt;&amp; potions, long long success) {
+        int spsize = spells.size();
+        int posize = potions.size();
+        vector&lt;int&gt; tmp(spsize);
+
+        sort(potions.begin(), potions.end());
+
+        for (int i = 0; i &lt; spsize; i++) {
+            // 找到第一个满足 spells[i] * potions[pos] &gt;= success 的位置
+            int pos = lowerBound(spells[i], potions, success, 0, posize - 1);
+            // 如果 pos == posize，说明没有满足条件的
+            tmp[i] = (pos == posize) ? 0 : (posize - pos);
+        }
+        return tmp;
+    }
+
+private:
+    // 返回第一个满足 spells * potions[mid] &gt;= success 的下标
+    // 如果都不满足，返回 potions.size()
+    int lowerBound(int spell, vector&lt;int&gt;&amp; potions, long long success, int left, int right) {
+        int posize = potions.size();
+        while (left &lt;= right) {
+            int mid = left + (right - left) / 2;
+            if ((long long)spell * potions[mid] &gt;= success) {
+                // mid 满足，但左边可能还有更小的满足，往左找
+                right = mid - 1;
+            } else {
+                // mid 不满足，往右找
+                left = mid + 1;
+            }
+        }
+        /*
+        找到最后发现全都满足条件，且left就是第一个满足条件的位置，所以返回left位置
+        */
+        return left;
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 4 · C++</div><pre><code>// 在上一版的基础上进行优化，自己又捋了一遍
+// 同样的思路，只是用迭代来做的。关键在于while循环
+class Solution {
+public:
+    vector&lt;int&gt; successfulPairs(vector&lt;int&gt;&amp; spells, vector&lt;int&gt;&amp; potions,
+                                long long success) {
+        int spsize = spells.size();
+        int posize = potions.size();
+        vector&lt;int&gt; tmp(spsize);
+
+        sort(potions.begin(), potions.end());
+
+        for(int i=0; i&lt;spsize; i++){
+            // 满足条件的第一个下标（从0开始
+            int leftidx = successleftidx(spells[i], potions, success);
+            tmp[i] += posize-leftidx;
+        }
+
+        return tmp;
+    }
+
+private:
+    int successleftidx(int spell, vector&lt;int&gt;&amp; potions, long long success){
+        int l = 0;
+        int r = potions.size()-1;
+        while(l&lt;=r){
+            int mid = l + (r-l)/2;
+            if( (long long)spell*potions[mid] &lt; success ){
+                // potions[mid]已经不满足条件了，所以l应该往右边一个
+                l = mid+1;
+            }else{
+                /*
+                potions[mid]已经满足(long long)spell*potions[mid] &gt;= success
+                但由于要找的是满足的下标里面的第一个下标，所以要往前找一个看看是否符合条件
+                */
+                r = mid-1;
+            }
+        }
+        return l;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">09</span><span class="entry-heading"><strong>栈的运用</strong><span>遇到星号时弹出前一个字符。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    string removeStars(string s) {
+        string temp = &quot;&quot;;
+        int sizes = s.size();
+        for(char c : s){
+            if(c==&#x27;*&#x27;){
+                if(!temp.empty()) temp.pop_back();
+            }else{
+                temp.push_back(c);
+            }
+        }
+        return temp;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">10</span><span class="entry-heading"><strong>前缀和</strong><span>累计每一步海拔，再找出最大值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    int largestAltitude(vector&lt;int&gt;&amp; gain) {
+        int sizeg = gain.size();
+        vector&lt;int&gt; h(sizeg+1);
+        h[0] = 0;
+        for(int i=1; i&lt;sizeg+1; i++){
+            h[i] = h[i-1] + gain[i-1];
+        }
+        // 注意vector的最大值查找函数
+        int maxx = *(max_element(h.begin(), h.end()));
+        return maxx;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">11</span><span class="entry-heading"><strong>包含重复项（哈希集合unordered_set）</strong><span>从占用过大内存的数组方案，改用哈希集合判断出现过的值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
+一开始想要按照空间换时间的方式来做，但是超内存了，因为限制如下：
+1 &lt;= nums.length &lt;= 10^5
+-10^9 &lt;= nums[i] &lt;= 10^9
+但是最后发现Memory Limit Exceeded内存超出限制了
+即：如果数组是 [1, 1000000000]，range 就是 999999999，会创建一个十亿个 int 的 vector，大约需要 4GB 内存，直接内存超限（MLE）。
+*/
+class Solution {
+public:
+    bool containsDuplicate(vector&lt;int&gt;&amp; nums) {
+        int maxx = * max_element(nums.begin(),nums.end());
+        int minn = * min_element(nums.begin(),nums.end());
+        int range = maxx-minn;
+        vector&lt;int&gt; flag(range+1,0);
+        for (int x : nums) {
+            if (++flag[x - minn] &gt; 1) return true;
+        }
+        return false;
+    }
+};</code></pre></div>
+<p>所以最后看了解析之后发现其实用哈希集合就可以了</p>
+<blockquote>哈希集合用法：<br></blockquote>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 1. 空集合
+unordered_set&lt;int&gt; s1;
+// 2. 列表初始化
+unordered_set&lt;int&gt; s2 = {1, 2, 3, 4};
+// 3. 从其他容器初始化（常用于去重）
+vector&lt;int&gt; nums = {1, 2, 2, 3, 3, 4};
+unordered_set&lt;int&gt; s3(nums.begin(), nums.end());
+// 4. 插入
+// insert 返回 pair&lt;iterator, bool&gt;
+auto [it, ok] = s.insert(30);
+if (ok) {
+    // 插入成功
+} else {
+    // 30 已存在
+}
+// 5. 查找
+// count：返回 0 或 1
+if (s.count(2)) {
+    // 存在
+}
+// find：返回迭代器，找不到返回 end()
+if (s.find(3) != s.end()) {
+    // 存在
+}
+// 6. 删除
+s.erase(2);           // 删除值为 2 的元素，返回删除个数
+s.erase(s.find(3));   // 按迭代器删除，返回下一个迭代器
+s.clear();            // 清空所有元素
+// 7.判空
+&gt;
+// 8.遍历 unordered_set 没有下标，不能用 s[0]。
+// 遍历只能用迭代器或范围 for
+for (int x : s) {
+    cout &lt;&lt; x &lt;&lt; &quot; &quot;;   // 顺序不确定
+}
+for (auto it = s.begin(); it != s.end(); ++it) {
+    cout &lt;&lt; *it &lt;&lt; &quot; &quot;;
+}</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>// 务必记牢！！！
+// 当前是“存不存在”的问题，所以无需排序，用哈希集合就可以了
+// 如果是需要排序的问题，那就用set，元素顺序就是自动升序的
+class Solution {
+public:
+    bool containsDuplicate(vector&lt;int&gt;&amp; nums) {
+        unordered_set&lt;int&gt; seen;
+        for (int x : nums) {
+        	// 已经出现过
+            if (seen.count(x)) return true;
+            seen.insert(x);
+        }
+        return false;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">12</span><span class="entry-heading"><strong>二分（注意最后一次 左下标l 所停留的下标）</strong><span>比较中点与下一项，将范围收缩到一个峰值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，峰值的含义要弄清楚
+class Solution {
+public:
+    int findPeakElement(vector&lt;int&gt;&amp; nums) {
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&lt;nums[mid+1]){
+                l = mid+1;
+            }else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+};</code></pre></div></div></details></section>
+<section class="note-group" id="trees"><h2>树与链表<span>8 篇</span></h2><details class="entry"><summary><span class="entry-number">13</span><span class="entry-heading"><strong>右视角的节点值（递归）</strong><span>先右后左递归，每层只记录首次访问的节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector&lt;int&gt; rightSideView(TreeNode* root) {
+        vector&lt;int&gt; rtemp;
+        // 递归
+        rightdfs(root, 0, rtemp);
+        return rtemp;
+    }
+
+private:
+    void rightdfs( TreeNode* node, int height, vector&lt;int&gt;&amp; rc ){
+        if(!node) return;
+        if(height == rc.size()) rc.push_back(node-&gt;val);
+        // 按照 右子树-》左子树的 顺序递归
+        rightdfs(node-&gt;right, height+1, rc);
+        rightdfs(node-&gt;left, height+1, rc);
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">14</span><span class="entry-heading"><strong>对称树（二叉树、递归）</strong><span>成对比较镜像节点及其左右子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 关键在于要对于对称的条件进行梳理
+// 两个都为空 → 对称
+// 只有一个为空 → 不对称
+// 两个都不为空，则需要同时满足：
+//1、left-&gt;val == right-&gt;val
+//2、left-&gt;left 和 right-&gt;right 互为镜像
+//3、left-&gt;right 和 right-&gt;left 互为镜像
+// 并且对于实际对比的对象也要理清楚：left-&gt;val == right-&gt;val
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root) return true;
+        return ifmirror(root-&gt;left, root-&gt;right);
+    }
+
+private:
+    bool ifmirror(TreeNode* left, TreeNode* right){
+        if(!left &amp;&amp; !right) return true;
+        if(!left || !right) return false;
+        bool f = false;
+        if((left-&gt;val == right-&gt;val)
+            &amp;&amp; ifmirror(left-&gt;left,right-&gt;right)
+            &amp;&amp; ifmirror(left-&gt;right,right-&gt;left)){
+                f = true;
+            }
+        return f;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">15</span><span class="entry-heading"><strong>反转二叉树</strong><span>交换当前节点的左右孩子，再递归处理子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 别和上面的对称树搞混了
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(!root) return nullptr;
+        // 先互换当前根节点的左右子节点
+        TreeNode* tmp = root-&gt;left;
+        root-&gt;left = root-&gt;right;
+        root-&gt;right = tmp;
+        // 再分别递归互换左子树、右子树的左右子节点
+        invertTree(root-&gt;left);
+        invertTree(root-&gt;right);
+
+        return root;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">16</span><span class="entry-heading"><strong>二叉树的深度</strong><span>取左右子树的最大深度，再加上当前节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 要注意递归的初始值和退出值
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(!root) return 0;
+        // 根节点也算是高度为1
+        int depth = 1;
+
+        int ld = maxDepth(root-&gt;left);
+        int rd = maxDepth(root-&gt;right);
+
+        depth += max(ld,rd);
+
+        return depth;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">17</span><span class="entry-heading"><strong>两个链表的相交点</strong><span>比较节点地址；记录了双重遍历和哈希集合两种写法。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意比较的对象是节点地址，即：函数传递的参数指针的值
+/*
+本题还有更加简单的方式：
+1、数学推理（将两个链表实际可到达的位置互相桥接一下，可以发现这两个链表实际实际走的路程一样）【实际不容易想到】
+设 A 的长度为 a，B 的长度为 b，相交部分长度为 c，A 独有部分 a-c，B 独有部分 b-c。
+pA 走的路程：a + (b - c)
+pB 走的路程：b + (a - c)
+两者总路程相等，都是 a + b - c。所以它们会在相交点相遇。
+2、哈希集合【这个可以多熟悉，比较容易想到，但是要对哈希集合特性比较熟悉】
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(!headA || !headB) return nullptr;
+        bool f = false;
+        ListNode * fnode = nullptr;
+        while(headA){
+            ListNode* hb = headB;
+            while(hb){
+                if( headA == hb ){
+                    f = true;
+                    fnode = headA;
+                    break;
+                }
+                hb = hb-&gt;next;
+            }
+            if(!f) headA = headA-&gt;next;
+            else break;
+        }
+        return fnode;
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 最简单且容易想到的是利用哈希集合的特点来查找
+// 但是核心还是在于要弄清楚比较的对象是谁
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        unordered_set&lt;ListNode*&gt; tmp;
+        for (ListNode* p = headA; p; p = p-&gt;next) {
+            tmp.insert(p);
+        }
+        for (ListNode* p = headB; p; p = p-&gt;next) {
+            if(tmp.count(p)) return p;
+        }
+        return nullptr;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">18</span><span class="entry-heading"><strong>移除链表倒数第n个节点</strong><span>从计算长度，推进到哑节点与快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(!head) return nullptr;
+        ListNode* tmp = head;
+        int sizel = 0;
+        while(tmp){
+            tmp = tmp-&gt;next;
+            sizel++;
+        }
+        tmp = head;
+
+        // 如果要删除的是头节点
+        if (n == sizel) {
+            ListNode* newHead = head-&gt;next;
+            delete head;   // 可选
+            return newHead;
+        }
+
+        int ind = 0;
+        while(tmp){
+            if(ind == sizel-n-1){
+                ListNode* t = tmp-&gt;next;
+                tmp-&gt;next = t-&gt;next;
+                delete t;
+                break;
+            }
+            ind++;
+            tmp=tmp-&gt;next;
+        }
+        return head;
+    }
+};</code></pre></div>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 可以考虑用快慢指针来做，并且要注意一下构建虚拟哑节点来统一整体遍历逻辑，就不用特判删除头节点了
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(!head) return nullptr;
+        // 避免头节点特判，设置哑节点
+        ListNode* dump = new ListNode(0);
+        dump-&gt;next = head;
+        ListNode* slow = dump;
+        ListNode* fast = dump;
+        // 快指针先移动n+1
+        for(int i=0; i&lt;n+1; i++) fast=fast-&gt;next;
+        while(fast){
+            slow = slow-&gt;next;
+            fast = fast-&gt;next;
+        }
+        // fast 指向nullptr，正好slow就指向了倒数n个节点的前置节点
+        ListNode* tmp = slow-&gt;next;
+        slow-&gt;next = slow-&gt;next-&gt;next;
+        delete tmp;
+
+        ListNode* cur = dump-&gt;next;
+        delete dump;
+        return cur;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">19</span><span class="entry-heading"><strong>链表中间节点</strong><span>从两次遍历转向快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意对于特殊情况的处理：只有一个节点时，应该怎么处理
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        if(!head) return nullptr;
+        if(head &amp;&amp; head-&gt;next==nullptr) return head;
+        ListNode* tmp = nullptr;
+        ListNode* mid = nullptr;
+        int sizel = 0;
+        tmp = head;
+        while(tmp){
+            sizel++;
+            tmp = tmp-&gt;next;
+        }
+        tmp = head;
+        int i = 0;
+        while(tmp){
+                if(i==sizel/2-1){
+                    mid = tmp-&gt;next;
+                    break;
+                }
+            i++;
+            tmp = tmp-&gt;next;
+        }
+        return mid;
+    }
+};</code></pre></div>
+<p>可以考虑用“快慢指针”来做，思路更简单并且逻辑更清晰</p>
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        // 快指针每次往前两步，慢指针每次往前一步
+        while(fast &amp;&amp; fast-&gt;next){
+            slow = slow-&gt;next;
+            // 奇数个节点，正好fast-&gt;next为空时，slow指向中间节点
+            // 偶数个节点，正好fast为空时，slow指向中间节点的第二个
+            fast = fast-&gt;next-&gt;next;
+        }
+        return slow;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">20</span><span class="entry-heading"><strong>翻转链表</strong><span>用前驱、当前和下一节点三个指针原地改链。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
+注意pre和cur开始的指向，开始的指向决定了是否能在后续进行持续推进
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(!head) return nullptr;
+        ListNode* pre = nullptr;
+        ListNode* cur = head;
+        while(cur){
+            ListNode* tmp = cur-&gt;next;
+            cur -&gt;next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        return pre;
+    }
+};</code></pre></div></div></details></section>
+<section class="note-group" id="greedy"><h2>贪心与区间<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">21</span><span class="entry-heading"><strong>跳跃游戏(贪心)</strong><span>维护当前可到达的最远下标。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，以及对于贪心的理解：每次都选择当前这一步最好的情况
+class Solution {
+public:
+    bool canJump(vector&lt;int&gt;&amp; nums) {
+        bool f = false;
+        int sizen = nums.size();
+        int maxr = 0;
+        for(int i=0; i&lt;sizen; i++){
+            /*
+            最大范围步数随着更新仍然小于当前移动的下标，说明已经不可能到达了
+            */
+            if(i&gt;maxr){
+                f=false;
+                break;
+            }
+            // 每次寻找能够到达的最大的范围步数
+            /*
+            这一步代表的是基于当前位置的下一步能够到达的所有位置依次进行比较是否可以更新最远的下标值
+            */
+            maxr = max(maxr, i+nums[i]);
+            if(maxr&gt;=sizen-1){
+                f = true;
+                break;
+            }
+        }
+        return f;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">22</span><span class="entry-heading"><strong>跳跃游戏Ⅱ（贪心）</strong><span>维护当前跳跃边界和下一跳可达范围。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 重点在于只需要维护“范围”，不关心中间点是哪些
+class Solution {
+public:
+    int jump(vector&lt;int&gt;&amp; nums) {
+         int sizen = nums.size();
+         if(sizen&lt;=1) return 0;
+         // 当前这一跳能够到达的最远位置下标
+         int curend = 0;
+         // 下一跳能够到达的最远位置下标
+         int furend = 0;
+         // 跳跃次数
+         int jump = 0;
+         for(int i=0; i&lt;sizen; i++){
+            // 下一跳能够到达的最远位置下标
+            furend = max(furend, i+nums[i]);
+            // 到达当前这一次跳跃的边界时，必须要跳才行
+            if(i == curend){
+                jump++;
+                // 跳到下一跳能够到达的最远的位置
+                curend = furend;
+                // 到达最远下标时，就跳出循环
+                if(curend&gt;=sizen-1) break;
+            }
+         }
+         return jump;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">23</span><span class="entry-heading"><strong>气球射击(贪心)</strong><span>按右端点排序，用尽量少的箭覆盖区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 区间贪心，主要在于先要进行排序，并且将实际每一次贪心的规则进行总结
+class Solution {
+public:
+    int findMinArrowShots(vector&lt;vector&lt;int&gt;&gt;&amp; points) {
+        if(points.empty()) return 0;
+        // 先按照右端点的下标进行升序排列
+        sort(points.begin(), points.end(), [](const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b){ return a[1]&lt;b[1]; });
+
+        // 之后按照贪心的思想，将每一个气球end位置依次初始化为每一个开始的位置
+        int sizep = points.size();
+        int sum = 1;
+        int nr = points[0][1];
+        for(int i=1; i&lt;sizep; i++){
+            if(points[i][0]&gt;nr){
+                sum++;
+                nr = points[i][1];
+            }
+        }
+        return sum;
+    }
+};</code></pre></div></div></details>
+<details class="entry"><summary><span class="entry-number">24</span><span class="entry-heading"><strong>不重叠的时间间隔（贪心）</strong><span>按右端点排序，先统计能保留的区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 主要问题在于要搞清楚当前计数的是什么（上一道题其实求的是最小重叠个数，即重叠的部分尽可能多的情况下，统计总共有多少重叠），而这道题其实求的是相反的值：即不重叠的个数
+class Solution {
+public:
+    int eraseOverlapIntervals(vector&lt;vector&lt;int&gt;&gt;&amp; intervals) {
+        if(intervals.empty()) return 0;
+        int sizei = intervals.size();
+        sort(intervals.begin(), intervals.end(), [](const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b){
+            return b[1]&gt;a[1];
+        });
+        int nr = intervals[0][1];
+        int keep = 1;
+        for(int i=1; i&lt;sizei; i++){
+            // 不重叠则记录不重叠的个数
+            if(intervals[i][0]&gt;=nr){
+                keep++;
+                nr = intervals[i][1];
+            }
+        }
+        return sizei - keep;
+    }
+};</code></pre></div></div></details></section>
+      </section>
+
+      <aside class="route" id="plan" aria-labelledby="plan-title">
+        <div class="route-inner">
+          <p class="eyebrow">PRACTICE MAP</p>
+          <h2 id="plan-title">15 天练习路线</h2>
+          <p class="route-intro">先巩固同类型题，再查漏补缺，最后做模拟与复盘。</p>
+          <section class="plan-phase"><h3>同类型巩固，1-5 天</h3>
+<details class="day"><summary><span>Day 01</span><strong>哈希 / 数组</strong></summary><div class="day-content"><ul><li>LC 217. Contains Duplicate</li><li>LC 242. Valid Anagram</li><li>LC 49. Group Anagrams</li><li>LC 238. Product of Array Except Self</li></ul><p><b>练习重点</b>unordered_map / unordered_set 写顺，注意计数和下标。</p></div></details>
+<details class="day"><summary><span>Day 02</span><strong>双指针 / 滑动窗口</strong></summary><div class="day-content"><ul><li>LC 11. Container With Most Water</li><li>LC 209. Minimum Size Subarray Sum</li><li>LC 438. Find All Anagrams in a String</li><li>LC 76. Minimum Window Substring，可先看题解</li></ul><p><b>练习重点</b>窗口左右边界、频次表、收缩条件。</p></div></details>
+<details class="day"><summary><span>Day 03</span><strong>栈 / 队列 / 单调栈</strong></summary><div class="day-content"><ul><li>LC 155. Min Stack</li><li>LC 232. Implement Queue using Stacks</li><li>LC 739. Daily Temperatures</li><li>LC 42. Trapping Rain Water，可选</li></ul><p><b>练习重点</b>普通栈和单调栈分清楚，单调栈主要解决“下一个更大/更小”。</p></div></details>
+<details class="day"><summary><span>Day 04</span><strong>二分</strong></summary><div class="day-content"><ul><li>LC 35. Search Insert Position</li><li>LC 34. Find First and Last Position of Element in Sorted Array</li><li>LC 153. Find Minimum in Rotated Sorted Array</li><li>LC 162. Find Peak Element</li></ul><p><b>练习重点</b>统一使用 [l, r] 或 [l, r)，不要混。</p></div></details>
+<details class="day"><summary><span>Day 05</span><strong>排序 / 贪心 / 区间</strong></summary><div class="day-content"><ul><li>LC 435. Non-overlapping Intervals</li><li>LC 452. Minimum Number of Arrows to Burst Balloons</li><li>LC 55. Jump Game</li><li>LC 45. Jump Game II</li></ul><p><b>练习重点</b>排序依据、局部最优怎么推全局最优。</p></div></details>
+</section>
+<section class="plan-phase"><h3>查漏补缺，6-11 天</h3>
+<details class="day"><summary><span>Day 06</span><strong>链表</strong></summary><div class="day-content"><ul><li>LC 206. Reverse Linked List</li><li>LC 876. Middle of the Linked List</li><li>LC 19. Remove Nth Node From End of List</li><li>LC 160. Intersection of Two Linked Lists</li></ul><p><b>练习重点</b>快慢指针、dummy node、反转链表模板。</p></div></details>
+<details class="day"><summary><span>Day 07</span><strong>树的 DFS / BFS</strong></summary><div class="day-content"><ul><li>LC 104. Maximum Depth of Binary Tree</li><li>LC 226. Invert Binary Tree</li><li>LC 101. Symmetric Tree</li><li>LC 199. Binary Tree Right Side View</li></ul><p><b>练习重点</b>递归返回值、层序遍历 queue 模板。</p></div></details>
+<details class="day"><summary><span>Day 08</span><strong>树递归进阶</strong></summary><div class="day-content"><ul><li>LC 98. Validate Binary Search Tree</li><li>LC 230. Kth Smallest Element in a BST</li><li>LC 543. Diameter of Binary Tree</li><li>LC 124. Binary Tree Maximum Path Sum，可选偏难</li></ul><p><b>练习重点</b>树题很多是“子树向父节点返回什么”。</p></div></details>
+<details class="day"><summary><span>Day 09</span><strong>图 / 网格 BFS DFS</strong></summary><div class="day-content"><ul><li>LC 695. Max Area of Island</li><li>LC 994. Rotting Oranges</li><li>LC 133. Clone Graph</li><li>LC 207. Course Schedule</li></ul><p><b>练习重点</b>网格方向数组、visited、拓扑排序入度。</p></div></details>
+<details class="day"><summary><span>Day 10</span><strong>动态规划基础</strong></summary><div class="day-content"><ul><li>LC 70. Climbing Stairs</li><li>LC 746. Min Cost Climbing Stairs</li><li>LC 213. House Robber II</li><li>LC 300. Longest Increasing Subsequence</li></ul><p><b>练习重点</b>状态定义先写中文，再写转移。</p></div></details>
+<details class="day"><summary><span>Day 11</span><strong>背包 / 字符串 DP</strong></summary><div class="day-content"><ul><li>LC 416. Partition Equal Subset Sum</li><li>LC 1143. Longest Common Subsequence</li><li>LC 139. Word Break</li><li>LC 72. Edit Distance，可选偏难</li></ul><p><b>练习重点</b>二维 DP、滚动数组、完全背包/01 背包区别。</p></div></details>
+</section>
+<section class="plan-phase"><h3>模拟 + 巩固，12-15 天</h3>
+<details class="day"><summary><span>Day 12</span><strong>堆 / TopK / 快选</strong></summary><div class="day-content"><ul><li>LC 215. Kth Largest Element in an Array</li><li>LC 347. Top K Frequent Elements</li><li>LC 295. Find Median from Data Stream，可选</li><li>牛客：面试 TOP101 里堆/优先队列相关题</li></ul><p><b>练习重点</b>priority_queue 默认大根堆，小根堆写法要熟。</p></div></details>
+<details class="day"><summary><span>Day 13</span><strong>回溯</strong></summary><div class="day-content"><ul><li>LC 78. Subsets</li><li>LC 39. Combination Sum</li><li>LC 22. Generate Parentheses</li><li>LC 79. Word Search</li></ul><p><b>练习重点</b>路径、选择列表、撤销选择；笔试里中等题很常见。</p></div></details>
+<details class="day"><summary><span>Day 14</span><strong>笔试输入输出 + 模拟</strong></summary><div class="day-content"><ul><li>牛客输入输出练习做完前 8-12 道</li><li>再限时 2 小时模拟：LC 1、LC 56、LC 200、LC 322</li></ul><p><b>练习重点</b>适应 ACM 模式，while (cin &gt;&gt; n)、多组输入、二维数组输入别翻车。</p></div></details>
+<details class="day"><summary><span>Day 15</span><strong>最终查漏 + 高频复刷</strong></summary><div class="day-content"><ul><li>复刷错题 6-8 道</li><li>必复刷：LC 3、15、33、53、102、198、200、322</li><li>牛客：笔试高频必刷题里选 2 道中等难度限时做</li></ul><p><b>练习重点</b>不学新模板，把会的题稳定写出来。</p></div></details>
+</section>
+<details class="plan-extra"><summary>每天的建议节奏</summary><ul><li>10 分钟：复习昨天错题模板</li><li>60-90 分钟：做当天 3-4 题</li><li>20 分钟：整理 C++ 模板</li><li>20 分钟：重写当天最卡的一题，不看答案</li></ul></details>
+<details class="plan-extra"><summary>C++ 模板清单</summary><ul><li>unordered_map / unordered_set</li><li>sort + lambda</li><li>priority_queue&lt;int&gt; 和 priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt;&gt;</li><li>queue&lt;pair&lt;int,int&gt;&gt; BFS</li><li>vector&lt;vector&lt;int&gt;&gt; dirs = {{1,0},{-1,0},{0,1},{0,-1}}</li><li>二分 [l, r]</li><li>DFS 回溯 path.push_back() / path.pop_back()</li><li>DP 初始化和边界</li></ul></details>
+<details class="plan-extra"><summary>参考题单</summary><ul><li><a href="https://leetcode.com/studyplan/leetcode-75/" target="_blank" rel="noopener noreferrer">LeetCode 75</a></li><li><a href="https://leetcode.com/studyplan/top-interview-150/" target="_blank" rel="noopener noreferrer">LeetCode Top Interview 150</a></li><li><a href="https://www.nowcoder.com/exam/oj" target="_blank" rel="noopener noreferrer">牛客面试 TOP101</a></li><li><a href="https://www.nowcoder.com/ta/code-written-high" target="_blank" rel="noopener noreferrer">牛客笔试高频必刷题</a></li><li><a href="https://www.nowcoder.com/exam/oj?page=1&amp;tab=算法笔试&amp;topicId=372" target="_blank" rel="noopener noreferrer">牛客输入输出练习</a></li></ul></details>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer"><span>整理自本地算法记录 · 原文保留在本地</span><a href="/">返回主页</a></footer>
+</body>
+</html>
