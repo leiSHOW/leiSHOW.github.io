@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>简历 | 雷雨 | LeiSHOW</title>
-  <meta name="description" content="雷雨的个人简历，涵盖教育背景、专业技能、实习经历与项目经历。">
+  <meta name="description" content="雷雨的个人简历：嵌入式系统、Linux 开发、端侧 AI 与开发者工具。">
   <meta name="robots" content="noindex">
-  <meta name="keywords" content="雷雨, 简历, 嵌入式开发, Linux, 网络协议栈">
+  <meta name="keywords" content="雷雨, 简历, 嵌入式开发, Linux, 端侧 AI, VS Code 扩展">
   <meta property="og:title" content="简历 | 雷雨">
-  <meta property="og:description" content="嵌入式软件开发方向 · 计算机技术硕士在读">
+  <meta property="og:description" content="嵌入式系统、Linux 开发与 AI 应用工程">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
@@ -130,6 +130,7 @@
       margin-bottom: 0.8rem;
     }
     .download-btn:hover { background: var(--accent); color: #fff; }
+    .download-btn:focus-visible, .nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     h1 {
       font-family: var(--serif-display);
       font-size: clamp(2.2rem, 4vw + 1rem, 2.8rem);
@@ -242,11 +243,14 @@
       margin: 0.5rem 0 0;
     }
     .exp-item li {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       color: var(--text-secondary);
       line-height: 1.75;
       margin-bottom: 0.3rem;
     }
+    .project-link { margin-left: 0.5rem; color: var(--accent); font-size: 0.88rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
+    .project-link:hover { text-decoration: underline; }
+    .project-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .divider {
       border: 0;
       border-top: 1px solid var(--border);
@@ -373,17 +377,16 @@
   <main>
     <!-- Name Card -->
     <div class="name-card">
-      <a href="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/lydl/resume_leiyu1.pdf"
-         class="download-btn" download title="下载简历 PDF">
-        ⬇ 下载 PDF 简历
+      <a href="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/lydl/%E7%AE%80%E5%8E%86_%E5%8F%8C%E4%B8%80%E6%B5%81_%E6%88%90%E9%83%BD%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6_%E7%A1%95%E5%A3%AB%E7%A0%94%E7%A9%B6%E7%94%9F_%E9%9B%B7%E9%9B%A8.pdf"
+         class="download-btn" target="_blank" rel="noopener noreferrer" title="打开 PDF，可在浏览器中下载">
+        ⬇ 查看 / 下载 PDF 简历
       </a>
       <p class="greeting">Resume</p>
       <h1>雷雨</h1>
-      <p class="subtitle">嵌入式软件开发方向 · 计算机技术硕士在读 · 兼顾系统实现与工程落地</p>
+      <p class="subtitle">嵌入式系统 · Linux 开发 · AI 应用工程</p>
       <div class="intro">
-        目前就读于成都理工大学计算机技术专业，持续聚焦于嵌入式系统、Linux 平台开发、网络协议栈实现与工程化落地。
-        在研究与实践中，重点关注<strong>协议设计、系统适配、内核态驱动开发、仿真平台搭建</strong>等方向，
-        希望逐步沉淀出从方案设计、功能实现到系统联调的完整能力。
+        成都理工大学计算机技术硕士在读。近期工作覆盖<strong>端侧 AI 服务、无人机自组网与 VS Code 开源扩展</strong>，
+        主要使用 C/C++、Python 和 TypeScript，关注系统实现、联调与部署。
       </div>
     </div>
 
@@ -401,33 +404,31 @@
       <h2>专业技能</h2>
       <div class="skills-grid">
         <div class="skill-item">
-          <strong>嵌入式与系统基础</strong>
+          <strong>嵌入式与 Linux</strong>
           <ul>
-            <li>熟悉嵌入式设备基本组成原理，掌握最小系统、总线架构、存储层次、I/O 控制、中断与 DMA 等核心内容</li>
-            <li>具备协议移植、定制化开发能力，可根据项目需求完成协议栈逻辑实现与调试</li>
+            <li>C/C++、Linux 内核模块与驱动适配、ARM64 板卡开发</li>
+            <li>设备接口、数据通道与系统联调</li>
           </ul>
         </div>
         <div class="skill-item">
-          <strong>Qt 与应用开发</strong>
+          <strong>网络与仿真</strong>
           <ul>
-            <li>熟悉 Qt 跨平台开发，包括信号槽、数据库连接与操作等常见机制</li>
-            <li>具备简单桌面应用与 WebServer 项目的开发、调试经验</li>
+            <li>NS-3、GNU Radio / USRP、无线链路与组网仿真</li>
+            <li>TDMA、路由与分簇机制的实现和验证</li>
           </ul>
         </div>
         <div class="skill-item">
-          <strong>Linux 与工程环境</strong>
+          <strong>后端与部署</strong>
           <ul>
-            <li>熟悉 Linux 文件系统、磁盘管理、进程监控、网络抓包与 Shell 脚本开发</li>
-            <li>具备 OpenWrt 系统环境搭建、开发与问题排查的完整项目落地能力</li>
+            <li>Python、HTTP API、SQLite / Redis 与异步任务处理</li>
+            <li>Docker / Compose 容器编排、部署与排障</li>
           </ul>
         </div>
         <div class="skill-item">
-          <strong>开发方向关键词</strong>
+          <strong>开发者工具</strong>
           <ul>
-            <li>C / C++</li>
-            <li>Linux 内核驱动开发</li>
-            <li>网络协议栈设计与实现</li>
-            <li>仿真平台开发与联调</li>
+            <li>TypeScript、VS Code Extension API</li>
+            <li>模型供应商接入、兼容接口与连接设置</li>
           </ul>
         </div>
       </div>
@@ -440,12 +441,8 @@
         <h3>中国科学院（北京）信息安全研究所｜算法工程师、嵌入式开发工程师</h3>
         <p class="meta">2025 年 9 月 - 2026 年 3 月</p>
         <ul>
-          <li>负责空天异构组网仿真平台、大规模半实物仿真平台的网络协议栈开发，以及 Linux 内核态 KO 驱动模块开发。</li>
-          <li>根据实际仿真需求开发协议组件库，并通过接口封装方式构建协议栈架构。</li>
-          <li>设计并实现两种基于地理位置坐标的路由协议，以及两种基于加权融合的分簇算法，逐步形成仿真平台中的网络协议库。</li>
-          <li>开发 Linux 内核态设备间通信协议栈 KO 驱动程序，并根据硬件寄存器文档完成 AXI4-Lite 接口物理层寄存器配置驱动封装。</li>
-          <li>设计协议层与物理层之间通过 DMA 通道进行空口数据交互的逻辑，实现 DMA 通道发送与接收回调函数。</li>
-          <li>基于网桥与 veth 网络技术搭建用户数据通道，使用 Linux 内核接口封装网卡间数据收发函数，完成协议层接管用户数据网卡的数据通道构建。</li>
+          <li>参与空天异构组网与半实物仿真平台建设，开发路由、分簇等协议组件。</li>
+          <li>完成 Linux 内核模块适配及设备数据通道联调，涉及 AXI4-Lite、DMA、网桥与 veth。</li>
         </ul>
       </div>
       <hr class="divider" />
@@ -463,26 +460,71 @@
     <div class="section">
       <h2>项目经历</h2>
       <div class="exp-item">
-        <h3>大规模半实物仿真平台开发</h3>
-        <p class="meta">网络协议栈开发 · 内核态驱动程序开发</p>
+        <h3>deepseek-harness-for-vscode 开源项目<a class="project-link" href="https://github.com/skymecode/deepseek-harness-for-vscode" target="_blank" rel="noopener noreferrer">GitHub ↗</a></h3>
+        <p class="meta">2026 年 8 月 - 至今</p>
+        <div class="tags">
+          <span class="tag">TypeScript</span>
+          <span class="tag">VS Code Extension API</span>
+        </div>
+        <ul>
+          <li>参与开源 AI 编码智能体扩展开发，主导连接设置与模型供应商管理功能。</li>
+          <li>统一 DeepSeek 官方源与 OpenAI 兼容源的接入流程，实现连通性测试和模型来源切换；相关提交已合并入上游并随版本发布。</li>
+        </ul>
+      </div>
+      <hr class="divider" />
+      <div class="exp-item">
+        <h3>RK3568 端侧 AI 健康管理终端</h3>
+        <p class="meta">2026 年 6 月 - 2026 年 9 月</p>
+        <div class="tags">
+          <span class="tag">Python</span>
+          <span class="tag">Docker / Compose</span>
+          <span class="tag">SQLite</span>
+        </div>
+        <ul>
+          <li>负责 ARM64 板卡上的服务编排、NPU 设备映射与后端业务集成。</li>
+          <li>以本地任务队列串联创建任务、模型推理、结果写回与查询；实现和维护 50 余个后端接口。</li>
+        </ul>
+      </div>
+      <hr class="divider" />
+      <div class="exp-item">
+        <h3>无人机自组网虚实结合平台</h3>
+        <p class="meta">2026 年 5 月 - 2026 年 9 月</p>
         <div class="tags">
           <span class="tag">C/C++</span>
-          <span class="tag">NS3</span>
-          <span class="tag">Linux 内核</span>
-          <span class="tag">Shell</span>
+          <span class="tag">GNU Radio / USRP</span>
+          <span class="tag">NS-3</span>
         </div>
-        <p style="margin-top: 0.9rem; font-size: 0.9rem; font-weight: 600;">主要贡献：</p>
         <ul>
-          <li>负责大规模半实物仿真平台在 NS3 验证阶段、虚拟仿真平台阶段、实物适配阶段的 0-1 搭建。</li>
-          <li>设计并实现协议栈中各层之间的交互框架，完成自研网络协议栈中的网络层路由与分簇逻辑。</li>
-          <li>负责内核态驱动程序适配全过程，包括内核态函数替换、浮点数处理、设备间时间同步、交叉编译等关键环节。</li>
+          <li>实现无线链路、TDMA 时隙、分簇路由与 ACK 重传机制，连接仿真节点和真实设备进行联合验证。</li>
+          <li>在真实空口实验中，双向接收率达到 94% 以上，文件传输有效吞吐量达到 16.4 KB/s 以上。</li>
         </ul>
-        <p style="margin-top: 0.9rem; font-size: 0.9rem; font-weight: 600;">项目成果：</p>
+      </div>
+      <hr class="divider" />
+      <div class="exp-item">
+        <h3>大规模半实物仿真平台开发</h3>
+        <p class="meta">2025 年 10 月 - 2026 年 5 月</p>
+        <div class="tags">
+          <span class="tag">C/C++</span>
+          <span class="tag">NS-3</span>
+          <span class="tag">Linux 内核</span>
+        </div>
         <ul>
-          <li>自研协议栈支持低时延、多优先级传输。</li>
-          <li>仿真节点规模可支持千节点仿真场景。</li>
-          <li>内核态程序适配后，实物间单跳通信延迟优化至 150ms 以内。</li>
-          <li>项目已通过内部验收，协议部分组件成为研究所仿真平台核心组件。</li>
+          <li>参与平台从 NS-3 验证、虚拟仿真到 Linux 内核态实物适配的建设，完成路由和分簇机制实现。</li>
+          <li>支持千节点规模仿真；内核态适配后，实物间单跳通信延迟降至 150 ms 以内。</li>
+        </ul>
+      </div>
+      <hr class="divider" />
+      <div class="exp-item">
+        <h3>空天异构组网仿真平台开发</h3>
+        <p class="meta">2024 年 6 月 - 2024 年 12 月</p>
+        <div class="tags">
+          <span class="tag">后端开发</span>
+          <span class="tag">Docker</span>
+          <span class="tag">数据库</span>
+        </div>
+        <ul>
+          <li>参与需求调研和平台从零搭建，梳理出 3 个核心模块与 13 个功能点。</li>
+          <li>负责后端接口、场景数据库与 Docker 部署，推进 3 次迭代并落实 6 项客户需求。</li>
         </ul>
       </div>
     </div>
@@ -491,9 +533,8 @@
     <div class="section">
       <h2>自我概述</h2>
       <p class="summary-text">
-        我更偏向系统型、工程型的成长路径：既重视底层原理，也重视在真实平台中的适配与落地。
-        相比只停留在单点功能实现，我更希望持续提升自己在<strong>协议设计、驱动开发、系统联调、问题定位与工程交付</strong>方面的综合能力，
-        并把每一次实践逐渐沉淀为可复用的方法与经验。
+        工作覆盖无线通信、Linux 系统、端侧 AI 服务与开发者工具。
+        熟悉从需求分析、功能实现到联调部署的完整过程，重视<strong>可验证的结果和可维护的实现</strong>。
       </p>
     </div>
   </main>
