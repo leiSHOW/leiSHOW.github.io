@@ -1,0 +1,4 @@
+Three.js 0.186.1
+Source: https://registry.npmjs.org/three/-/three-0.186.1.tgz
+License: MIT (see LICENSE-three.txt)
+Build modules minified with esbuild; OrbitControls preserved from the same package.

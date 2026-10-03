@@ -8,6 +8,11 @@
   <link rel="canonical" href="https://leishow.github.io/show/iotidr/">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%233559c7%22%2F%3E%3Cpath%20d%3D%22M9%208v16h14%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%2F%3E%3C%2Fsvg%3E">
   <link rel="stylesheet" href="/show/style.css">
+  <link rel="stylesheet" href="/show/iotidr/assets/hardware-viewer.css">
+  <script type="importmap">{"imports":{"three":"/show/iotidr/assets/vendor/three.module.js"}}</script>
+  <script type="module" src="/show/iotidr/assets/hardware-viewer.js"></script>
+  <link rel="stylesheet" href="/show/iotidr/assets/system-flow.css">
+  <script type="module" src="/show/iotidr/assets/system-flow.js"></script>
   <title>IoTIDR · 物联网智能晾衣架 · LeiSHOW</title>
 </head>
 <body>
@@ -24,7 +29,7 @@
         <h1 id="project-title">物联网<br>智能晾衣架</h1>
         <p class="lead">以 STM32 为设备核心，采集温湿度与相对光照，驱动晾衣架按四个档位展开。LCD、红外遥控与 Android 应用共同参与控制，环境保护策略提供自动收架能力。</p>
         <ul class="tags" aria-label="项目技术"><li>STM32F103</li><li>C / HAL</li><li>机智云</li><li>Android / Java</li></ul>
-        <div class="hero-actions"><a class="button" href="#capabilities">项目功能</a><a class="button secondary" href="#architecture">系统架构</a></div>
+        <div class="hero-actions"><a class="button" href="#hardware">探索三维系统</a><a class="button secondary" href="#architecture">系统架构</a></div>
       </div>
       <figure class="system-exhibit">
         <p class="eyebrow">SYSTEM AT A GLANCE</p>
@@ -37,30 +42,56 @@
       </figure>
     </section>
     <dl class="facts" aria-label="项目概况"><div><dt>主控平台</dt><dd>STM32F103ZE · 72 MHz</dd></div><div><dt>感知信息</dt><dd>温度 · 湿度 · 相对光照</dd></div><div><dt>控制入口</dt><dd>LCD · 红外 · Android</dd></div><div><dt>设备展开</dt><dd>1/4 · 1/2 · 3/4 · 全开</dd></div></dl>
-    <nav class="section-nav" aria-label="项目章节"><a href="#capabilities">项目功能</a><a href="#architecture">系统架构</a><a href="#control">控制策略</a><a href="#data">设备数据</a><a href="#implementation">实现情况</a></nav>
+    <nav class="section-nav" aria-label="项目章节"><a href="#hardware">三维系统</a><a href="#capabilities">项目功能</a><a href="#architecture">系统架构</a><a href="#control">控制策略</a><a href="#data">设备数据</a><a href="#implementation">实现情况</a></nav>
+
+
+    <section class="hardware-section" id="hardware" aria-labelledby="hardware-title">
+      <div class="hardware-heading"><div><p class="eyebrow">INTERACTIVE SYSTEM</p><h2 id="hardware-title">探索设备与连接</h2><p>点击三维模型中的外设，查看设备信息与端口连线。</p></div><span class="hardware-count">10 个设备模块</span></div>
+      <div class="hardware-layout" id="hardware-layout">
+        <div class="hardware-stage">
+          <div class="hardware-scene" id="hardware-scene"><p class="hardware-state" id="hardware-state" role="status">三维系统载入中…</p></div>
+          <div class="hardware-labels" id="hardware-labels" aria-label="三维设备标签"></div>
+          <div class="hardware-toolbar"><span>IoTIDR / HARDWARE</span><div class="view-buttons"><button type="button" id="view-top">俯视</button><button type="button" id="view-reset">恢复视角</button></div></div>
+          <p class="hardware-help" id="hardware-help">拖动旋转 · 滚轮缩放 · 点击设备</p>
+        </div>
+        <aside class="hardware-panel" id="hardware-panel" aria-labelledby="device-title">
+          <div class="device-kicker"><span id="device-number">DEVICE 01</span><span id="device-kind">主控</span></div>
+          <h3 id="device-title" aria-live="polite">STM32F103ZE 主控</h3>
+          <p class="device-description" id="device-description">汇集环境数据，协调多端控制与设备动作。</p>
+          <div class="device-tabs" role="tablist" aria-label="设备详情"><button type="button" id="tab-overview" role="tab" aria-selected="true" aria-controls="device-overview">设备信息</button><button type="button" id="tab-ports" role="tab" aria-selected="false" aria-controls="device-ports" tabindex="-1">端口连线</button></div>
+          <div class="device-tabpanel" id="device-overview" role="tabpanel" aria-labelledby="tab-overview"><dl class="device-specs" id="device-specs"><div><dt>平台</dt><dd>STM32F103ZE · Cortex-M3</dd></div><div><dt>系统时钟</dt><dd>72 MHz</dd></div></dl><p class="device-note" id="device-note">选择外设查看连接信息。</p></div>
+          <div class="device-tabpanel" id="device-ports" role="tabpanel" aria-labelledby="tab-ports" hidden><p class="device-port-summary" id="device-port-summary"></p><table class="device-port-table"><caption>主控与设备的接口对应</caption><thead><tr><th scope="col">主控端</th><th scope="col">设备端</th><th scope="col">信号用途</th></tr></thead><tbody id="device-pin-rows"></tbody></table></div>
+        </aside>
+      </div>
+      <div class="hardware-device-list" id="hardware-device-list" role="group" aria-label="选择设备"></div>
+      <p class="hardware-caption">结构化三维示意，器件位置为展示布局；端口对应当前项目配置，供电以设备规格为准。</p>
+      <noscript><p class="hardware-caption">开启 JavaScript 可查看三维交互。下方保留项目功能与系统架构介绍。</p></noscript>
+    </section>
 
     <section class="project-section" id="capabilities" aria-labelledby="capabilities-title">
       <div class="section-title"><span class="section-number" aria-hidden="true">01</span><div><h2 id="capabilities-title">感知、控制与交互</h2><p>将环境信息、设备动作和控制端连接成一套完整的应用逻辑。</p></div></div>
       <div class="features">
-        <article class="feature"><span class="feature-label">SENSING / 环境感知</span><h3>温湿度与光照采集</h3><p>DHT11 提供温度与湿度信息，光敏传感器通过 ADC 采样。十次采样平均得到相对光照刻度，数据同时服务界面展示与保护判断。</p></article>
-        <article class="feature"><span class="feature-label">MOTION / 设备动作</span><h3>四档展开控制</h3><p>28BYJ48 步进电机与 ULN2003 驱动晾衣架动作。根据目标档位和当前软件位置计算移动距离，统一管理运动、完成与拒绝状态。</p></article>
-        <article class="feature"><span class="feature-label">DISPLAY / 本地交互</span><h3>LCD 触摸与红外遥控</h3><p>TFTLCD 显示传感器、网络和电机状态，触摸入口控制档位与两路灯光；红外数字 1–4 对应四个展开档位。</p></article>
-        <article class="feature"><span class="feature-label">CONNECTIVITY / 物联网</span><h3>机智云与 Android 控制端</h3><p>WiFi 模块经 USART3 与主控交换机智云数据点。Android 端显示环境数据、下发档位与灯光指令，支持设备发现、绑定及配网流程。</p></article>
-        <article class="feature"><span class="feature-label">PROTECTION / 环境策略</span><h3>高湿环境自动收架</h3><p>结合网络时间、湿度和白天光照条件触发保护，向统一控制入口请求 1/4 档。保护期间限制进一步展开，界面与 APP 展示触发状态。</p></article>
-        <article class="feature"><span class="feature-label">FEEDBACK / 状态反馈</span><h3>灯光、提示与设备状态</h3><p>两路 LED 可独立控制，蜂鸣器提供操作反馈。系统维护采样有效性、网络连接、机械参考和运动状态，让指令与设备状态保持一致。</p></article>
+        <article class="feature"><span class="feature-label">SENSING</span><h3>环境感知</h3><p>温湿度与相对光照采集，供屏端和 APP 展示。</p></article>
+        <article class="feature"><span class="feature-label">CONTROL</span><h3>多端控制</h3><p>LCD、红外、Android 共用档位请求入口。</p></article>
+        <article class="feature"><span class="feature-label">ACTUATION</span><h3>动作与保护</h3><p>四档展开、独立灯光与高湿环境保护。</p></article>
       </div>
     </section>
 
     <section class="project-section" id="architecture" aria-labelledby="architecture-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">02</span><div><h2 id="architecture-title">从设备到应用的系统架构</h2><p>传感器与本地交互进入主控，应用层管理设备状态；WiFi 模块承担设备与机智云之间的通信。</p></div></div>
-      <figure class="architecture-figure">
-        <div class="architecture">
-          <div class="architecture-column"><p class="eyebrow">设备输入与输出</p><div class="architecture-block"><strong>DHT11 · 光敏传感器</strong><span>PG11 温湿度 · PF8 / ADC3 光照</span></div><div class="architecture-block"><strong>TFTLCD · 电阻触摸</strong><span>240 × 320 · FSMC 显示 · 五点校准</span></div><div class="architecture-block"><strong>红外 · 按键 · 蜂鸣器</strong><span>TIM4 输入捕获 · 本地操作反馈</span></div><div class="architecture-block"><strong>步进电机 · 两路 LED</strong><span>ULN2003 · 28BYJ48 · 独立灯光控制</span></div></div>
-          <div class="architecture-column core"><p class="eyebrow">STM32 固件</p><div class="architecture-block"><strong>外设与采样层</strong><span>GPIO / ADC / TIM / EXTI / USART / FSMC</span></div><div class="architecture-block"><strong>设备状态与控制仲裁</strong><span>APP、LCD、红外与自动保护共用档位请求入口</span></div><div class="architecture-block"><strong>异步任务处理</strong><span>DHT11 边沿采集 · 步进节拍 · 分批界面刷新</span></div><div class="architecture-block"><strong>机智云协议与数据点</strong><span>指令接收 · 事件处理 · 状态上报</span></div></div>
-          <div class="architecture-column"><p class="eyebrow">网络与移动应用</p><div class="architecture-block"><strong>ATK-MW8266D WiFi 模块</strong><span>GAgent 固件 · USART3 / 9600 8N1</span></div><div class="architecture-block"><strong>机智云平台</strong><span>设备连接 · 数据点交换 · 网络时间</span></div><div class="architecture-block"><strong>Android 控制端</strong><span>GizWifiSDK · Java · 设备绑定与配网</span></div><div class="architecture-block"><strong>控制与状态界面</strong><span>档位选择 · 灯光开关 · 环境数据 · 保护状态</span></div></div>
-        </div>
-        <figcaption class="figure-caption">Android 应用通过 WiFi 模块与机智云链路交换数据，STM32 负责将控制请求转为实际设备动作，并回传设备状态。</figcaption>
-      </figure>
+      <div class="section-title"><span class="section-number" aria-hidden="true">02</span><div><h2 id="architecture-title">数据如何流动</h2><p>切换链路，查看采集、控制与回传的路径。</p></div></div>
+      <div class="flow-controls"><div class="flow-modes" role="group" aria-label="选择系统链路"><button type="button" data-flow="sensing" aria-pressed="true">环境采集</button><button type="button" data-flow="control" aria-pressed="false">远程控制</button><button type="button" data-flow="report" aria-pressed="false">状态回传</button></div><button type="button" class="flow-play" id="flow-play" aria-pressed="true">暂停动画</button></div>
+      <div class="flow-map" id="flow-map" aria-label="系统数据链路图">
+        <svg class="flow-lines" id="flow-lines" aria-hidden="true"><g id="flow-paths"></g><circle id="flow-packet-halo" r="11"/><circle id="flow-packet" r="5"/></svg>
+<div class="flow-node flow-node-sensors" data-flow-node="sensors"><span class="flow-node-tag">感知</span><strong>环境传感器</strong><small>温湿度 · 光照</small></div>
+<div class="flow-node flow-node-mcu" data-flow-node="mcu"><span class="flow-node-tag">计算</span><strong>STM32 主控</strong><small>处理 · 状态 · 仲裁</small></div>
+<div class="flow-node flow-node-driver" data-flow-node="driver"><span class="flow-node-tag">驱动</span><strong>ULN2003</strong><small>四相驱动</small></div>
+<div class="flow-node flow-node-motor" data-flow-node="motor"><span class="flow-node-tag">执行</span><strong>步进电机</strong><small>四档展开</small></div>
+<div class="flow-node flow-node-lcd" data-flow-node="lcd"><span class="flow-node-tag">显示</span><strong>LCD / 触摸</strong><small>本地交互</small></div>
+<div class="flow-node flow-node-wifi" data-flow-node="wifi"><span class="flow-node-tag">连接</span><strong>WiFi 模块</strong><small>USART3 · GAgent</small></div>
+<div class="flow-node flow-node-cloud" data-flow-node="cloud"><span class="flow-node-tag">服务</span><strong>机智云</strong><small>数据点交换</small></div>
+<div class="flow-node flow-node-phone" data-flow-node="phone"><span class="flow-node-tag">交互</span><strong>Android APP</strong><small>指令 · 状态</small></div>
+      </div>
+      <div class="flow-caption"><span class="flow-demo-label">链路示意</span><span id="flow-order" aria-live="polite">传感器 → STM32 → LCD</span></div>
     </section>
 
     <section class="project-section" id="control" aria-labelledby="control-title">
