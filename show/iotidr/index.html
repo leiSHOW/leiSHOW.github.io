@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3559c7">
+  <meta name="description" content="IoTIDR 物联网智能晾衣架：基于 STM32 的环境感知、四档展开、LCD 与红外控制、机智云及 Android 交互系统。">
+  <link rel="canonical" href="https://leishow.github.io/show/iotidr/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%233559c7%22%2F%3E%3Cpath%20d%3D%22M9%208v16h14%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-width%3D%223%22%2F%3E%3C%2Fsvg%3E">
+  <link rel="stylesheet" href="/show/style.css">
+  <title>IoTIDR · 物联网智能晾衣架 · LeiSHOW</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到内容</a>
+  <header class="site-header"><div class="shell header-inner">
+    <a class="brand" href="/">LeiSHOW<span>项目展示</span></a>
+    <nav class="site-nav" aria-label="主导航"><a href="/">首页</a><a href="/blog/">博客</a><a href="/habit/">算法手记</a><a href="/show/">项目展示</a></nav>
+  </div></header>
+  <main class="shell" id="main">
+    <nav class="breadcrumb" aria-label="面包屑"><a href="/show/">项目展示</a><span aria-hidden="true">/</span><span aria-current="page">IoTIDR</span></nav>
+    <section class="project-hero" aria-labelledby="project-title">
+      <div>
+        <p class="hero-code">IoTIDR / 嵌入式 · 物联网</p>
+        <h1 id="project-title">物联网<br>智能晾衣架</h1>
+        <p class="lead">以 STM32 为设备核心，采集温湿度与相对光照，驱动晾衣架按四个档位展开。LCD、红外遥控与 Android 应用共同参与控制，环境保护策略提供自动收架能力。</p>
+        <ul class="tags" aria-label="项目技术"><li>STM32F103</li><li>C / HAL</li><li>机智云</li><li>Android / Java</li></ul>
+        <div class="hero-actions"><a class="button" href="#capabilities">项目功能</a><a class="button secondary" href="#architecture">系统架构</a></div>
+      </div>
+      <figure class="system-exhibit">
+        <p class="eyebrow">SYSTEM AT A GLANCE</p>
+        <div class="signal-row"><div><strong>温湿度</strong><small>DHT11</small></div><div><strong>相对光照</strong><small>ADC 采样</small></div><div><strong>控制请求</strong><small>LCD / IR / APP</small></div></div>
+        <div class="signal-connector" aria-hidden="true"></div>
+        <div class="controller"><strong>STM32F103ZE</strong><span>采集 · 状态管理 · 控制仲裁</span></div>
+        <div class="signal-connector" aria-hidden="true"></div>
+        <div class="signal-row"><div><strong>四档展开</strong><small>28BYJ48</small></div><div><strong>灯光与显示</strong><small>LED / TFTLCD</small></div><div><strong>云端交互</strong><small>WiFi / 机智云</small></div></div>
+        <figcaption>项目功能链路示意</figcaption>
+      </figure>
+    </section>
+    <dl class="facts" aria-label="项目概况"><div><dt>主控平台</dt><dd>STM32F103ZE · 72 MHz</dd></div><div><dt>感知信息</dt><dd>温度 · 湿度 · 相对光照</dd></div><div><dt>控制入口</dt><dd>LCD · 红外 · Android</dd></div><div><dt>设备展开</dt><dd>1/4 · 1/2 · 3/4 · 全开</dd></div></dl>
+    <nav class="section-nav" aria-label="项目章节"><a href="#capabilities">项目功能</a><a href="#architecture">系统架构</a><a href="#control">控制策略</a><a href="#data">设备数据</a><a href="#implementation">实现情况</a></nav>
+
+    <section class="project-section" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="section-title"><span class="section-number" aria-hidden="true">01</span><div><h2 id="capabilities-title">感知、控制与交互</h2><p>将环境信息、设备动作和控制端连接成一套完整的应用逻辑。</p></div></div>
+      <div class="features">
+        <article class="feature"><span class="feature-label">SENSING / 环境感知</span><h3>温湿度与光照采集</h3><p>DHT11 提供温度与湿度信息，光敏传感器通过 ADC 采样。十次采样平均得到相对光照刻度，数据同时服务界面展示与保护判断。</p></article>
+        <article class="feature"><span class="feature-label">MOTION / 设备动作</span><h3>四档展开控制</h3><p>28BYJ48 步进电机与 ULN2003 驱动晾衣架动作。根据目标档位和当前软件位置计算移动距离，统一管理运动、完成与拒绝状态。</p></article>
+        <article class="feature"><span class="feature-label">DISPLAY / 本地交互</span><h3>LCD 触摸与红外遥控</h3><p>TFTLCD 显示传感器、网络和电机状态，触摸入口控制档位与两路灯光；红外数字 1–4 对应四个展开档位。</p></article>
+        <article class="feature"><span class="feature-label">CONNECTIVITY / 物联网</span><h3>机智云与 Android 控制端</h3><p>WiFi 模块经 USART3 与主控交换机智云数据点。Android 端显示环境数据、下发档位与灯光指令，支持设备发现、绑定及配网流程。</p></article>
+        <article class="feature"><span class="feature-label">PROTECTION / 环境策略</span><h3>高湿环境自动收架</h3><p>结合网络时间、湿度和白天光照条件触发保护，向统一控制入口请求 1/4 档。保护期间限制进一步展开，界面与 APP 展示触发状态。</p></article>
+        <article class="feature"><span class="feature-label">FEEDBACK / 状态反馈</span><h3>灯光、提示与设备状态</h3><p>两路 LED 可独立控制，蜂鸣器提供操作反馈。系统维护采样有效性、网络连接、机械参考和运动状态，让指令与设备状态保持一致。</p></article>
+      </div>
+    </section>
+
+    <section class="project-section" id="architecture" aria-labelledby="architecture-title">
+      <div class="section-title"><span class="section-number" aria-hidden="true">02</span><div><h2 id="architecture-title">从设备到应用的系统架构</h2><p>传感器与本地交互进入主控，应用层管理设备状态；WiFi 模块承担设备与机智云之间的通信。</p></div></div>
+      <figure class="architecture-figure">
+        <div class="architecture">
+          <div class="architecture-column"><p class="eyebrow">设备输入与输出</p><div class="architecture-block"><strong>DHT11 · 光敏传感器</strong><span>PG11 温湿度 · PF8 / ADC3 光照</span></div><div class="architecture-block"><strong>TFTLCD · 电阻触摸</strong><span>240 × 320 · FSMC 显示 · 五点校准</span></div><div class="architecture-block"><strong>红外 · 按键 · 蜂鸣器</strong><span>TIM4 输入捕获 · 本地操作反馈</span></div><div class="architecture-block"><strong>步进电机 · 两路 LED</strong><span>ULN2003 · 28BYJ48 · 独立灯光控制</span></div></div>
+          <div class="architecture-column core"><p class="eyebrow">STM32 固件</p><div class="architecture-block"><strong>外设与采样层</strong><span>GPIO / ADC / TIM / EXTI / USART / FSMC</span></div><div class="architecture-block"><strong>设备状态与控制仲裁</strong><span>APP、LCD、红外与自动保护共用档位请求入口</span></div><div class="architecture-block"><strong>异步任务处理</strong><span>DHT11 边沿采集 · 步进节拍 · 分批界面刷新</span></div><div class="architecture-block"><strong>机智云协议与数据点</strong><span>指令接收 · 事件处理 · 状态上报</span></div></div>
+          <div class="architecture-column"><p class="eyebrow">网络与移动应用</p><div class="architecture-block"><strong>ATK-MW8266D WiFi 模块</strong><span>GAgent 固件 · USART3 / 9600 8N1</span></div><div class="architecture-block"><strong>机智云平台</strong><span>设备连接 · 数据点交换 · 网络时间</span></div><div class="architecture-block"><strong>Android 控制端</strong><span>GizWifiSDK · Java · 设备绑定与配网</span></div><div class="architecture-block"><strong>控制与状态界面</strong><span>档位选择 · 灯光开关 · 环境数据 · 保护状态</span></div></div>
+        </div>
+        <figcaption class="figure-caption">Android 应用通过 WiFi 模块与机智云链路交换数据，STM32 负责将控制请求转为实际设备动作，并回传设备状态。</figcaption>
+      </figure>
+    </section>
+
+    <section class="project-section" id="control" aria-labelledby="control-title">
+      <div class="section-title"><span class="section-number" aria-hidden="true">03</span><div><h2 id="control-title">四档展开与环境保护</h2><p>多种控制来源共享同一套设备状态，控制请求先经过状态检查，再进入电机执行。</p></div></div>
+      <div class="control-layout">
+        <div class="degree-panel"><h3>展开档位</h3><div class="degree-scale" aria-label="四个展开档位及协议值"><div class="degree-item"><span>1/4 开</span><div class="degree-track" aria-hidden="true"><i class="quarter"></i></div><span>值 0</span></div><div class="degree-item"><span>1/2 开</span><div class="degree-track" aria-hidden="true"><i class="half"></i></div><span>值 1</span></div><div class="degree-item"><span>3/4 开</span><div class="degree-track" aria-hidden="true"><i class="three-quarter"></i></div><span>值 2</span></div><div class="degree-item"><span>全开</span><div class="degree-track" aria-hidden="true"><i class="full"></i></div><span>值 3</span></div></div><p class="figure-caption">条形表示档位比例。档位 0 对应 1/4 开，保护动作请求这一档位。</p></div>
+        <div class="control-details"><div><h3>一个控制入口，多种操作方式</h3><p>Android 档位选择、LCD 触摸、红外数字键以及自动保护均提交目标档位。应用层检查机械参考、忙状态与保护条件，减少重复指令造成的额外动作。</p></div><div><h3>位置状态与运动完成</h3><p>电机上电后需要确认机械参考位置，随后按步数估算位置。运动状态与已完成档位分别维护，动作结束后再更新完成状态。</p></div><div><h3>本地配网与灯光操作</h3><p>LCD 提供 AirLink、SoftAP 与 WiFi 重置入口，红外支持配网及复位操作。两路 LED 独立下发与回显，WiFi 重置需要确认。</p></div></div>
+      </div>
+      <div class="callout">当前位置来自机械参考与软件步数估计。系统没有编码器或自动归零反馈，档位比例不等同于闭环测量的机械行程。</div>
+      <div class="protection-rules"><article class="rule"><p class="rule-time">白天 / 08:00–18:59</p><h3>高湿度 + 低光照</h3><p>湿度超过 85%，且相对光照低于 20 时，触发环境保护。</p><div class="rule-result">保护状态生效 · 请求 1/4 档</div></article><article class="rule"><p class="rule-time">夜间 / 19:00–次日 07:59</p><h3>高湿度</h3><p>湿度超过 85% 时触发环境保护，夜间不以光照作为附加条件。</p><div class="rule-result">保护状态生效 · 请求 1/4 档</div></article></div>
+      <p class="figure-caption">保护判断依赖有效的网络通信、网络时间、传感器新鲜数据和机械参考。光照使用 0–100 相对刻度；当前项目使用这些环境条件作为保护依据。</p>
+    </section>
+
+    <section class="project-section" id="data" aria-labelledby="data-title">
+      <div class="section-title"><span class="section-number" aria-hidden="true">04</span><div><h2 id="data-title">设备与应用共享的数据</h2><p>七个机智云数据点定义控制指令和设备上报内容，板端与 Android 应用保持一致。</p></div></div>
+      <div class="table-wrap"><table><caption>机智云设备数据点</caption><thead><tr><th scope="col">数据点</th><th scope="col">方向</th><th scope="col">内容</th></tr></thead><tbody>
+        <tr><td>LED0</td><td>下发 / 回显</td><td>第一路灯光开关</td></tr><tr><td>LED1</td><td>下发 / 回显</td><td>第二路灯光开关</td></tr><tr><td>degree</td><td>下发 / 回显</td><td>四档展开，0–3 对应 1/4 开至全开</td></tr><tr><td>careMODE</td><td>设备上报</td><td>环境保护是否触发，由设备计算</td></tr><tr><td>light</td><td>设备上报</td><td>0–100 相对光照刻度</td></tr><tr><td>humidity</td><td>设备上报</td><td>相对湿度，单位 %RH</td></tr><tr><td>tempr</td><td>设备上报</td><td>温度，单位 °C；保留协议中的原标识名</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="project-section" id="implementation" aria-labelledby="implementation-title">
+      <div class="section-title"><span class="section-number" aria-hidden="true">05</span><div><h2 id="implementation-title">实现情况</h2></div></div>
+      <div class="status-copy"><p><strong>项目包含板端固件与 Android 控制工程。</strong> 环境采集、四档控制、LCD/触摸、红外、灯光、机智云协议与保护逻辑均有对应实现。</p><p>板端完整固件已构建，协议、电机与 LCD/触摸的主机回归通过；已有电机点动和部分红外按键的实物反馈。完整机械行程、最新按键映射与手机—云端—设备的整链路效果仍需实物确认。</p></div>
+    </section>
+    <div class="project-end"><a href="/show/">返回项目展示</a><a href="#project-title">回到项目开头</a></div>
+  </main>
+  <footer class="site-footer"><div class="shell footer-inner"><span>© 2026 LeiSHOW · IoTIDR</span><a href="/">返回主页</a></div></footer>
+</body>
+</html>

@@ -76,6 +76,7 @@
       .identity { padding: 2.3rem 2.3rem 2rem; }
       .actions { border-left: 0; border-top: 1px solid var(--border); padding: 1.6rem 2.3rem 2.3rem; }
       .hero-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero-links a:last-child:nth-child(odd) { grid-column: 1 / -1; }
       .hero-avatar { margin-bottom: 1.4rem; }
     }
     @media (max-width: 520px) {
@@ -125,6 +126,10 @@
           <a href="/habit/">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2zm2 4h6v1H5V5zm0 3h6v1H5V8zm0 3h4v1H5v-1z"/></svg>
             算法手记 <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a href="/show/">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.5" y="4" width="13" height="10" rx="1.5"/><path d="M5 4V2h6v2M1.5 8h13M7 8v2h2V8"/></svg>
+            项目展示
           </a>
           <a href="/resume/">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm1 3v1h6V5H5zm0 3v1h6V8H5zm0 3v1h4v-1H5z"/></svg>
