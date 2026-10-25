@@ -3,50 +3,59 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#3559c7">
-  <meta name="description" content="MultiUAV 多无人机网络仿真可视化平台：连接 ns-3、C++ 中间件与 Three.js，在同一工作台观察节点态势、多场景、路由、MAC 与分簇指标。内嵌可交互静态演示。">
+  <meta name="description" content="空天异构组网仿真平台：由 ns-3 后端、C++ 中间件和浏览器前端构成，展示仿真配置、状态封装、消息队列传递与解封展示的完整链路。">
   <link rel="canonical" href="https://leishow.github.io/show/multiuav/">
-  <link rel="stylesheet" href="/show/style.css"><link rel="stylesheet" href="./assets/project.css">
-  <script defer src="./assets/project.js"></script>
-  <title>MultiUAV · 多无人机网络仿真可视化平台 · LeiSHOW</title>
+  <link rel="stylesheet" href="/show/style.css"><link rel="stylesheet" href="./assets/project.css"><link rel="stylesheet" href="./assets/data-flow.css">
+  <script defer src="./assets/project.js"></script><script type="module" src="./assets/data-flow.js"></script>
+  <title>空天异构组网仿真平台 · LeiSHOW</title>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到内容</a>
   <header class="site-header"><div class="shell header-inner"><a class="brand" href="/">LeiSHOW<span>项目展示</span></a><nav class="site-nav" aria-label="主导航"><a href="/">首页</a><a href="/blog/">博客</a><a href="/habit/">算法手记</a><a href="/show/">项目展示</a></nav></div></header>
   <main class="shell" id="main">
-    <nav class="breadcrumb" aria-label="面包屑"><a href="/show/">项目展示</a><span aria-hidden="true">/</span><span aria-current="page">MultiUAV</span></nav>
+    <nav class="breadcrumb" aria-label="面包屑"><a href="/show/">项目展示</a><span aria-hidden="true">/</span><span aria-current="page">空天异构组网仿真平台</span></nav>
     <section class="project-hero" aria-labelledby="project-title">
-      <div><p class="hero-code">MultiUAV / 网络仿真 · 数据可视化</p><h1 id="project-title">让无人机网络<br>变得直观可见</h1><p class="lead">把仿真中的节点、分簇关系与网络性能放到同一张工作台。连接 ns-3 仿真、C++ 中间件与浏览器前端，在不同场景之间观察节点运动，查看路由、MAC 与分簇指标。</p><ul class="tags" aria-label="项目技术"><li>ns-3 / C++</li><li>Three.js</li><li>WebSocket</li><li>RabbitMQ</li><li>Docker</li></ul><div class="hero-actions"><a class="button" href="#demo">体验交互演示</a><a class="button secondary" href="#architecture">了解系统架构</a></div></div>
-      <figure class="network-exhibit"><div class="exhibit-top"><span>FANET / NETWORK VIEW</span><span class="exhibit-dot">多节点协同</span></div>
-        <svg viewBox="0 0 440 330" role="img" aria-labelledby="network-art-title network-art-desc"><title id="network-art-title">多无人机分簇网络示意</title><desc id="network-art-desc">金色簇头连接周围的蓝色成员节点，簇头之间以虚线相连。</desc><defs><pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M 28 0 L 0 0 0 28" fill="none" stroke="#29445a" stroke-width=".6"/></pattern></defs><rect width="440" height="330" fill="url(#grid)"/><g fill="none" stroke="#419cc1" stroke-width="1.4" opacity=".8"><path d="M110 115 55 66M110 115 58 157M110 115 151 48M110 115 174 157M110 115 100 208M275 90 219 35M275 90 331 36M275 90 367 95M275 90 321 151M275 90 221 151M272 235 211 197M272 235 188 275M272 235 316 288M272 235 362 225M272 235 371 171"/></g><path d="M110 115 275 90 272 235Z" fill="none" stroke="#e9ba6b" stroke-width="1.5" stroke-dasharray="6 7"/><g fill="#6ed5eb" stroke="#17364a" stroke-width="5"><circle cx="55" cy="66" r="8"/><circle cx="58" cy="157" r="8"/><circle cx="151" cy="48" r="8"/><circle cx="174" cy="157" r="8"/><circle cx="100" cy="208" r="8"/><circle cx="219" cy="35" r="8"/><circle cx="331" cy="36" r="8"/><circle cx="367" cy="95" r="8"/><circle cx="321" cy="151" r="8"/><circle cx="221" cy="151" r="8"/><circle cx="211" cy="197" r="8"/><circle cx="188" cy="275" r="8"/><circle cx="316" cy="288" r="8"/><circle cx="362" cy="225" r="8"/><circle cx="371" cy="171" r="8"/></g><g fill="#f4c979" stroke="#f4c979"><circle cx="110" cy="115" r="18" fill-opacity=".12" stroke-opacity=".5"/><circle cx="110" cy="115" r="7"/><circle cx="275" cy="90" r="18" fill-opacity=".12" stroke-opacity=".5"/><circle cx="275" cy="90" r="7"/><circle cx="272" cy="235" r="18" fill-opacity=".12" stroke-opacity=".5"/><circle cx="272" cy="235" r="7"/></g><g fill="#e4f0fc" font-size="11" font-family="sans-serif"><text x="89" y="147">簇头 01</text><text x="254" y="122">簇头 07</text><text x="251" y="267">簇头 13</text></g></svg>
-        <figcaption><span><i class="legend-head"></i>簇头</span><span><i class="legend-member"></i>簇成员</span><span>结构示意</span></figcaption></figure>
+      <div><p class="hero-code">MultiUAV / 仿真后端 · 数据服务 · 可视前端</p><h1 id="project-title">空天异构组网<br>仿真平台</h1><p class="lead">由 ns-3 负责网络仿真，C++ 中间件连接配置、消息队列与数据接口，浏览器前端提供参数交互和态势展示。从仿真参数下发到节点状态回传，组成一条可观察的数据链路。</p><ul class="tags" aria-label="项目技术"><li>ns-3 / C++</li><li>Three.js</li><li>WebSocket</li><li>RabbitMQ</li><li>Docker</li></ul><div class="hero-actions"><a class="button" href="#dataflow">查看数据流向</a><a class="button secondary" href="#demo">体验前端演示</a></div></div>
+      <figure class="hero-system"><p class="eyebrow">ONE SYSTEM / THREE LAYERS</p><div class="hero-tier"><span>01</span><div><strong>ns-3 仿真后端</strong><small>运行模型 · 采集状态 · 封装数据</small></div></div><div class="hero-relationship">↓ HTTP 上报　↑ HTTP 领取配置</div><div class="hero-tier"><span>02</span><div><strong>C++ 中间件</strong><small>参数交互 · RabbitMQ · 数据存取</small></div></div><div class="hero-relationship">↓ WebSocket 状态　↑ HTTP 配置</div><div class="hero-tier"><span>03</span><div><strong>浏览器前端</strong><small>参数提交 · 数据解封 · 三维与图表</small></div></div><figcaption>以现有节点与分簇仿真链路展示系统协作关系。</figcaption></figure>
     </section>
     <dl class="facts" aria-label="项目概况"><div><dt>仿真平台</dt><dd>ns-3.34 · C++</dd></div><div><dt>三维展示</dt><dd>Three.js · 节点态势</dd></div><div><dt>数据链路</dt><dd>HTTP · WebSocket</dd></div><div><dt>运行与存储</dt><dd>Docker · MariaDB</dd></div></dl>
-    <nav class="section-nav" aria-label="项目章节"><a href="#demo">交互演示</a><a href="#capabilities">项目功能</a><a href="#architecture">系统架构</a><a href="#metrics">观察指标</a><a href="#workflow">使用流程</a></nav>
+    <nav class="section-nav" aria-label="项目章节"><a href="#architecture">系统组成</a><a href="#dataflow">数据流向</a><a href="#demo">前端演示</a><a href="#metrics">数据内容</a></nav>
+    <section class="project-section" id="architecture" aria-labelledby="architecture-title">
+      <div class="section-title"><span class="section-number">01</span><div><h2 id="architecture-title">三个部分，组成一个系统</h2><p>后端计算网络行为，中间件承接数据与控制，前端把运行状态呈现给用户。</p></div></div>
+      <div class="features">
+        <article class="feature role-feature"><span class="feature-label">SIMULATION BACKEND</span><h3>ns-3 仿真后端</h3><p>用 C++ 运行节点移动、分簇、路由与 MAC 模型，产生节点状态和性能指标。</p><ul><li>支持命令行参数，或从中间件领取仿真配置。</li><li>接口模块采集状态，Connector 按消息定义封装为 JSON。</li><li>后台 HTTP worker 向中间件上报，携带场景与快照信息。</li></ul></article>
+        <article class="feature role-feature"><span class="feature-label">DATA &amp; CONTROL SERVICE</span><h3>C++ 中间件</h3><p>用 HTTP 接收数据和配置，用 RabbitMQ 衔接数据生产与消费，用 WebSocket 提供订阅推送。</p><ul><li>校验配置、映射算法名称，按场景暂存待领取参数。</li><li>保留消息元数据，按队列消费并整理节点快照。</li><li>提供独立的 MariaDB 设备信息存取接口；服务以 Docker 组织。</li></ul></article>
+        <article class="feature role-feature"><span class="feature-label">BROWSER FRONTEND</span><h3>浏览器前端</h3><p>提交仿真参数，解析返回消息，按场景维护节点与指标状态，形成可交互的观察工作台。</p><ul><li>按 type 与 sceneId 分发消息，排除过期节点快照。</li><li>Three.js 显示节点与分簇关系，Chart.js 显示指标历史。</li><li>支持详情、定位、浏览器本地保存与文件导出。</li></ul></article>
+      </div>
+    </section>
+    <section class="project-section" id="dataflow" aria-labelledby="dataflow-title">
+      <div class="section-title"><span class="section-number">02</span><div><h2 id="dataflow-title">一条数据，如何穿过整个系统</h2><p>切换链路，观察数据在哪里封装、经过什么协议、又在哪里被解封。点击任意步骤可暂停并查看这一站的数据形态。</p></div></div>
+      <div id="system-data-flow">
+        <div class="transport-controls"><div class="transport-modes" role="group" aria-label="选择数据链路"><button type="button" data-transport-mode="telemetry" aria-pressed="true">状态上报</button><button type="button" data-transport-mode="control" aria-pressed="false">仿真配置</button><button type="button" data-transport-mode="storage" aria-pressed="false">设备存取</button></div><div class="transport-actions"><button id="transport-play" type="button" aria-pressed="true">暂停动画</button><button id="transport-next" type="button">下一步 →</button></div></div>
+        <p id="flow-summary" class="transport-summary">结构化状态转成 JSON，经过消息队列缓冲，再按场景还原为节点与图表数据。</p>
+        <div class="transport-heading"><span>系统数据通道</span><code>ENCODE → TRANSFER → DECODE</code></div>
+        <div class="transport-box" id="transport-box"><div class="transport-lanes"><div><span>SIMULATION</span><strong>ns-3 后端</strong></div><div><span>SERVICE &amp; QUEUE</span><strong>C++ 中间件</strong></div><div><span>VISUALIZATION</span><strong>浏览器前端／调用端</strong></div></div>
+          <div class="transport-map" id="transport-map" role="group" aria-label="按序排列的数据处理步骤"><svg id="transport-lines" class="transport-lines" aria-hidden="true"><defs><marker id="transport-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L7 3.5 L0 7Z"/></marker></defs><g id="transport-paths"></g><circle id="transport-halo" class="transport-halo" r="10"/><circle id="transport-packet" class="transport-packet" r="3.5"/></svg></div>
+        </div>
+        <p class="transport-caption" id="transport-direction">ns-3 → HTTP → 中间件 → RabbitMQ → WebSocket → 前端</p>
+        <div class="packet-inspector" id="packet-inspector"><div class="packet-explanation"><span id="packet-index" class="packet-step-label">STEP 01</span><h3 id="packet-title">仿真产生状态</h3><p id="packet-description">查看每一站的输入、转换与输出。</p><div class="packet-transform" id="packet-transform">仿真对象 → 节点／指标结构</div></div><div class="packet-code"><div class="packet-code-heading"><span id="packet-format">C++ 状态对象</span><span>示例字段 · 非实时抓包</span></div><pre aria-label="当前步骤的数据示例"><code id="packet-payload"></code></pre></div></div>
+        <p class="flow-note" id="flow-note">Protobuf 定义字段；接口实际传输 JSON 文本。</p>
+      </div>
+      <div class="field-notes"><div><code>sceneId / algorithm</code><p>说明数据属于哪个场景、哪种算法，让同一服务处理的消息有明确归属。</p></div><div><code>snapshot / snapshotId</code><p>区分完整快照及其顺序；前端据此更新节点集合，忽略已处理的旧快照。</p></div><div><code>type / data</code><p>type 决定处理分支，data 承载节点或指标。传递过程中保留外层元数据。</p></div></div>
+      <noscript><p class="callout">状态：ns-3 → Protobuf 字段封装为 JSON → HTTP → 中间件 → RabbitMQ → 中间件 WebSocket → 前端解析与展示。配置：前端 HTTP 提交 → 中间件暂存 → ns-3 HTTP 领取。设备存取为独立的 HTTP → MariaDB 接口。</p></noscript>
+    </section>
     <section class="project-section" id="demo" aria-labelledby="demo-title">
-      <div class="section-title"><span class="section-number">01</span><div><h2 id="demo-title">走进仿真工作台</h2><p>保留项目的实际前端样式，用模拟节点和指标体验场景切换、节点详情与数据看板。</p></div></div>
+      <div class="section-title"><span class="section-number">03</span><div><h2 id="demo-title">前端工作台演示</h2><p>保留项目的实际前端样式，用模拟节点和指标体验场景切换、节点详情与数据看板。</p></div></div>
       <div class="demo-intro"><span class="demo-data-label">模拟数据展示</span><p>所有数值均为界面演示生成，不代表真实仿真结果，也不用于比较算法性能。</p></div>
-      <div class="demo-frame-heading"><span>MultiUAV / 浏览器演示</span><div><button id="demo-fullscreen" class="text-button" type="button">全屏体验</button><a href="./demo/" target="_blank" rel="noopener">独立打开 ↗</a></div></div>
-      <div class="demo-stage" id="demo-stage"><iframe id="demo-frame" title="MultiUAV 工作台：四场景模拟数据交互演示" src="./demo/" loading="lazy" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-downloads allow-popups allow-top-navigation-by-user-activation"></iframe></div>
+      <div class="demo-frame-heading"><span>空天异构组网仿真平台 / 前端演示</span><div><button id="demo-fullscreen" class="text-button" type="button">全屏体验</button><a href="./demo/" target="_blank" rel="noopener">独立打开 ↗</a></div></div>
+      <div class="demo-stage" id="demo-stage"><iframe id="demo-frame" title="空天异构组网仿真平台工作台：四场景模拟数据交互演示" src="./demo/" loading="lazy" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-downloads allow-popups allow-top-navigation-by-user-activation"></iframe></div>
       <div class="demo-help"><p><strong>桌面：</strong>拖动与缩放画板，右键节点查看基础信息和分簇信息；悬停簇头查看成员连线。</p><p><strong>触屏：</strong>输入节点 ID，点击“查看节点”；在下方切换路由、MAC 与分簇指标。</p></div>
       <p class="figure-caption">演示支持暂停、场景保存、JSON／CSV 导出；配置预览可改变场景、算法、节点数及 MAC 协议。完整仿真参数由实际系统提交给 ns-3 执行。</p>
     </section>
-    <section class="project-section" id="capabilities" aria-labelledby="capabilities-title">
-      <div class="section-title"><span class="section-number">02</span><div><h2 id="capabilities-title">从节点运动到网络行为</h2><p>围绕“网络里发生了什么”，将空间关系、运行状态和指标历史放在一起观察。</p></div></div>
-      <div class="features"><article class="feature"><span class="feature-label">SPATIAL VIEW</span><h3>三维节点态势</h3><p>显示节点位置与运动轨迹。通过颜色边框与光环区分簇头、簇成员和访客，悬停簇头展示成员关系。</p></article><article class="feature"><span class="feature-label">MULTI-SCENE</span><h3>多场景独立展示</h3><p>四个场景分别维护节点和指标历史，通过 sceneId 归属数据。同一算法可在不同场景展示不同参数。</p></article><article class="feature"><span class="feature-label">NODE INSPECTOR</span><h3>节点详情与定位</h3><p>根据节点 ID 定位，在基础信息与分簇信息中查看坐标、速度、能量、所属簇头、权重和 IP。</p></article><article class="feature"><span class="feature-label">METRICS</span><h3>分层指标看板</h3><p>路由、MAC 与分簇指标按页签切换。MAC 时延支持优先级与平均视图，避免不同层的信息挤在同一画面。</p></article><article class="feature"><span class="feature-label">SIMULATION SETUP</span><h3>参数化仿真</h3><p>配置算法、节点规模、移动模型、通信区域、业务流量和能量参数，指定数据所对应的展示场景。</p></article><article class="feature"><span class="feature-label">DATA EXPORT</span><h3>保存与导出</h3><p>保存本地场景状态，导出场景 JSON、路由 CSV 与分簇 CSV，便于进一步整理和分析。</p></article></div>
-    </section>
-    <section class="project-section" id="architecture" aria-labelledby="architecture-title">
-      <div class="section-title"><span class="section-number">03</span><div><h2 id="architecture-title">仿真、数据与界面的连接</h2><p>由仿真端生成状态，中间件处理数据，浏览器专注交互与展示。</p></div></div>
-      <figure class="architecture-figure"><div class="architecture"><div class="architecture-column"><p class="eyebrow">01 / SIMULATION</p><div class="architecture-block"><strong>ns-3.34 仿真</strong><span>节点移动、分簇、路由与 MAC 协议运行。</span></div><div class="architecture-block"><strong>节点与指标输出</strong><span>FANET-core 接口模块生成节点快照与性能数据。</span></div><div class="architecture-block"><strong>参数接收</strong><span>支持命令行运行，也支持等待中间件下发仿真配置。</span></div></div><div class="architecture-column core"><p class="eyebrow">02 / MIDDLEWARE</p><div class="architecture-block"><strong>RabbitMQ 消息队列</strong><span>承接仿真消息，分离数据生产与消费。</span></div><div class="architecture-block"><strong>C++ 中间件服务</strong><span>HTTP 与 WebSocket 提供配置交互、数据查询与订阅推送。</span></div><div class="architecture-block"><strong>MariaDB / MySQL</strong><span>数据持久化与查询，Adminer 提供数据库管理界面。</span></div></div><div class="architecture-column"><p class="eyebrow">03 / VISUALIZATION</p><div class="architecture-block"><strong>Three.js 场景</strong><span>节点渲染、位置插值、分簇关系与详情查看。</span></div><div class="architecture-block"><strong>Chart.js 指标</strong><span>按 sceneId 组织指标历史，按层切换曲线。</span></div><div class="architecture-block"><strong>交互控制台</strong><span>提交参数、切换场景、收缩面板与导出数据。</span></div></div></div><figcaption class="figure-caption">状态链路：ns-3 → 消息队列 → 中间件 → 浏览器。配置链路：浏览器 → HTTP → 中间件 → ns-3。上方静态演示在浏览器内生成数据。</figcaption></figure>
-      <div class="control-layout architecture-notes"><div><h3>数据按场景归属</h3><p class="muted">节点快照携带场景与算法标识。新位置通过插值过渡，完整快照与增量更新分别处理；切换场景时，加载对应节点和指标历史。</p></div><div><h3>可配置的队列消费</h3><p class="muted">single 每次获取一条消息；drain 持续消费，在连续两次空轮询后等待，队列达到配置阈值再恢复。前端按消息内容更新展示。</p></div></div>
-    </section>
     <section class="project-section" id="metrics" aria-labelledby="metrics-title">
-      <div class="section-title"><span class="section-number">04</span><div><h2 id="metrics-title">在不同层面观察网络</h2><p>一组空间状态，配合三组指标，让运行过程更容易理解。</p></div></div>
+      <div class="section-title"><span class="section-number">04</span><div><h2 id="metrics-title">系统传递哪些数据</h2><p>节点快照描述空间与分簇状态，指标消息描述运行表现；具体上报类别随仿真模块启用。</p></div></div>
       <div class="table-wrap"><table><caption>指标与观察对象</caption><thead><tr><th scope="col">层面</th><th scope="col">展示内容</th><th scope="col">观察对象</th></tr></thead><tbody><tr><td>节点</td><td>位置、速度、角色、能量、簇头、权重、IP</td><td>节点运动与分簇归属</td></tr><tr><td>路由</td><td>平均时延、丢包率、收敛时间、平均吞吐量</td><td>端到端通信表现</td></tr><tr><td>MAC</td><td>时延、信道利用率、丢包率、吞吐量</td><td>信道访问与 QoS 优先级</td></tr><tr><td>分簇</td><td>簇首与成员平均生命周期、簇维护消息、簇首声明消息、Guest 维护消息</td><td>分簇稳定性与维护开销</td></tr></tbody></table></div>
       <div class="algorithm-note"><span class="eyebrow">ALGORITHM &amp; PROTOCOL</span><p>当前控制台提供 WOA、DFP-LR-WOCA、DFP-LR-WOCA-no-RK 三种分簇算法；MAC 支持 eemac 与 qosmac。不同演示场景用于展示界面能力，曲线差异由模拟函数生成。</p></div>
-    </section>
-    <section class="project-section" id="workflow" aria-labelledby="workflow-title">
-      <div class="section-title"><span class="section-number">05</span><div><h2 id="workflow-title">一次完整的观察流程</h2><p>从参数配置开始，到场景观察，再到数据整理。</p></div></div>
-      <ol class="workflow-list"><li><span>01</span><div><h3>确定仿真与场景</h3><p>选择目标场景，设置算法、节点数、MAC、移动模型与业务参数。</p></div></li><li><span>02</span><div><h3>观察节点与分簇</h3><p>查看运动中的节点，定位目标节点，检查基础状态和所属簇头。</p></div></li><li><span>03</span><div><h3>切换指标与场景</h3><p>浏览路由、MAC、分簇曲线，切换场景时保留各自的数据上下文。</p></div></li><li><span>04</span><div><h3>导出数据进一步分析</h3><p>保存场景状态，导出 JSON 或 CSV，接入后续的数据整理工作。</p></div></li></ol>
     </section>
     <div class="project-end"><a href="/show/">← 全部项目</a><a href="/show/iotidr/">另一个项目：IoTIDR →</a></div>
   </main>
