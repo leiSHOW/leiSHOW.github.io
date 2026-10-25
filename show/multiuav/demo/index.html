@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111e" />
+    <title>MultiUAV · 多无人机网络仿真演示</title>
+    <link rel="stylesheet" href="./Css/main.css" />
+    <script src="./vendor/chart.umd.js"></script>
+    <link rel="stylesheet" href="./Demo/demo.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three.module.js",
+          "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <header class="demo-bar"><div><strong>MultiUAV / 静态演示</strong> <span class="demo-label">所有数值为模拟数据，不代表实验结果</span></div><div class="demo-controls"><output id="demo-time">036 s</output><button id="demo-play" type="button" aria-pressed="true">暂停演示</button><button id="demo-reset" type="button">重置</button><a href="../" target="_top">返回项目 ↗</a></div></header>
+    <div id="menu" aria-hidden="true">
+      <div class="context-menu-kicker">NODE INSPECTOR</div>
+      <h3 id="title">物体ID:2</h3>
+      <button id="baseInfo" type="button">查看基础信息</button>
+      <button id="clusterInfo" type="button">查看分簇信息</button>
+      <button id="closeMenu" type="button">✕ 关闭当前菜单 <span>Esc</span></button>
+    </div>
+
+    <div class="menuChild" aria-hidden="true">
+      <div id="baseInfoMenu">
+        <div class="context-menu-kicker">BASE INFORMATION</div>
+        <div class="info-row"><label for="nodeID">节点</label><input type="text" id="nodeID" value="2" readonly /></div>
+        <div class="info-row"><label for="position">坐标</label><input type="text" id="position" value="0, 0" readonly /></div>
+        <div class="info-row"><label for="NodeType">角色</label><input type="text" id="NodeType" value="0, 0" readonly /></div>
+        <div class="info-row"><label for="size">大小</label><input type="number" id="size" value="1" readonly /></div>
+        <div class="info-row"><label for="v">速度</label><input type="text" id="v" value="0" readonly /></div>
+        <div class="button-container"><button id="cancelBase" type="button">关闭</button></div>
+      </div>
+      <div id="clusterInfoMenu">
+        <div class="context-menu-kicker">CLUSTER INFORMATION</div>
+        <div class="info-row"><label for="energy">能量值</label><input type="text" id="energy" value="0" readonly /></div>
+        <div class="info-row"><label for="clusterHead">簇头 ID</label><input type="text" id="clusterHead" value="0" readonly /></div>
+        <div class="info-row"><label for="weight">节点权重</label><input type="text" id="weight" value="0" readonly /></div>
+        <div class="info-row"><label for="nodeState">节点状态</label><input type="text" id="nodeState" value="0" readonly /></div>
+        <div class="info-row"><label for="ip">节点 IP</label><input type="text" id="ip" value="0" readonly /></div>
+        <div class="button-container"><button id="cancelCluster" type="button">关闭</button></div>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="控制面板">
+        <div class="brand-block">
+          <div class="brand-mark">MW</div>
+          <div>
+            <div class="brand-title">Middleware</div>
+            <div class="brand-subtitle">MULTI-UAV NETWORK SIMULATION</div>
+          </div>
+          <span class="live-dot" title="前端已加载"></span>
+          <button id="sidebar-collapse-btn" class="icon-button shell-collapse-button" type="button" aria-expanded="true" aria-label="收起控制侧栏" title="收起控制侧栏">‹</button>
+        </div>
+
+        <nav class="siderbar-switch" aria-label="控制面板页签">
+          <button class="siderbar-switch-btn siderbar-switch-btn-hover" id="scene-btn" type="button">
+            <span class="tab-index">01</span><span>场景</span>
+          </button>
+          <button class="siderbar-switch-btn" id="server-btn" type="button">
+            <span class="tab-index">02</span><span>服务器</span>
+          </button>
+          <button class="siderbar-switch-btn" id="base-config-btn" type="button">
+            <span class="tab-index">03</span><span>基础配置</span>
+          </button>
+        </nav>
+
+        <section id="scene-container" class="sidebar-panel scene-panel" aria-label="场景管理">
+          <div class="panel-heading">
+            <div><div class="panel-kicker">WORKSPACE</div><h2>场景管理</h2></div>
+            <div class="panel-actions">
+              <button id="save_scene" type="button" class="secondary-button">保存</button>
+              <button class="icon-button panel-collapse-button" type="button" data-panel-collapse="scene-container" aria-expanded="true" aria-label="收起场景面板" title="收起场景面板">⌃</button>
+
+            </div>
+          </div>
+          <div class="section-caption">选择一个场景以加载节点、路由和指标历史</div>
+          <ul id="scene-list" class="scene-list"></ul>
+
+          <div class="section-divider"></div>
+          <div class="panel-heading compact-heading">
+            <div><div class="panel-kicker">ASSET LIBRARY</div><h2>模型组件</h2></div>
+            <button id="add_model" type="button" class="icon-button" title="展开组件库" aria-label="展开组件库">⌃</button>
+          </div>
+          <div class="component" id="model-container">
+            <div class="model_button" id="addModel">
+              <div class="model-tile"><img id="uavBlue" src="image/uavBlue.png" alt="蓝色无人机" draggable="true" /><span>蓝色 UAV</span></div>
+              <div class="model-tile"><img id="uavGray" src="image/uavGray.png" alt="灰色无人机" draggable="true" /><span>灰色 UAV</span></div>
+              <div class="model-tile"><img id="uavWhite" src="image/uavWhite.png" alt="白色无人机" draggable="true" /><span>白色 UAV</span></div>
+              <div class="model-tile"><img id="fourUAVGray" src="image/fourUAVGray.png" alt="灰色四旋翼无人机" draggable="true" /><span>灰色四旋翼</span></div>
+              <div class="model-tile"><img id="fourUAVBlue" src="image/fourUAVBlue.png" alt="蓝色四旋翼无人机" draggable="true" /><span>蓝色四旋翼</span></div>
+              <div class="model-tile"><img id="fourUAVWhite" src="image/fourUAVWhite.png" alt="白色四旋翼无人机" draggable="true" /><span>白色四旋翼</span></div>
+            </div>
+          </div>
+          <div class="drag-hint"></div>
+        </section>
+
+        <section id="reload-container" class="sidebar-panel server-panel" style="display: none" aria-label="数据连接">
+          <div class="panel-heading">
+            <div><div class="panel-kicker">DATA LINK</div><h2>数据连接</h2></div>
+            <span id="connection-status" class="status-chip status-idle"><i></i><span>未连接</span></span>
+            <button class="icon-button panel-collapse-button" type="button" data-panel-collapse="reload-container" aria-expanded="true" aria-label="收起服务器面板" title="收起服务器面板">⌃</button>
+          </div>
+          <div class="section-caption">本演示完全在浏览器中生成数据，可刷新或暂停播放。</div>
+          <div class="form-card">
+            <div class="field-group"><label for="pathRoot">数据通道</label><input type="text" id="pathRoot" value="本地模拟通道（无需服务器）" readonly autocomplete="off" /></div>
+            <div class="field-group"><label for="httpRoot">数据来源</label><input type="text" id="httpRoot" value="本地模拟数据（无需网络请求）" readonly autocomplete="off" /></div>
+            <div class="field-group">
+              <label for="pathChild">数据操作</label>
+              <select name="dataReload" id="pathChild">
+                <option value="reload">连接服务器</option>
+                <option value="/data/GetClusternode">刷新节点信息</option>
+                <option value="/data/GetRoutingmetrics">刷新路由状态</option>
+                <option value="/data/GetClustermetrics">刷新分簇指标</option>
+                <option value="closeWS">断开服务器</option>
+              </select>
+            </div>
+            <button id="pathEnsure" type="button" class="primary-button">应用演示操作 <span>→</span></button>
+          </div>
+
+          <div class="section-divider"></div>
+          <div class="panel-heading compact-heading"><div><div class="panel-kicker">DISPLAY</div><h2>画板参数</h2></div></div>
+          <div class="form-card compact-form-card">
+            <div class="field-group inline-field"><label for="uavSize">UAV 显示大小</label><input type="number" id="uavSize" value="1" min="0.1" step="0.1" /></div>
+          </div>
+        </section>
+
+                <section id="base-config-container" class="sidebar-panel base-config-panel" style="display: none" aria-label="基础配置">
+          <div class="panel-heading"><div><div class="panel-kicker">SIMULATION SETUP</div><h2>基础配置</h2></div><button class="icon-button panel-collapse-button" type="button" data-panel-collapse="base-config-container" aria-expanded="true" aria-label="收起基础配置面板" title="收起基础配置面板">⌃</button></div>
+          <div class="section-caption">选择场景、算法、节点数与 MAC 协议，预览配置在界面中的展示效果。其他仿真参数仅供查看。</div>
+          <div class="form-card base-config-form-card">
+            <div class="base-config-grid">
+              <div class="field-group">
+                <label for="base-config-scene">目标展示场景</label>
+                <select id="base-config-scene">
+                  <option value="0">场景 0 · 协同巡航</option>
+                  <option value="1">场景 1 · 基础分簇</option>
+                  <option value="2">场景 2 · 消融观察</option>
+                  <option value="3">场景 3 · 大规模节点</option>
+                </select>
+              </div>
+              <div class="field-group"><label for="base-config-node-num">节点数量</label><input type="number" id="base-config-node-num" value="24" min="2" max="120" step="1" /></div>
+              <div class="field-group">
+                <label for="base-config-deal">分簇算法</label>
+                <select name="base-config-deal" id="base-config-deal">
+                  <option value="WOA">WOA</option>
+                  <option value="DFP-LR-WOCA">DFP-LR-WOCA</option>
+                  <option value="DFP-LR-WOCA-no-RK">DFP-LR-WOCA-no-RK</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="base-config-mac">MAC 协议</label>
+                <select id="base-config-mac">
+                  <option value="eemac">eemac</option>
+                  <option value="qosmac">qosmac</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="base-config-mobility">移动模型</label>
+                <select id="base-config-mobility">
+                  <option value="RandomWaypointMobilityModel">RandomWaypointMobilityModel</option>
+                  <option value="RandomWalk2dMobilityModel">RandomWalk2dMobilityModel</option>
+                  <option value="GaussMarkovMobilityModel">GaussMarkovMobilityModel</option>
+                </select>
+              </div>
+              <div class="field-group"><label for="base-config-sim-time">仿真时长（秒）</label><input type="number" id="base-config-sim-time" value="100" min="0.1" step="0.1" /></div>
+              <div class="field-group"><label for="base-config-seed">随机种子（0=默认）</label><input type="number" id="base-config-seed" value="0" min="0" step="1" /></div>
+              <div class="field-group"><label for="base-config-scope">区域边长（米）</label><input type="number" id="base-config-scope" value="1000" min="1" step="1" /></div>
+              <div class="field-group"><label for="base-config-comm-range">通信半径（米）</label><input type="number" id="base-config-comm-range" value="1000" min="1" step="1" /></div>
+              <div class="field-group"><label for="base-config-src-node">源节点 ID</label><input type="number" id="base-config-src-node" value="0" min="0" step="1" /></div>
+              <div class="field-group"><label for="base-config-dst-node">目的节点 ID（-1=末节点）</label><input type="number" id="base-config-dst-node" value="-1" min="-1" step="1" /></div>
+              <div class="field-group"><label for="base-config-packet-size">UDP 包大小（字节）</label><input type="number" id="base-config-packet-size" value="384" min="1" step="1" /></div>
+              <div class="field-group"><label for="base-config-max-packets">最大发包数</label><input type="number" id="base-config-max-packets" value="200" min="1" step="1" /></div>
+              <div class="field-group"><label for="base-config-interval">发包间隔（秒）</label><input type="number" id="base-config-interval" value="0.5" min="0.001" step="0.001" /></div>
+              <div class="field-group"><label for="base-config-initial-energy">初始能量（焦耳）</label><input type="number" id="base-config-initial-energy" value="70" min="0.001" step="0.1" /></div>
+            </div>
+            <label class="checkbox-field" for="base-config-anim"><input type="checkbox" id="base-config-anim" /> 输出 NetAnim XML</label>
+            <button id="submit-simulation-config" class="config-submit" type="button">应用演示配置 <span>→</span></button>
+            <div id="simulation-status" class="simulation-status status-idle" role="status" aria-live="polite">尚未提交仿真配置</div>
+          </div>
+          <div class="config-note"><span>i</span> 此处仅更新浏览器模拟数据，不连接中间件、不启动 ns-3。数值不用于算法性能比较。</div>
+        </section>
+      </aside>
+
+      <main class="main" aria-label="三维仿真画板">
+        <div id="three-container" class="viewport"></div>
+        <div class="viewport-overlay">
+          <div class="viewport-title"><span class="signal-mark"></span><div><strong>SIMULATION DEMO</strong><small>三维节点态势</small></div></div>
+          <div class="viewport-hints"><span>右键节点查看详情 · 触屏可使用下方查看按钮</span></div>
+        </div>
+        <div class="viewport-corner viewport-corner-tl"></div>
+        <div class="viewport-corner viewport-corner-br"></div>
+      </main>
+
+      <footer class="footer" aria-label="指标看板">
+        <div class="board-toolbar route-active">
+          <span class="toolbar-label">指标视图</span>
+          <div class="metrics-view-switch" role="tablist" aria-label="指标视图切换">
+            <button id="route-metrics-tab" class="metrics-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="route-metrics-panel">
+              <span>路由指标</span><small>ROUTE</small>
+            </button>
+            <button id="mac-metrics-tab" class="metrics-tab" type="button" role="tab" aria-selected="false" aria-controls="mac-metrics-panel">
+              <span>MAC 指标</span><small>MAC</small>
+            </button>
+            <button id="cluster-metrics-tab" class="metrics-tab" type="button" role="tab" aria-selected="false" aria-controls="cluster-metrics-panel">
+              <span>分簇指标</span><small>CLUSTER</small>
+            </button>
+          </div>
+          <div id="mac-priority-controls" class="mac-priority-controls mac-only-control" aria-hidden="true">
+            <span class="toolbar-sep"></span>
+            <span class="toolbar-label">时延视图</span>
+            <label class="radio-pill"><input type="radio" name="priority" value="优先级" checked /> 优先级</label>
+            <label class="radio-pill"><input type="radio" name="priority" value="average" id="averagePriority" /> 平均</label>
+          </div>
+          <span id="mac-qos-badge" class="mac-only-control">等待数据…</span>
+          <button id="metrics-collapse-btn" class="icon-button metrics-collapse-button" type="button" aria-expanded="true" aria-label="收起指标看板" title="收起指标看板">⌄</button>
+        </div>
+        <div class="locate-bar-row">
+          <span class="locate-label">节点定位</span><input type="text" id="locate-input" placeholder="输入节点 ID，回车定位并闪烁" /><button id="locate-go" type="button">定位</button>
+          <button id="demo-inspect" type="button">查看节点</button><span id="scene-node-count">展示画板节点数: 0</span><output id="demo-active">模拟数据载入中…</output>
+        </div>
+        <div class="chart-container" id="metrics-chart-container">
+          <div id="route-metrics-panel" class="metrics-panel is-active" role="tabpanel" aria-labelledby="route-metrics-tab">
+            <article class="chart-card"><div class="chart-card-label">平均时延 <span>(s)</span></div><canvas id="AverageDelay"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">丢包率 <span>(%)</span></div><canvas id="lossPacketRatio"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">收敛时间 <span>(s)</span></div><canvas id="convergenceTime"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">平均吞吐量 <span>(Mbps)</span></div><canvas id="AvgThroughput"></canvas></article>
+          </div>
+          <div id="mac-metrics-panel" class="metrics-panel" role="tabpanel" aria-labelledby="mac-metrics-tab" aria-hidden="true">
+            <article class="chart-card"><div class="chart-card-label">MAC 时延 <span>(ms)</span></div><canvas id="mac_chart1"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">MAC 利用率 <span>(0~1)</span></div><canvas id="mac_chart2"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">MAC 丢包 <span>(0~1)</span></div><canvas id="mac_chart3"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">MAC 吞吐量 <span>(kbps)</span></div><canvas id="mac_chart4"></canvas></article>
+          </div>
+          <div id="cluster-metrics-panel" class="metrics-panel cluster-metrics-panel" role="tabpanel" aria-labelledby="cluster-metrics-tab" aria-hidden="true">
+            <article class="chart-card"><div class="chart-card-label">平均簇首生命周期 <span>(s)</span></div><canvas id="avgCHLifetime"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">平均成员生命周期 <span>(s)</span></div><canvas id="avgMemberLifetime"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">簇维护消息 <span>(条)</span></div><canvas id="clusterMaintenanceMessages"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">簇首声明消息 <span>(条)</span></div><canvas id="clusterHeadClaimMessages"></canvas></article>
+            <article class="chart-card"><div class="chart-card-label">Guest 维护消息 <span>(条)</span></div><canvas id="guestMaintenanceMessages"></canvas></article>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div id="dialog-loading" style="display: none"><div class="dialog-container"><div class="dialog-text" id="dialog-loading-text"></div><div class="dialog-loading-cycle"></div></div></div>
+    <div id="dialog-text" style="display: none"><div class="dialog-container" id="dialog-text-content"></div></div>
+
+    <script>
+      // 这个探针不依赖任何 ES module，用来区分“页面未加载”和“模块加载失败”。
+      (() => {
+        const bootAt = Date.now();
+        console.log("[middleware] main.html 已加载", location.href);
+        const status = document.getElementById("connection-status");
+        const setBootStatus = (message) => {
+          if (!status) return;
+          const label = status.querySelector("span");
+          if (label) label.textContent = message;
+          status.className = "status-chip status-error";
+        };
+        window.addEventListener("error", (event) => {
+          console.error("[middleware] 页面脚本错误", event.error || event.message, event.filename || "");
+          setBootStatus("前端脚本错误");
+        });
+        window.addEventListener("unhandledrejection", (event) => {
+          console.error("[middleware] 页面异步脚本错误", event.reason);
+          setBootStatus("前端脚本错误");
+        });
+        window.setTimeout(() => {
+          if (!window.__middlewarePathLoaded) {
+            console.error("[middleware] path.js 未加载或其依赖加载失败", {
+              url: location.href,
+              elapsedMs: Date.now() - bootAt
+            });
+            setBootStatus("连接模块未加载");
+          }
+        }, 1800);
+      })();
+    </script>
+    <script src="./Move/heightMove.js"></script>
+    <script src="./Move/metrics-switch.js"></script>
+    <script src="./Move/layout-controls.js"></script>
+    <script type="module" src="./dataForm/chart.js"></script>
+    <script type="module" src="./Demo/demo.js"></script>
+    <script type="module" src="./Data/dataSave.js"></script>
+    <script type="module" src="./Move/viewControl.js"></script>
+    <script type="module" src="./Move/siderbar-switch.js"></script>
+  </body>
+</html>
