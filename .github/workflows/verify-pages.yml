@@ -1,0 +1,42 @@
+name: Verify published site
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: read
+  actions: read
+
+concurrency:
+  group: verify-published-site
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPORT: /tmp/site-verification.json
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Wait for Pages and verify the live files
+        run: >-
+          python3 .github/scripts/pages_release.py verify
+          --sha "$GITHUB_SHA" --root . --report "$REPORT"
+      - name: Save diagnostic report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-verification-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.REPORT }}
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Record the verified release and recovery version
+        run: python3 .github/scripts/pages_release.py record --report "$REPORT"
