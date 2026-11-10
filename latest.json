@@ -1,6 +1,6 @@
 {
   "repository": "leiSHOW/leiSHOW.github.io",
-  "pages_commit": "3f546e13f52fe4232dfcdd5f95911e08a105e393",
+  "pages_commit": "f974ff2ec7896d6cfb53003cf97ab55d259cf990",
   "site_url": "https://leishow.github.io/",
   "status": "verified",
   "checks": [
@@ -1183,13 +1183,13 @@
     "show/multiuav/index.html": "c1b7b5736272c3eb84fd13ac65ebb44caf57f19b0596556cd0434005d1dd6ebd",
     "show/style.css": "09f6afb37f0f567cb41be761b4ad0a27091538b7b2065a36fe2fe7331ac2af63"
   },
-  "pages_tree": "10ab4c2354ae909c0e334ab3956d52850f927a75",
+  "pages_tree": "4437f1779a23be4a619fe9a3c5dad0f77036806c",
   "pages_build": {
-    "commit": "3f546e13f52fe4232dfcdd5f95911e08a105e393",
+    "commit": "f974ff2ec7896d6cfb53003cf97ab55d259cf990",
     "status": "built",
-    "updated_at": "2026-11-10T07:29:53Z"
+    "updated_at": "2026-11-10T08:05:38Z"
   },
-  "verified_at": "2026-11-10T07:55:22.674957+00:00",
-  "run_url": null,
-  "previous_verified_commit": null
+  "verified_at": "2026-11-10T08:05:44.766751+00:00",
+  "run_url": "https://github.com/leiSHOW/leiSHOW.github.io/actions/runs/42779801866",
+  "previous_verified_commit": "3f546e13f52fe4232dfcdd5f95911e08a105e393"
 }
