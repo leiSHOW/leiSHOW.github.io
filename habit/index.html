@@ -30,13 +30,13 @@
         <h1 id="page-title">算法手记<span class="title-line" aria-hidden="true"></span></h1>
       </div>
       <div class="intro-meta" aria-label="记录概况">
-        <div><strong>24</strong><span>篇已有笔记</span></div>
+        <div><strong>26</strong><span>篇已有笔记</span></div>
         <div><strong>15</strong><span>个学习主题</span></div>
       </div>
     </section>
 
-    <nav class="topic-nav" aria-label="笔记主题"><a href="#strings">字符串与模拟 <span>4</span></a>
-<a href="#arrays">数组与常用技巧 <span>8</span></a>
+    <nav class="topic-nav" aria-label="笔记主题"><a href="#dated">日期记录 <span>6</span></a><a href="#strings">字符串与模拟 <span>4</span></a>
+<a href="#arrays">数组与常用技巧 <span>10</span></a>
 <a href="#trees">树与链表 <span>8</span></a>
 <a href="#greedy">贪心与区间 <span>4</span></a></nav>
 
@@ -46,7 +46,360 @@
           <div><p class="eyebrow">NOTEBOOK</p><h2 id="notes-title">解题笔记</h2></div>
           <span>点开条目查看思路与代码</span>
         </div>
-        <section class="note-group" id="palindromic-substrings"><h2>字符串与模拟<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">01</span><span class="entry-heading"><span class="entry-title-row"><strong>大数加法</strong><a class="problem-link" href="https://leetcode.com/problems/add-strings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 415 题" aria-label="打开力扣第 415 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 415 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从低位逐位相加，记录进位后反转结果。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
+        <section class="dated-records" id="dated"><h2>按日期记录<span>逐日更新</span></h2>
+<div class="dated-group"><h3>2026-10-15</h3>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 76 · 最小窗口子串</strong><span>2026-10-15 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>主要考察对于哈希表（unordered_map&lt;char, int&gt;）的使用</p>
+</blockquote>
+<p>这道题不是找连续模式，而是找“覆盖”：</p>
+<ul>
+<li>不要求 <code>t</code> 作为连续子串出现。</li>
+<li>不要求字符顺序。</li>
+<li>只要求窗口内<strong>每个字符的数量都不少于 <code>t</code> 中的数量</strong>。</li>
+</ul>
+<p>并且对于这两个哈希表的应用也很关键：</p>
+<ul>
+<li><code>need</code>：记录 <code>t</code> 中每个字符需要多少个。</li>
+<li><code>window</code>：记录当前窗口 <code>[left, right)</code> 中每个字符有多少个。</li>
+</ul>
+<p>因为对于右边界的自增是： <strong>先取字符，再 <code>right++</code></strong> 。</p>
+<p>所以其实实际right是在right+1的位置</p>
+<p>最终更新答案的时候窗口长度是 <code>right - left</code></p>
+<blockquote>
+<p>并且要注意 s.substr(start, len)是从start下标开始的len个字符</p>
+</blockquote>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map&lt;char, int&gt; need, window;
+        // 将匹配串放入到哈希表中，用于统计t中每个字符的需求数量
+        for(char c : t) need[c]++;
+        // 左右边界[left, right)
+        int left = 0, right = 0;
+        // 窗口中已经满足需求的字符种类数目
+        int valid = 0;
+        // 最小覆盖子串的起始位置和长度
+        int start = 0, len = INT_MAX;
+
+        while(right &lt; s.size()){
+            char c = s[right];
+            // 右移窗口
+            right++;
+            // 如果当前c在需求窗口中就加入顺序子窗口
+            if(need.count(c)){
+                window[c]++;
+                // 如果当前字符满足需求数目，就说明已有一个字符是满足在这个顺序子窗口中的
+                if(window[c]==need[c]) valid++;
+            }
+            // 此时，说明当前窗口已经覆盖了t的所有字符，尝试去收缩左边界
+            while(valid == need.size()){
+                // 更新当前答案的起始位置和长度
+                if(right-left &lt;len){
+                    start = left;
+                    len = right - left;
+                }
+                // 从当前起始位置开始尝试去收缩左边界
+                char d = s[left];
+                left++;
+                // 如果d在当前需求的字符中，删除满足需求的值以及需求子窗口的情况
+                if(need.count(d)){
+                    if(window[d]==need[d]) valid--;
+                    window[d]--;
+                }
+            }
+        }
+        return len == INT_MAX ? &quot;&quot; : s.substr(start, len);
+    }
+};</code></pre></div></div></details>
+</div>
+<div class="dated-group"><h3>2026-10-08</h3>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 42 · 收集雨水</strong><span>2026-10-08 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>找规律，以及贪心</p>
+</blockquote>
+<p>这道题主要是想象每个柱子上方都有一个“水槽”，能接多少水取决于<strong>它左右两边最高的柱子中较矮的那个</strong>，再减去它自身的高度。</p>
+<p><strong>核心公式</strong>：</p>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>位置 i 的接水量 = max(0, min(左边最高, 右边最高) - height[i])</code></pre></div>
+<p>为什么是 <code>min</code>？因为水会从较矮的一边流走，所以水位最高只能到较矮的那根柱子。</p>
+<p>但由于这道题有时间限制，常规暴力解会超时，所以可以先提前用两个数组存起来：</p>
+<ul>
+<li><code>maxl[i]</code>：从 0 到 i 的最高柱子高度。</li>
+<li><code>maxr[i]</code>：从 i 到 n-1 的最高柱子高度。</li>
+</ul>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>class Solution {
+public:
+    int trap(vector&lt;int&gt;&amp; height) {
+        if(height.empty()) return 0;
+        int sizeh = height.size();
+        vector&lt;int&gt; maxl(sizeh), maxr(sizeh);
+        int ans = 0;
+
+        maxl[0] = height[0];
+        for(int i=1; i&lt;sizeh; i++){
+            maxl[i] = max(maxl[i-1], height[i]);
+        }
+
+        maxr[sizeh-1] = height[sizeh-1];
+        for(int i=sizeh-2; i&gt;-1; i--){
+            maxr[i] = max(maxr[i+1], height[i]);
+        }
+
+        for(int i=1; i&lt;sizeh-1; i++){
+            ans += min(maxl[i],maxr[i]) - height[i];
+        }
+        return ans;
+    }
+};</code></pre></div>
+</div></details>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 739 · 每日温度</strong><span>2026-10-08 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>找规律，注意时间限制</p>
+</blockquote>
+<p>如果直接暴力解会超时：</p>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    vector&lt;int&gt; dailyTemperatures(vector&lt;int&gt;&amp; temperatures) {
+        int sizet = temperatures.size();
+        vector&lt;int&gt; ans(sizet);
+        for(int i = 0; i&lt;sizet; i++){
+            for(int j=i+1; j&lt;sizet; j++){
+                if(temperatures[i]&gt;=temperatures[j]){
+                    if(i==sizet-1) ans[i] = 0;
+                }else{
+                    ans[i] = j-i;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+};</code></pre></div>
+<p>这道题由于数组是无序的，并且解题是与下标有关的，也不能按照先排序再求解的方式进行，所以可以根据这道题查找第一个满足条件的下标的值的特性，使用栈的入栈、出栈特性来解题：</p>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>class Solution {
+public:
+    vector&lt;int&gt; dailyTemperatures(vector&lt;int&gt;&amp; temperatures) {
+        int sizet = temperatures.size();
+        vector&lt;int&gt; ans(sizet,0);
+        stack&lt;int&gt; st;
+
+        for(int i=0; i&lt;sizet; i++){
+            while(!st.empty() &amp;&amp; temperatures[i] &gt; temperatures[st.top()]){
+                int pre = st.top();
+                st.pop();
+                ans[pre] = i - pre;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+};</code></pre></div>
+</div></details>
+</div>
+<div class="dated-group"><h3>2026-09-30</h3>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 162 · 找到峰值元素</strong><span>2026-09-30 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>二分（注意最后一次 <em>左下标l</em> 所停留的下标）</p>
+</blockquote>
+<p>注意读题：找到峰值的元素，也就是说元素是呈现一个“低-&gt;高-&gt;低”的状态，并且由于题目说明了对于数组中如果包含多个峰值，只用返回任意一个峰值的索引就可以，所以其实要求并不严格，但是由于对时间有限制，所以对于本题采用二分查找的思路，需要注意对于mid值的定义以及判断条件</p>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，峰值的含义要弄清楚
+class Solution {
+public:
+    int findPeakElement(vector&lt;int&gt;&amp; nums) {
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&lt;nums[mid+1]){
+                l = mid+1;
+            }else{
+                r = mid;
+            }
+        }
+        return l;
+    }
+};</code></pre></div>
+</div></details>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 34 · 排序数组中查找元素第一个和最后一个</strong><span>2026-09-30 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>二分（左右边界查找）</p>
+</blockquote>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意左边界和右边界的查找
+class Solution {
+public:
+    vector&lt;int&gt; searchRange(vector&lt;int&gt;&amp; nums, int target) {
+        if(nums.empty()) return {-1,-1};
+        vector&lt;int&gt; result;
+        int f = leftcheck(nums,target);
+        int l = rightcheck(nums,target);
+        result.push_back(f);
+        result.push_back(l);
+        if (l &gt;= nums.size() || nums[l] != target) {
+            return {-1, -1};
+        }
+        return result;
+    }
+
+private:
+    int leftcheck(vector&lt;int&gt;&amp; nums, int target){
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;=r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&gt;=target){
+            // mid 可能不满足“第一个”的条件（即使 nums[mid] == target，左边可能还有更早的），所以要排除 mid，继续往左找。
+                r = mid -1;
+            }else{
+                l = mid+1;
+            }
+        }
+        return l;
+    }
+
+    int rightcheck(vector&lt;int&gt;&amp; nums, int target){
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;=r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&lt;=target){
+            // 同理，mid 可能不满足“最后一个”的条件（即使 nums[mid] == target，右边可能还有更晚的），所以要排除 mid，继续往右找。
+                l = mid +1;
+            }else{
+                r = mid-1;
+            }
+        }
+        return r;
+    }
+};</code></pre></div>
+<p>并且对于为什么需要特判左边界，主要是因为：</p>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>int leftBound(vector&lt;int&gt;&amp; nums, int target) {
+    int l = 0, r = nums.size() - 1;
+    while (l &lt;= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] &gt;= target) {
+            r = mid - 1;   // 往左找
+        } else {
+            l = mid + 1;
+        }
+    }
+    return l;   // l 是第一个 &gt;= target 的位置
+}</code></pre></div>
+<p><code>l</code> 的取值范围是 <strong><code>[0, nums.size()]</code></strong> 。</p>
+<ul>
+<li>如果所有元素都 <code>&lt; target</code>，<code>l</code> 会一路增加到 <code>nums.size()</code>（越界）。</li>
+<li>如果找到了 <code>target</code>，<code>l</code> 就是第一个 <code>== target</code> 的位置。</li>
+</ul>
+<p>而对于右边界，其实也是一样的：</p>
+
+<div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>int rightBound(vector&lt;int&gt;&amp; nums, int target) {
+    int l = 0, r = nums.size() - 1;
+    while (l &lt;= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] &lt;= target) {
+            l = mid + 1;   // 往右找
+        } else {
+            r = mid - 1;
+        }
+    }
+    return r;   // r 是最后一个 &lt;= target 的位置
+}</code></pre></div>
+<p><code>r</code> 的取值范围是 <strong><code>[-1, nums.size()-1]</code></strong> 。</p>
+<ul>
+<li>如果所有元素都 <code>&gt; target</code>，<code>r</code> 会一路减小到 <code>-1</code>（越界）。</li>
+<li>如果找到了 <code>target</code>，<code>r</code> 就是最后一个 <code>== target</code> 的位置。</li>
+</ul>
+<p>但是由于核心逻辑： <strong><code>left</code> 的检查已经能判断 <code>target</code> 是否存在。</strong></p>
+
+<div class="code-sample"><div class="code-label">写法 4 · C++</div><pre><code>if (left &gt;= nums.size() || nums[left] != target) {
+    return {-1, -1};
+}</code></pre></div>
+<p>这两种情况覆盖了所有“<code>target</code> 不存在”的可能：</p>
+<div class="table-scroll"><table><thead><tr>
+<th align="left">情况</th>
+<th align="left"><code>left</code> 的值</th>
+<th align="left"><code>nums[left]</code></th>
+<th align="left">判断结果</th>
+</tr>
+</thead><tbody><tr>
+<td align="left">所有元素都 <code>&lt; target</code></td>
+<td align="left"><code>nums.size()</code></td>
+<td align="left">越界</td>
+<td align="left"><code>left &gt;= size</code> ✅ 返回 <code>[-1,-1]</code></td>
+</tr>
+<tr>
+<td align="left"><code>target</code> 不存在，但有些元素比它大</td>
+<td align="left">第一个 <code>&gt; target</code> 的位置</td>
+<td align="left"><code>!= target</code></td>
+<td align="left">返回 <code>[-1,-1]</code></td>
+</tr>
+<tr>
+<td align="left"><code>target</code> 存在</td>
+<td align="left">第一个 <code>== target</code> 的位置</td>
+<td align="left"><code>== target</code></td>
+<td align="left">通过检查</td>
+</tr>
+</tbody></table></div><p><strong>即：一旦通过左边界的检查，说明 <code>target</code> 一定存在。</strong></p>
+</div></details>
+<details class="entry dated-entry"><summary><span class="entry-number">记</span><span class="entry-heading"><strong>LC 35 · 搜索插入位置</strong><span>2026-09-30 的练习与复盘</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>搜索插入位置（二分问题）</p>
+</blockquote>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        if(nums.empty()) return 0;
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]&lt;target){
+                l = mid+1;
+            }else{
+                r = mid;
+            }
+        }
+        /*
+            对于找到的最后一个值，如果都是小于目标值的（也就是数组中所有值都是小于target的），那代表是需要插入到最后一个坐标下
+        */
+        if (nums[l] &lt; target) l++;
+        return l;
+    }
+};</code></pre></div>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 也可以考虑把右边界设为 sizen，使用左闭右开区间 [l, r)
+//
+class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        int l = 0, r = nums.size();   // 注意：r = size，不是 size-1
+        while (l &lt; r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] &lt; target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;   // l 就是插入位置
+    }
+};</code></pre></div>
+<p>这样处理能够综合考虑到在“空数组”以及“数组中所有元素都小于target”情况下最后一次l的指向下标问题：</p>
+<ul>
+<li>区间是 <code>[l, r)</code>，当 <code>l == r</code> 时区间为空，循环结束。</li>
+<li><code>l</code> 始终指向第一个 <code>&gt;= target</code> 的位置，如果所有元素都 <code>&lt; target</code>，<code>l</code> 会一直增加到 <code>r = sizen</code>，正好是插入到末尾的位置。</li>
+<li>不需要任何特判，空数组也能正确处理（<code>l=0, r=0</code>，返回 0）。</li>
+</ul>
+</div></details>
+</div>
+</section><section class="note-group" id="strings"><h2>字符串与模拟<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">01</span><span class="entry-heading"><span class="entry-title-row"><strong>大数加法</strong><a class="problem-link" href="https://leetcode.com/problems/add-strings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 415 题" aria-label="打开力扣第 415 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 415 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从低位逐位相加，记录进位后反转结果。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;algorithm&gt;
 using namespace std;
@@ -75,8 +428,10 @@ int main() {
         cout &lt;&lt; res &lt;&lt; endl;
     }
     return 0;
-}</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">02</span><span class="entry-heading"><span class="entry-title-row"><strong>回文串判断</strong><a class="problem-link" href="https://leetcode.com/problems/valid-palindrome/" target="_blank" rel="noopener noreferrer" title="相似练习：力扣 125 还要求忽略非字母数字字符与大小写" aria-label="相似练习：力扣 125 还要求忽略非字母数字字符与大小写" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">相似题 LC 125 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">两端指针向中间收缩，遇到不同字符就停止。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
+}</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">02</span><span class="entry-heading"><span class="entry-title-row"><strong>回文串判断</strong><a class="problem-link" href="https://leetcode.com/problems/valid-palindrome/" target="_blank" rel="noopener noreferrer" title="相似练习：力扣 125 还要求忽略非字母数字字符与大小写" aria-label="相似练习：力扣 125 还要求忽略非字母数字字符与大小写" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">相似题 LC 125 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">两端指针向中间收缩，遇到不同字符就停止。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;cstring&gt;
 using namespace std;
@@ -110,8 +465,10 @@ int main() {
     }
 
     return 0;
-}</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">03</span><span class="entry-heading"><span class="entry-title-row"><strong>字符最大公约数</strong><a class="problem-link" href="https://leetcode.com/problems/greatest-common-divisor-of-strings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 1071 题" aria-label="打开力扣第 1071 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 1071 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先检查拼接顺序，再取两个长度的最大公约数。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>/*
+}</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">03</span><span class="entry-heading"><span class="entry-title-row"><strong>字符最大公约数</strong><a class="problem-link" href="https://leetcode.com/problems/greatest-common-divisor-of-strings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 1071 题" aria-label="打开力扣第 1071 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 1071 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先检查拼接顺序，再取两个长度的最大公约数。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>/*
 重点在于
 */
 class Solution {
@@ -126,8 +483,10 @@ public:
         temp.append(str1.substr(0,g));
         return temp;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">04</span><span class="entry-heading"><span class="entry-title-row"><strong>回文串</strong><a class="problem-link" href="https://leetcode.com/problems/palindromic-substrings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 647 题" aria-label="打开力扣第 647 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 647 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从枚举子串改为由中心向两侧扩展。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 回文串（及子字符串）问题，但是这样解的时间复杂度较高，O(n^3)
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">04</span><span class="entry-heading"><span class="entry-title-row"><strong>回文串</strong><a class="problem-link" href="https://leetcode.com/problems/palindromic-substrings/" target="_blank" rel="noopener noreferrer" title="打开力扣第 647 题" aria-label="打开力扣第 647 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 647 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从枚举子串改为由中心向两侧扩展。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 回文串（及子字符串）问题，但是这样解的时间复杂度较高，O(n^3)
 class Solution {
 public:
     int countSubstrings(string s) {
@@ -153,6 +512,7 @@ private:
         return true;
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>/*
 利用回文串的特性来解：从中心向两边扩展，如果两边字符相同，就是回文
 【任何回文串，都有一个中心。我们枚举了所有可能的中心，并且从每个中心尽可能向两边扩展，所以每个回文串都会被找到一次。】
@@ -182,8 +542,12 @@ private:
         }
         return cnt;
     }
-};</code></pre></div></div></details></section>
-<section class="note-group" id="find-peak-element"><h2>数组与常用技巧<span>8 篇</span></h2><details class="entry"><summary><span class="entry-number">05</span><span class="entry-heading"><span class="entry-title-row"><strong>双指针（其中一个用法）</strong><a class="problem-link" href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener noreferrer" title="打开力扣第 11 题" aria-label="打开力扣第 11 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 11 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">盛水问题中收缩较短的一边，持续更新最大面积。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>统计水池的最大面积</blockquote>
+};</code></pre></div>
+</div></details></section>
+<section class="note-group" id="arrays"><h2>数组与常用技巧<span>10 篇</span></h2><details class="entry"><summary><span class="entry-number">05</span><span class="entry-heading"><span class="entry-title-row"><strong>双指针（其中一个用法）</strong><a class="problem-link" href="https://leetcode.com/problems/container-with-most-water/" target="_blank" rel="noopener noreferrer" title="打开力扣第 11 题" aria-label="打开力扣第 11 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 11 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">盛水问题中收缩较短的一边，持续更新最大面积。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><blockquote>
+<p>统计水池的最大面积</p>
+</blockquote>
+
 <div class="code-sample"><div class="code-label">写法 1 · c++</div><pre><code>class Solution {
 public:
     int maxArea(vector&lt;int&gt;&amp; height) {
@@ -201,8 +565,10 @@ public:
         }
         return maxarea;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">06</span><span class="entry-heading"><span class="entry-title-row"><strong>移动窗口</strong><a class="problem-link" href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank" rel="noopener noreferrer" title="打开力扣第 643 题" aria-label="打开力扣第 643 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 643 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">固定长度窗口移出左端、加入右端，维护区间和。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">06</span><span class="entry-heading"><span class="entry-title-row"><strong>移动窗口</strong><a class="problem-link" href="https://leetcode.com/problems/maximum-average-subarray-i/" target="_blank" rel="noopener noreferrer" title="打开力扣第 643 题" aria-label="打开力扣第 643 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 643 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">固定长度窗口移出左端、加入右端，维护区间和。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
 public:
     double findMaxAverage(vector&lt;int&gt;&amp; nums, int k) {
         // 求最大sum即可
@@ -221,8 +587,10 @@ public:
         }
         return (double)maxx/k;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">07</span><span class="entry-heading"><span class="entry-title-row"><strong>二分最基础题目（递归）</strong><a class="problem-link" href="https://leetcode.com/problems/guess-number-higher-or-lower/" target="_blank" rel="noopener noreferrer" title="打开力扣第 374 题" aria-label="打开力扣第 374 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 374 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">猜数字题中的递归二分与边界收缩。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">07</span><span class="entry-heading"><span class="entry-title-row"><strong>二分最基础题目（递归）</strong><a class="problem-link" href="https://leetcode.com/problems/guess-number-higher-or-lower/" target="_blank" rel="noopener noreferrer" title="打开力扣第 374 题" aria-label="打开力扣第 374 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 374 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">猜数字题中的递归二分与边界收缩。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
  * Forward declaration of guess API.
  * @param  num   your guess
  * @return 	     -1 if num is higher than the picked number
@@ -258,8 +626,10 @@ private:
         // 等于的情况，直接返回
         return mid;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">08</span><span class="entry-heading"><span class="entry-title-row"><strong>二分搜索典型题（常规暴力会超时）</strong><a class="problem-link" href="https://leetcode.com/problems/successful-pairs-of-spells-and-potions/" target="_blank" rel="noopener noreferrer" title="打开力扣第 2300 题" aria-label="打开力扣第 2300 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 2300 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先排序药剂，再找到第一个满足条件的位置；保留了多版尝试。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 常规暴力搜索，直接超时
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">08</span><span class="entry-heading"><span class="entry-title-row"><strong>二分搜索典型题（常规暴力会超时）</strong><a class="problem-link" href="https://leetcode.com/problems/successful-pairs-of-spells-and-potions/" target="_blank" rel="noopener noreferrer" title="打开力扣第 2300 题" aria-label="打开力扣第 2300 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 2300 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先排序药剂，再找到第一个满足条件的位置；保留了多版尝试。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 常规暴力搜索，直接超时
 class Solution {
 public:
     vector&lt;int&gt; successfulPairs(vector&lt;int&gt;&amp; spells, vector&lt;int&gt;&amp; potions, long long success) {
@@ -275,6 +645,7 @@ public:
         return tmp;
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 二分查找最小的（递归）
 // 其实可以考虑迭代来做，递归有点做复杂了
 class Solution {
@@ -305,6 +676,7 @@ private:
         return successfulNode(spells, potions, success, mid+1, right);
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>// 同样的思路，只是用迭代来做的。关键在于while循环
 class Solution {
 public:
@@ -345,6 +717,7 @@ private:
         return left;
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 4 · C++</div><pre><code>// 在上一版的基础上进行优化，自己又捋了一遍
 // 同样的思路，只是用迭代来做的。关键在于while循环
 class Solution {
@@ -385,8 +758,10 @@ private:
         }
         return l;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">09</span><span class="entry-heading"><span class="entry-title-row"><strong>栈的运用</strong><a class="problem-link" href="https://leetcode.com/problems/removing-stars-from-a-string/" target="_blank" rel="noopener noreferrer" title="打开力扣第 2390 题" aria-label="打开力扣第 2390 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 2390 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">遇到星号时弹出前一个字符。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">09</span><span class="entry-heading"><span class="entry-title-row"><strong>栈的运用</strong><a class="problem-link" href="https://leetcode.com/problems/removing-stars-from-a-string/" target="_blank" rel="noopener noreferrer" title="打开力扣第 2390 题" aria-label="打开力扣第 2390 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 2390 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">遇到星号时弹出前一个字符。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
 public:
     string removeStars(string s) {
         string temp = &quot;&quot;;
@@ -400,8 +775,10 @@ public:
         }
         return temp;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">10</span><span class="entry-heading"><span class="entry-title-row"><strong>前缀和</strong><a class="problem-link" href="https://leetcode.com/problems/find-the-highest-altitude/" target="_blank" rel="noopener noreferrer" title="打开力扣第 1732 题" aria-label="打开力扣第 1732 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 1732 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">累计每一步海拔，再找出最大值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">10</span><span class="entry-heading"><span class="entry-title-row"><strong>前缀和</strong><a class="problem-link" href="https://leetcode.com/problems/find-the-highest-altitude/" target="_blank" rel="noopener noreferrer" title="打开力扣第 1732 题" aria-label="打开力扣第 1732 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 1732 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">累计每一步海拔，再找出最大值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
 public:
     int largestAltitude(vector&lt;int&gt;&amp; gain) {
         int sizeg = gain.size();
@@ -414,8 +791,10 @@ public:
         int maxx = *(max_element(h.begin(), h.end()));
         return maxx;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">11</span><span class="entry-heading"><span class="entry-title-row"><strong>包含重复项（哈希集合unordered_set）</strong><a class="problem-link" href="https://leetcode.com/problems/contains-duplicate/" target="_blank" rel="noopener noreferrer" title="打开力扣第 217 题" aria-label="打开力扣第 217 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 217 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从占用过大内存的数组方案，改用哈希集合判断出现过的值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">11</span><span class="entry-heading"><span class="entry-title-row"><strong>包含重复项（哈希集合unordered_set）</strong><a class="problem-link" href="https://leetcode.com/problems/contains-duplicate/" target="_blank" rel="noopener noreferrer" title="打开力扣第 217 题" aria-label="打开力扣第 217 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 217 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从占用过大内存的数组方案，改用哈希集合判断出现过的值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
 一开始想要按照空间换时间的方式来做，但是超内存了，因为限制如下：
 1 &lt;= nums.length &lt;= 10^5
 -10^9 &lt;= nums[i] &lt;= 10^9
@@ -436,7 +815,10 @@ public:
     }
 };</code></pre></div>
 <p>所以最后看了解析之后发现其实用哈希集合就可以了</p>
-<blockquote>哈希集合用法：<br></blockquote>
+<blockquote>
+<p>哈希集合用法：</p>
+</blockquote>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 1. 空集合
 unordered_set&lt;int&gt; s1;
 // 2. 列表初始化
@@ -475,6 +857,7 @@ for (int x : s) {
 for (auto it = s.begin(); it != s.end(); ++it) {
     cout &lt;&lt; *it &lt;&lt; &quot; &quot;;
 }</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>// 务必记牢！！！
 // 当前是“存不存在”的问题，所以无需排序，用哈希集合就可以了
 // 如果是需要排序的问题，那就用set，元素顺序就是自动升序的
@@ -489,8 +872,10 @@ public:
         }
         return false;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">12</span><span class="entry-heading"><span class="entry-title-row"><strong>二分（注意最后一次 左下标l 所停留的下标）</strong><a class="problem-link" href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="noopener noreferrer" title="打开力扣第 162 题" aria-label="打开力扣第 162 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 162 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">比较中点与下一项，将范围收缩到一个峰值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，峰值的含义要弄清楚
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">12</span><span class="entry-heading"><span class="entry-title-row"><strong>二分（注意最后一次 左下标l 所停留的下标）</strong><a class="problem-link" href="https://leetcode.com/problems/find-peak-element/" target="_blank" rel="noopener noreferrer" title="打开力扣第 162 题" aria-label="打开力扣第 162 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 162 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">比较中点与下一项，将范围收缩到一个峰值。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，峰值的含义要弄清楚
 class Solution {
 public:
     int findPeakElement(vector&lt;int&gt;&amp; nums) {
@@ -507,8 +892,180 @@ public:
         }
         return l;
     }
-};</code></pre></div></div></details></section>
-<section class="note-group" id="reverse-linked-list"><h2>树与链表<span>8 篇</span></h2><details class="entry"><summary><span class="entry-number">13</span><span class="entry-heading"><span class="entry-title-row"><strong>右视角的节点值（递归）</strong><a class="problem-link" href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank" rel="noopener noreferrer" title="打开力扣第 199 题" aria-label="打开力扣第 199 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 199 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先右后左递归，每层只记录首次访问的节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">13</span><span class="entry-heading"><span class="entry-title-row"><strong>二分（左右边界查找）</strong><a class="problem-link" href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/" target="_blank" rel="noopener noreferrer" title="打开力扣第 34 题" aria-label="打开力扣第 34 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 34 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">分别寻找目标值的左右边界，处理不存在和越界的情况。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><p><a href="https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/" target="_blank" rel="noopener noreferrer">https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/</a></p>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意左边界和右边界的查找
+class Solution {
+public:
+    vector&lt;int&gt; searchRange(vector&lt;int&gt;&amp; nums, int target) {
+        if(nums.empty()) return {-1,-1};
+        vector&lt;int&gt; result;
+        int f = leftcheck(nums,target);
+        int l = rightcheck(nums,target);
+        result.push_back(f);
+        result.push_back(l);
+        if (l &gt;= nums.size() || nums[l] != target) {
+            return {-1, -1};
+        }
+        return result;
+    }
+
+private:
+    int leftcheck(vector&lt;int&gt;&amp; nums, int target){
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;=r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&gt;=target){
+            // mid 可能不满足“第一个”的条件（即使 nums[mid] == target，左边可能还有更早的），所以要排除 mid，继续往左找。
+                r = mid -1;
+            }else{
+                l = mid+1;
+            }
+        }
+        return l;
+    }
+
+    int rightcheck(vector&lt;int&gt;&amp; nums, int target){
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;=r){
+            int mid = l + (r-l)/2;
+            if(nums[mid]&lt;=target){
+            // 同理，mid 可能不满足“最后一个”的条件（即使 nums[mid] == target，右边可能还有更晚的），所以要排除 mid，继续往右找。
+                l = mid +1;
+            }else{
+                r = mid-1;
+            }
+        }
+        return r;
+    }
+};</code></pre></div>
+<p>并且对于为什么需要特判左边界，主要是因为：</p>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>int leftBound(vector&lt;int&gt;&amp; nums, int target) {
+    int l = 0, r = nums.size() - 1;
+    while (l &lt;= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] &gt;= target) {
+            r = mid - 1;   // 往左找
+        } else {
+            l = mid + 1;
+        }
+    }
+    return l;   // l 是第一个 &gt;= target 的位置
+}</code></pre></div>
+<p><code>l</code> 的取值范围是 <strong><code>[0, nums.size()]</code></strong> 。</p>
+<ul>
+<li>如果所有元素都 <code>&lt; target</code>，<code>l</code> 会一路增加到 <code>nums.size()</code>（越界）。</li>
+<li>如果找到了 <code>target</code>，<code>l</code> 就是第一个 <code>== target</code> 的位置。</li>
+</ul>
+<p>而对于右边界，其实也是一样的：</p>
+
+<div class="code-sample"><div class="code-label">写法 3 · C++</div><pre><code>int rightBound(vector&lt;int&gt;&amp; nums, int target) {
+    int l = 0, r = nums.size() - 1;
+    while (l &lt;= r) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] &lt;= target) {
+            l = mid + 1;   // 往右找
+        } else {
+            r = mid - 1;
+        }
+    }
+    return r;   // r 是最后一个 &lt;= target 的位置
+}</code></pre></div>
+<p><code>r</code> 的取值范围是 <strong><code>[-1, nums.size()-1]</code></strong> 。</p>
+<ul>
+<li>如果所有元素都 <code>&gt; target</code>，<code>r</code> 会一路减小到 <code>-1</code>（越界）。</li>
+<li>如果找到了 <code>target</code>，<code>r</code> 就是最后一个 <code>== target</code> 的位置。</li>
+</ul>
+<p>但是由于核心逻辑： <strong><code>left</code> 的检查已经能判断 <code>target</code> 是否存在。</strong></p>
+
+<div class="code-sample"><div class="code-label">写法 4 · C++</div><pre><code>if (left &gt;= nums.size() || nums[left] != target) {
+    return {-1, -1};
+}</code></pre></div>
+<p>这两种情况覆盖了所有“<code>target</code> 不存在”的可能：</p>
+<div class="table-scroll"><table><thead><tr>
+<th align="left">情况</th>
+<th align="left"><code>left</code> 的值</th>
+<th align="left"><code>nums[left]</code></th>
+<th align="left">判断结果</th>
+</tr>
+</thead><tbody><tr>
+<td align="left">所有元素都 <code>&lt; target</code></td>
+<td align="left"><code>nums.size()</code></td>
+<td align="left">越界</td>
+<td align="left"><code>left &gt;= size</code> ✅ 返回 <code>[-1,-1]</code></td>
+</tr>
+<tr>
+<td align="left"><code>target</code> 不存在，但有些元素比它大</td>
+<td align="left">第一个 <code>&gt; target</code> 的位置</td>
+<td align="left"><code>!= target</code></td>
+<td align="left">返回 <code>[-1,-1]</code></td>
+</tr>
+<tr>
+<td align="left"><code>target</code> 存在</td>
+<td align="left">第一个 <code>== target</code> 的位置</td>
+<td align="left"><code>== target</code></td>
+<td align="left">通过检查</td>
+</tr>
+</tbody></table></div><p><strong>即：一旦通过左边界的检查，说明 <code>target</code> 一定存在。</strong></p>
+</div></details>
+<details class="entry"><summary><span class="entry-number">14</span><span class="entry-heading"><span class="entry-title-row"><strong>搜索插入位置（二分问题）</strong><a class="problem-link" href="https://leetcode.com/problems/search-insert-position/" target="_blank" rel="noopener noreferrer" title="打开力扣第 35 题" aria-label="打开力扣第 35 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 35 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">用二分查找第一个大于等于目标值的位置，统一处理插入到末尾的情况。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><p><a href="https://leetcode.com/problems/search-insert-position/" target="_blank" rel="noopener noreferrer">https://leetcode.com/problems/search-insert-position/</a></p>
+
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        if(nums.empty()) return 0;
+        int sizen = nums.size();
+        int l = 0;
+        int r = sizen-1;
+        while(l&lt;r){
+            int mid = l+(r-l)/2;
+            if(nums[mid]&lt;target){
+                l = mid+1;
+            }else{
+                r = mid;
+            }
+        }
+        /*
+            对于找到的最后一个值，如果都是小于目标值的（也就是数组中所有值都是小于target的），那代表是需要插入到最后一个坐标下
+        */
+        if (nums[l] &lt; target) l++;
+        return l;
+    }
+};</code></pre></div>
+
+<div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 也可以考虑把右边界设为 sizen，使用左闭右开区间 [l, r)
+//
+class Solution {
+public:
+    int searchInsert(vector&lt;int&gt;&amp; nums, int target) {
+        int l = 0, r = nums.size();   // 注意：r = size，不是 size-1
+        while (l &lt; r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] &lt; target) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;   // l 就是插入位置
+    }
+};</code></pre></div>
+<p>这样处理能够综合考虑到在“空数组”以及“数组中所有元素都小于target”情况下最后一次l的指向下标问题：</p>
+<ul>
+<li>区间是 <code>[l, r)</code>，当 <code>l == r</code> 时区间为空，循环结束。</li>
+<li><code>l</code> 始终指向第一个 <code>&gt;= target</code> 的位置，如果所有元素都 <code>&lt; target</code>，<code>l</code> 会一直增加到 <code>r = sizen</code>，正好是插入到末尾的位置。</li>
+<li>不需要任何特判，空数组也能正确处理（<code>l=0, r=0</code>，返回 0）。</li>
+</ul>
+</div></details></section>
+<section class="note-group" id="trees"><h2>树与链表<span>8 篇</span></h2><details class="entry"><summary><span class="entry-number">15</span><span class="entry-heading"><span class="entry-title-row"><strong>右视角的节点值（递归）</strong><a class="problem-link" href="https://leetcode.com/problems/binary-tree-right-side-view/" target="_blank" rel="noopener noreferrer" title="打开力扣第 199 题" aria-label="打开力扣第 199 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 199 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">先右后左递归，每层只记录首次访问的节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -536,8 +1093,10 @@ private:
         rightdfs(node-&gt;right, height+1, rc);
         rightdfs(node-&gt;left, height+1, rc);
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">14</span><span class="entry-heading"><span class="entry-title-row"><strong>对称树（二叉树、递归）</strong><a class="problem-link" href="https://leetcode.com/problems/symmetric-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 101 题" aria-label="打开力扣第 101 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 101 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">成对比较镜像节点及其左右子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 关键在于要对于对称的条件进行梳理
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">16</span><span class="entry-heading"><span class="entry-title-row"><strong>对称树（二叉树、递归）</strong><a class="problem-link" href="https://leetcode.com/problems/symmetric-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 101 题" aria-label="打开力扣第 101 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 101 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">成对比较镜像节点及其左右子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 关键在于要对于对称的条件进行梳理
 // 两个都为空 → 对称
 // 只有一个为空 → 不对称
 // 两个都不为空，则需要同时满足：
@@ -575,8 +1134,10 @@ private:
             }
         return f;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">15</span><span class="entry-heading"><span class="entry-title-row"><strong>反转二叉树</strong><a class="problem-link" href="https://leetcode.com/problems/invert-binary-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 226 题" aria-label="打开力扣第 226 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 226 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">交换当前节点的左右孩子，再递归处理子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 别和上面的对称树搞混了
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">17</span><span class="entry-heading"><span class="entry-title-row"><strong>反转二叉树</strong><a class="problem-link" href="https://leetcode.com/problems/invert-binary-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 226 题" aria-label="打开力扣第 226 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 226 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">交换当前节点的左右孩子，再递归处理子树。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 别和上面的对称树搞混了
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -602,8 +1163,10 @@ public:
 
         return root;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">16</span><span class="entry-heading"><span class="entry-title-row"><strong>二叉树的深度</strong><a class="problem-link" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 104 题" aria-label="打开力扣第 104 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 104 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">取左右子树的最大深度，再加上当前节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 要注意递归的初始值和退出值
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">18</span><span class="entry-heading"><span class="entry-title-row"><strong>二叉树的深度</strong><a class="problem-link" href="https://leetcode.com/problems/maximum-depth-of-binary-tree/" target="_blank" rel="noopener noreferrer" title="打开力扣第 104 题" aria-label="打开力扣第 104 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 104 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">取左右子树的最大深度，再加上当前节点。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 要注意递归的初始值和退出值
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -629,8 +1192,10 @@ public:
 
         return depth;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">17</span><span class="entry-heading"><span class="entry-title-row"><strong>两个链表的相交点</strong><a class="problem-link" href="https://leetcode.com/problems/intersection-of-two-linked-lists/" target="_blank" rel="noopener noreferrer" title="打开力扣第 160 题" aria-label="打开力扣第 160 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 160 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">比较节点地址；记录了双重遍历和哈希集合两种写法。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意比较的对象是节点地址，即：函数传递的参数指针的值
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">19</span><span class="entry-heading"><span class="entry-title-row"><strong>两个链表的相交点</strong><a class="problem-link" href="https://leetcode.com/problems/intersection-of-two-linked-lists/" target="_blank" rel="noopener noreferrer" title="打开力扣第 160 题" aria-label="打开力扣第 160 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 160 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">比较节点地址；记录了双重遍历和哈希集合两种写法。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意比较的对象是节点地址，即：函数传递的参数指针的值
 /*
 本题还有更加简单的方式：
 1、数学推理（将两个链表实际可到达的位置互相桥接一下，可以发现这两个链表实际实际走的路程一样）【实际不容易想到】
@@ -670,6 +1235,7 @@ public:
         return fnode;
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 最简单且容易想到的是利用哈希集合的特点来查找
 // 但是核心还是在于要弄清楚比较的对象是谁
 /**
@@ -692,8 +1258,10 @@ public:
         }
         return nullptr;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">18</span><span class="entry-heading"><span class="entry-title-row"><strong>移除链表倒数第n个节点</strong><a class="problem-link" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 19 题" aria-label="打开力扣第 19 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 19 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从计算长度，推进到哑节点与快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">20</span><span class="entry-heading"><span class="entry-title-row"><strong>移除链表倒数第n个节点</strong><a class="problem-link" href="https://leetcode.com/problems/remove-nth-node-from-end-of-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 19 题" aria-label="打开力扣第 19 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 19 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从计算长度，推进到哑节点与快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/**
  * Definition for singly-linked list.
  * struct ListNode {
  *     int val;
@@ -736,6 +1304,7 @@ public:
         return head;
     }
 };</code></pre></div>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>// 可以考虑用快慢指针来做，并且要注意一下构建虚拟哑节点来统一整体遍历逻辑，就不用特判删除头节点了
 /**
  * Definition for singly-linked list.
@@ -771,8 +1340,10 @@ public:
         delete dump;
         return cur;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">19</span><span class="entry-heading"><span class="entry-title-row"><strong>链表中间节点</strong><a class="problem-link" href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 876 题" aria-label="打开力扣第 876 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 876 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从两次遍历转向快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意对于特殊情况的处理：只有一个节点时，应该怎么处理
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">21</span><span class="entry-heading"><span class="entry-title-row"><strong>链表中间节点</strong><a class="problem-link" href="https://leetcode.com/problems/middle-of-the-linked-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 876 题" aria-label="打开力扣第 876 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 876 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">从两次遍历转向快慢指针。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意对于特殊情况的处理：只有一个节点时，应该怎么处理
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -810,6 +1381,7 @@ public:
     }
 };</code></pre></div>
 <p>可以考虑用“快慢指针”来做，思路更简单并且逻辑更清晰</p>
+
 <div class="code-sample"><div class="code-label">写法 2 · C++</div><pre><code>/**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -834,8 +1406,10 @@ public:
         }
         return slow;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">20</span><span class="entry-heading"><span class="entry-title-row"><strong>翻转链表</strong><a class="problem-link" href="https://leetcode.com/problems/reverse-linked-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 206 题" aria-label="打开力扣第 206 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 206 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">用前驱、当前和下一节点三个指针原地改链。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">22</span><span class="entry-heading"><span class="entry-title-row"><strong>翻转链表</strong><a class="problem-link" href="https://leetcode.com/problems/reverse-linked-list/" target="_blank" rel="noopener noreferrer" title="打开力扣第 206 题" aria-label="打开力扣第 206 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 206 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">用前驱、当前和下一节点三个指针原地改链。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>/*
 注意pre和cur开始的指向，开始的指向决定了是否能在后续进行持续推进
 */
 /**
@@ -862,8 +1436,10 @@ public:
         }
         return pre;
     }
-};</code></pre></div></div></details></section>
-<section class="note-group" id="non-overlapping-intervals"><h2>贪心与区间<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">21</span><span class="entry-heading"><span class="entry-title-row"><strong>跳跃游戏(贪心)</strong><a class="problem-link" href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener noreferrer" title="打开力扣第 55 题" aria-label="打开力扣第 55 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 55 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">维护当前可到达的最远下标。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，以及对于贪心的理解：每次都选择当前这一步最好的情况
+};</code></pre></div>
+</div></details></section>
+<section class="note-group" id="greedy"><h2>贪心与区间<span>4 篇</span></h2><details class="entry"><summary><span class="entry-number">23</span><span class="entry-heading"><span class="entry-title-row"><strong>跳跃游戏(贪心)</strong><a class="problem-link" href="https://leetcode.com/problems/jump-game/" target="_blank" rel="noopener noreferrer" title="打开力扣第 55 题" aria-label="打开力扣第 55 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 55 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">维护当前可到达的最远下标。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 注意审题，以及对于贪心的理解：每次都选择当前这一步最好的情况
 class Solution {
 public:
     bool canJump(vector&lt;int&gt;&amp; nums) {
@@ -890,8 +1466,10 @@ public:
         }
         return f;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">22</span><span class="entry-heading"><span class="entry-title-row"><strong>跳跃游戏Ⅱ（贪心）</strong><a class="problem-link" href="https://leetcode.com/problems/jump-game-ii/" target="_blank" rel="noopener noreferrer" title="打开力扣第 45 题" aria-label="打开力扣第 45 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 45 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">维护当前跳跃边界和下一跳可达范围。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 重点在于只需要维护“范围”，不关心中间点是哪些
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">24</span><span class="entry-heading"><span class="entry-title-row"><strong>跳跃游戏Ⅱ（贪心）</strong><a class="problem-link" href="https://leetcode.com/problems/jump-game-ii/" target="_blank" rel="noopener noreferrer" title="打开力扣第 45 题" aria-label="打开力扣第 45 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 45 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">维护当前跳跃边界和下一跳可达范围。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 重点在于只需要维护“范围”，不关心中间点是哪些
 class Solution {
 public:
     int jump(vector&lt;int&gt;&amp; nums) {
@@ -917,8 +1495,10 @@ public:
          }
          return jump;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">23</span><span class="entry-heading"><span class="entry-title-row"><strong>气球射击(贪心)</strong><a class="problem-link" href="https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/" target="_blank" rel="noopener noreferrer" title="打开力扣第 452 题" aria-label="打开力扣第 452 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 452 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">按右端点排序，用尽量少的箭覆盖区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 区间贪心，主要在于先要进行排序，并且将实际每一次贪心的规则进行总结
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">25</span><span class="entry-heading"><span class="entry-title-row"><strong>气球射击(贪心)</strong><a class="problem-link" href="https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/" target="_blank" rel="noopener noreferrer" title="打开力扣第 452 题" aria-label="打开力扣第 452 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 452 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">按右端点排序，用尽量少的箭覆盖区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 区间贪心，主要在于先要进行排序，并且将实际每一次贪心的规则进行总结
 class Solution {
 public:
     int findMinArrowShots(vector&lt;vector&lt;int&gt;&gt;&amp; points) {
@@ -938,8 +1518,10 @@ public:
         }
         return sum;
     }
-};</code></pre></div></div></details>
-<details class="entry"><summary><span class="entry-number">24</span><span class="entry-heading"><span class="entry-title-row"><strong>不重叠的时间间隔（贪心）</strong><a class="problem-link" href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank" rel="noopener noreferrer" title="打开力扣第 435 题" aria-label="打开力扣第 435 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 435 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">按右端点排序，先统计能保留的区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content"><div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 主要问题在于要搞清楚当前计数的是什么（上一道题其实求的是最小重叠个数，即重叠的部分尽可能多的情况下，统计总共有多少重叠），而这道题其实求的是相反的值：即不重叠的个数
+};</code></pre></div>
+</div></details>
+<details class="entry"><summary><span class="entry-number">26</span><span class="entry-heading"><span class="entry-title-row"><strong>不重叠的时间间隔（贪心）</strong><a class="problem-link" href="https://leetcode.com/problems/non-overlapping-intervals/" target="_blank" rel="noopener noreferrer" title="打开力扣第 435 题" aria-label="打开力扣第 435 题" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()">LC 435 <span aria-hidden="true">↗</span></a></span><span class="entry-summary">按右端点排序，先统计能保留的区间。</span></span><span class="entry-open" aria-hidden="true">＋</span></summary><div class="entry-content">
+<div class="code-sample"><div class="code-label">写法 1 · C++</div><pre><code>// 主要问题在于要搞清楚当前计数的是什么（上一道题其实求的是最小重叠个数，即重叠的部分尽可能多的情况下，统计总共有多少重叠），而这道题其实求的是相反的值：即不重叠的个数
 class Solution {
 public:
     int eraseOverlapIntervals(vector&lt;vector&lt;int&gt;&gt;&amp; intervals) {
@@ -959,7 +1541,8 @@ public:
         }
         return sizei - keep;
     }
-};</code></pre></div></div></details></section>
+};</code></pre></div>
+</div></details></section>
       </section>
 
       <aside class="route" id="plan" aria-labelledby="plan-title">

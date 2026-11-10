@@ -144,6 +144,12 @@ h1 { display: flex; align-items: center; gap: 1.2rem; margin-bottom: .4rem; font
 .entry-content { padding: .2rem 1.25rem 1.4rem 4rem; color: var(--ink-soft); }
 .entry-content p, .entry-content blockquote { margin: 0 0 1rem; font-size: .96rem; line-height: 1.85; overflow-wrap: anywhere; }
 .entry-content blockquote { margin-left: 0; padding-left: 1rem; border-left: 2px solid var(--accent); color: var(--ink); }
+.entry-content ul, .entry-content ol { padding-left: 1.4rem; line-height: 1.85; }
+.entry-content a { color: var(--accent); overflow-wrap: anywhere; }
+.entry-content .table-scroll { max-width: 100%; overflow-x: auto; margin-bottom: 1rem; }
+.entry-content table { width: 100%; min-width: 36rem; border-collapse: collapse; font-size: .9rem; line-height: 1.65; }
+.entry-content th, .entry-content td { padding: .6rem .75rem; border: 1px solid var(--line); text-align: left; }
+.entry-content th { color: var(--ink); background: var(--accent-dim); }
 .code-sample { margin: 1rem 0 1.4rem; border: 1px solid var(--line); border-radius: .75rem; overflow: hidden; background: #0a141c; }
 .code-label { padding: .55rem .9rem; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .78rem; }
 pre { margin: 0; padding: 1rem; overflow-x: auto; tab-size: 4; }
