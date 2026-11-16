@@ -9,32 +9,32 @@
   <script defer src="./assets/project.js"></script><script type="module" src="./assets/data-flow.js"></script>
   <title>空天异构组网仿真平台 · LeiSHOW</title>
 </head>
-<body>
+<body class="project-detail project-multiuav">
   <a class="skip-link" href="#main">跳到内容</a>
   <header class="site-header"><div class="shell header-inner"><a class="brand" href="/">LeiSHOW<span>项目展示</span></a><nav class="site-nav" aria-label="主导航"><a href="/">首页</a><a href="/blog/">博客</a><a href="/habit/">算法手记</a><a href="/show/">项目展示</a></nav></div></header>
   <main class="shell" id="main">
     <nav class="breadcrumb" aria-label="面包屑"><a href="/show/">项目展示</a><span aria-hidden="true">/</span><span aria-current="page">空天异构组网仿真平台</span></nav>
     <section class="project-hero" aria-labelledby="project-title">
       <div><p class="hero-code">MultiUAV / 仿真后端 · 数据服务 · 可视前端</p><h1 id="project-title">空天异构组网<br>仿真平台</h1><p class="lead">由 ns-3 负责网络仿真，C++ 中间件连接配置、消息队列与数据接口，浏览器前端提供参数交互和态势展示。从仿真参数下发到节点状态回传，组成一条可观察的数据链路。</p><ul class="tags" aria-label="项目技术"><li>ns-3 / C++</li><li>Three.js</li><li>WebSocket</li><li>RabbitMQ</li><li>Docker</li></ul><div class="hero-actions"><a class="button" href="#dataflow">查看数据流向</a><a class="button secondary" href="#demo">体验前端演示</a></div></div>
-      <figure class="hero-system"><p class="eyebrow">ONE SYSTEM / THREE LAYERS</p><div class="hero-tier"><span>01</span><div><strong>ns-3 仿真后端</strong><small>运行模型 · 采集状态 · 封装数据</small></div></div><div class="hero-relationship">↓ HTTP 上报　↑ HTTP 领取配置</div><div class="hero-tier"><span>02</span><div><strong>C++ 中间件</strong><small>参数交互 · RabbitMQ · 数据存取</small></div></div><div class="hero-relationship">↓ WebSocket 状态　↑ HTTP 配置</div><div class="hero-tier"><span>03</span><div><strong>浏览器前端</strong><small>参数提交 · 数据解封 · 三维与图表</small></div></div><figcaption>以现有节点与分簇仿真链路展示系统协作关系。</figcaption></figure>
+      <figure class="hero-system"><p class="eyebrow">仿真、数据服务与展示</p><div class="hero-tier"><span>01</span><div><strong>ns-3 仿真后端</strong><small>运行模型 · 采集状态 · 封装数据</small></div></div><div class="hero-relationship">↓ HTTP 上报　↑ HTTP 领取配置</div><div class="hero-tier"><span>02</span><div><strong>C++ 中间件</strong><small>参数交互 · RabbitMQ · 数据存取</small></div></div><div class="hero-relationship">↓ WebSocket 状态　↑ HTTP 配置</div><div class="hero-tier"><span>03</span><div><strong>浏览器前端</strong><small>参数提交 · 数据解封 · 三维与图表</small></div></div><figcaption>以现有节点与分簇仿真链路展示系统协作关系。</figcaption></figure>
     </section>
     <dl class="facts" aria-label="项目概况"><div><dt>仿真平台</dt><dd>ns-3.34 · C++</dd></div><div><dt>三维展示</dt><dd>Three.js · 节点态势</dd></div><div><dt>数据链路</dt><dd>HTTP · WebSocket</dd></div><div><dt>运行与存储</dt><dd>Docker · MariaDB</dd></div></dl>
     <nav class="section-nav" aria-label="项目章节"><a href="#architecture">系统组成</a><a href="#dataflow">数据流向</a><a href="#demo">前端演示</a><a href="#metrics">数据内容</a></nav>
     <section class="project-section" id="architecture" aria-labelledby="architecture-title">
-      <div class="section-title"><span class="section-number">01</span><div><h2 id="architecture-title">三个部分，组成一个系统</h2><p>后端计算网络行为，中间件承接数据与控制，前端把运行状态呈现给用户。</p></div></div>
+      <div class="section-title"><div><h2 id="architecture-title">三个部分，组成一个系统</h2><p>后端计算网络行为，中间件承接数据与控制，前端把运行状态呈现给用户。</p></div></div>
       <div class="features">
-        <article class="feature role-feature"><span class="feature-label">SIMULATION BACKEND</span><h3>ns-3 仿真后端</h3><p>用 C++ 运行节点移动、分簇、路由与 MAC 模型，产生节点状态和性能指标。</p><ul><li>支持命令行参数，或从中间件领取仿真配置。</li><li>接口模块采集状态，Connector 按消息定义封装为 JSON。</li><li>后台 HTTP worker 向中间件上报，携带场景与快照信息。</li></ul></article>
-        <article class="feature role-feature"><span class="feature-label">DATA &amp; CONTROL SERVICE</span><h3>C++ 中间件</h3><p>用 HTTP 接收数据和配置，用 RabbitMQ 衔接数据生产与消费，用 WebSocket 提供订阅推送。</p><ul><li>校验配置、映射算法名称，按场景暂存待领取参数。</li><li>保留消息元数据，按队列消费并整理节点快照。</li><li>提供独立的 MariaDB 设备信息存取接口；服务以 Docker 组织。</li></ul></article>
-        <article class="feature role-feature"><span class="feature-label">BROWSER FRONTEND</span><h3>浏览器前端</h3><p>提交仿真参数，解析返回消息，按场景维护节点与指标状态，形成可交互的观察工作台。</p><ul><li>按 type 与 sceneId 分发消息，排除过期节点快照。</li><li>Three.js 显示节点与分簇关系，Chart.js 显示指标历史。</li><li>支持详情、定位、浏览器本地保存与文件导出。</li></ul></article>
+        <article class="feature role-feature"><h3>ns-3 仿真后端</h3><p>用 C++ 运行节点移动、分簇、路由与 MAC 模型，产生节点状态和性能指标。</p><ul><li>支持命令行参数，或从中间件领取仿真配置。</li><li>接口模块采集状态，Connector 按消息定义封装为 JSON。</li><li>后台 HTTP worker 向中间件上报，携带场景与快照信息。</li></ul></article>
+        <article class="feature role-feature"><h3>C++ 中间件</h3><p>用 HTTP 接收数据和配置，用 RabbitMQ 衔接数据生产与消费，用 WebSocket 提供订阅推送。</p><ul><li>校验配置、映射算法名称，按场景暂存待领取参数。</li><li>保留消息元数据，按队列消费并整理节点快照。</li><li>提供独立的 MariaDB 设备信息存取接口；服务以 Docker 组织。</li></ul></article>
+        <article class="feature role-feature"><h3>浏览器前端</h3><p>提交仿真参数，解析返回消息，按场景维护节点与指标状态，形成可交互的观察工作台。</p><ul><li>按 type 与 sceneId 分发消息，排除过期节点快照。</li><li>Three.js 显示节点与分簇关系，Chart.js 显示指标历史。</li><li>支持详情、定位、浏览器本地保存与文件导出。</li></ul></article>
       </div>
     </section>
     <section class="project-section" id="dataflow" aria-labelledby="dataflow-title">
-      <div class="section-title"><span class="section-number">02</span><div><h2 id="dataflow-title">一条数据，如何穿过整个系统</h2><p>切换链路，观察数据在哪里封装、经过什么协议、又在哪里被解封。点击任意步骤可暂停并查看这一站的数据形态。</p></div></div>
+      <div class="section-title"><div><h2 id="dataflow-title">一条数据，如何穿过整个系统</h2><p>切换链路，观察数据在哪里封装、经过什么协议、又在哪里被解封。点击任意步骤可暂停并查看这一站的数据形态。</p></div></div>
       <div id="system-data-flow">
         <div class="transport-controls"><div class="transport-modes" role="group" aria-label="选择数据链路"><button type="button" data-transport-mode="telemetry" aria-pressed="true">状态上报</button><button type="button" data-transport-mode="control" aria-pressed="false">仿真配置</button><button type="button" data-transport-mode="storage" aria-pressed="false">设备存取</button></div><div class="transport-actions"><button id="transport-play" type="button" aria-pressed="true">暂停动画</button><button id="transport-next" type="button">下一步 →</button></div></div>
         <p id="flow-summary" class="transport-summary">结构化状态转成 JSON，经过消息队列缓冲，再按场景还原为节点与图表数据。</p>
-        <div class="transport-heading"><span>系统数据通道</span><code>ENCODE → TRANSFER → DECODE</code></div>
-        <div class="transport-box" id="transport-box"><div class="transport-lanes"><div><span>SIMULATION</span><strong>ns-3 后端</strong></div><div><span>SERVICE &amp; QUEUE</span><strong>C++ 中间件</strong></div><div><span>VISUALIZATION</span><strong>浏览器前端／调用端</strong></div></div>
+        <div class="transport-heading"><span>系统数据通道</span><span>封装 → 传递 → 解封</span></div>
+        <div class="transport-box" id="transport-box"><div class="transport-lanes"><div><span>仿真层</span><strong>ns-3 后端</strong></div><div><span>服务层</span><strong>C++ 中间件</strong></div><div><span>展示与调用层</span><strong>浏览器前端／调用端</strong></div></div>
           <div class="transport-map" id="transport-map" role="group" aria-label="按序排列的数据处理步骤"><svg id="transport-lines" class="transport-lines" aria-hidden="true"><defs><marker id="transport-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L7 3.5 L0 7Z"/></marker></defs><g id="transport-paths"></g><circle id="transport-halo" class="transport-halo" r="10"/><circle id="transport-packet" class="transport-packet" r="3.5"/></svg></div>
         </div>
         <p class="transport-caption" id="transport-direction">ns-3 → HTTP → 中间件 → RabbitMQ → WebSocket → 前端</p>
@@ -45,7 +45,7 @@
       <noscript><p class="callout">状态：ns-3 → Protobuf 字段封装为 JSON → HTTP → 中间件 → RabbitMQ → 中间件 WebSocket → 前端解析与展示。配置：前端 HTTP 提交 → 中间件暂存 → ns-3 HTTP 领取。设备存取为独立的 HTTP → MariaDB 接口。</p></noscript>
     </section>
     <section class="project-section" id="demo" aria-labelledby="demo-title">
-      <div class="section-title"><span class="section-number">03</span><div><h2 id="demo-title">前端工作台演示</h2><p>保留项目的实际前端样式，用模拟节点和指标体验场景切换、节点详情与数据看板。</p></div></div>
+      <div class="section-title"><div><h2 id="demo-title">前端工作台演示</h2><p>保留项目的实际前端样式，用模拟节点和指标体验场景切换、节点详情与数据看板。</p></div></div>
       <div class="demo-intro"><span class="demo-data-label">模拟数据展示</span><p>所有数值均为界面演示生成，不代表真实仿真结果，也不用于比较算法性能。</p></div>
       <div class="demo-frame-heading"><span>空天异构组网仿真平台 / 前端演示</span><div><button id="demo-fullscreen" class="text-button" type="button">全屏体验</button><a href="./demo/" target="_blank" rel="noopener">独立打开 ↗</a></div></div>
       <div class="demo-stage" id="demo-stage"><iframe id="demo-frame" title="空天异构组网仿真平台工作台：四场景模拟数据交互演示" src="./demo/" loading="lazy" allow="fullscreen" sandbox="allow-scripts allow-same-origin allow-downloads allow-popups allow-top-navigation-by-user-activation"></iframe></div>
@@ -53,9 +53,9 @@
       <p class="figure-caption">演示支持暂停、场景保存、JSON／CSV 导出；配置预览可改变场景、算法、节点数及 MAC 协议。完整仿真参数由实际系统提交给 ns-3 执行。</p>
     </section>
     <section class="project-section" id="metrics" aria-labelledby="metrics-title">
-      <div class="section-title"><span class="section-number">04</span><div><h2 id="metrics-title">系统传递哪些数据</h2><p>节点快照描述空间与分簇状态，指标消息描述运行表现；具体上报类别随仿真模块启用。</p></div></div>
+      <div class="section-title"><div><h2 id="metrics-title">系统传递哪些数据</h2><p>节点快照描述空间与分簇状态，指标消息描述运行表现；具体上报类别随仿真模块启用。</p></div></div>
       <div class="table-wrap"><table><caption>指标与观察对象</caption><thead><tr><th scope="col">层面</th><th scope="col">展示内容</th><th scope="col">观察对象</th></tr></thead><tbody><tr><td>节点</td><td>位置、速度、角色、能量、簇头、权重、IP</td><td>节点运动与分簇归属</td></tr><tr><td>路由</td><td>平均时延、丢包率、收敛时间、平均吞吐量</td><td>端到端通信表现</td></tr><tr><td>MAC</td><td>时延、信道利用率、丢包率、吞吐量</td><td>信道访问与 QoS 优先级</td></tr><tr><td>分簇</td><td>簇首与成员平均生命周期、簇维护消息、簇首声明消息、Guest 维护消息</td><td>分簇稳定性与维护开销</td></tr></tbody></table></div>
-      <div class="algorithm-note"><span class="eyebrow">ALGORITHM &amp; PROTOCOL</span><p>当前控制台提供 WOA、DFP-LR-WOCA、DFP-LR-WOCA-no-RK 三种分簇算法；MAC 支持 eemac 与 qosmac。不同演示场景用于展示界面能力，曲线差异由模拟函数生成。</p></div>
+      <div class="algorithm-note"><span class="eyebrow">算法与协议</span><p>当前控制台提供 WOA、DFP-LR-WOCA、DFP-LR-WOCA-no-RK 三种分簇算法；MAC 支持 eemac 与 qosmac。不同演示场景用于展示界面能力，曲线差异由模拟函数生成。</p></div>
     </section>
     <div class="project-end"><a href="/show/">← 全部项目</a><a href="/show/iotidr/">另一个项目：IoTIDR →</a></div>
   </main>

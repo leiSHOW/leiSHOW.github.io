@@ -1,9 +1,13 @@
-说明：在 Hexo中 插入图片时，请按照以下的步骤进行设置
+博客文章与图片维护
 
-将 站点配置文件 中的 post_asset_folder 选项的值设置为 true
+在 LEI 目录运行 npx hexo new post "文章标题" 创建文章。
+编辑 source/_posts/ 下的 Markdown 文件，将图片放入同名资源目录。
+正文使用 ![图片说明](example.png) 引用图片。
 
-在站点文件夹中打开 git bash，输入命令 npm install hexo-asset-image --save 安装插件
+现有 COS 图片地址可以继续在 Markdown 中引用。
+文章日期参与现有网址生成，更新正文时应保留原始发布日期。
 
-这样，当使用 hexo new title 创建文章时，将同时在 source/_post 文件夹中生成一个与 title 同名的文件夹，我们只需将图片放进此文件夹中，然后在文章中通过 Markdown 语法进行引用即可
-
-例如，在资源文件夹（就是那个与 title 同名的文件夹）中添加图片 example.PNG，则可以在对应的文章中使用语句 ![示例图片](title/example.PNG "示例图片") 添加图片
+源码根目录的 README.md 记录各栏目来源与仓库关系。
+使用 bash deploy.sh prepare blog 准备成品，预览输出的暂存目录，
+再使用 bash deploy.sh publish <暂存目录> 上传已检查的页面。
+详细步骤见 Doc/完整站点部署方案.md。

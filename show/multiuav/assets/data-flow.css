@@ -2,3 +2,26 @@
 @media(max-width:850px){.transport-lanes{padding-inline:16px;gap:26px}.transport-map{margin-inline:16px;gap:30px 26px}.transport-node{padding:11px}.packet-inspector{grid-template-columns:1fr}.packet-code pre{max-height:250px}.field-notes{gap:12px}.hero-system{width:100%;max-width:600px}}
 @media(max-width:620px){.transport-controls{align-items:flex-start}.transport-modes{width:100%}.transport-modes button{flex:1;padding-inline:8px}.transport-actions button{padding:6px 12px;min-height:38px}.transport-heading{padding:10px 14px;flex-wrap:wrap;gap:4px}.transport-lanes{display:none}.transport-map{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:minmax(86px,auto);gap:30px;margin:18px}.transport-node{grid-column:1!important;grid-row:auto!important;padding:12px 15px}.transport-node small{font-size:.8125rem}.transport-node strong{font-size:1rem}.packet-explanation{padding:18px}.packet-code{padding:16px}.field-notes{grid-template-columns:1fr;gap:0}.hero-system{padding:20px}.hero-tier{padding:14px 0}.transport-caption{font-size:.8125rem}.flow-note{font-size:.8125rem}}
 @media(prefers-reduced-motion:reduce){.transport-node{transition:none}}
+
+
+/* Clearer labels and data examples without altering the flow geometry. */
+.hero-system { border-radius: 12px; padding: 1.8rem; }
+.hero-system .eyebrow { font-size: .875rem; letter-spacing: .025em; }
+.hero-tier { justify-content: flex-start; gap: 1.2rem; }
+.hero-tier > span { min-width: 1.2rem; }
+.hero-tier strong { line-height: 1.7; }
+.hero-relationship { font-size: .8125rem; line-height: 1.8; }
+.transport-controls { margin-block: 1.5rem 1rem; }
+.transport-controls button { min-height: 44px; }
+.transport-lanes span { font-size: .8125rem; letter-spacing: .02em; color: #a8bdce; }
+.transport-node small { font-size: .8125rem; line-height: 1.7; }
+.packet-code-heading { color: #b4c8da; flex-wrap: wrap; }
+.packet-code pre { font-size: .8125rem; line-height: 1.9; }
+.packet-explanation p { line-height: 1.9; }
+.field-notes { gap: 1.5rem; }
+.field-notes p { line-height: 1.9; }
+@media (max-width: 620px) {
+  .hero-system { padding: 1.3rem; }
+  .transport-actions button { min-height: 44px; }
+  .field-notes { gap: .25rem; }
+}

@@ -9,3 +9,26 @@
 @media(max-width:620px){.hardware-section{padding:1.5rem 0 2rem}.hardware-heading h2{font-size:1.7rem}.hardware-heading p:not(.eyebrow){font-size:.9375rem}.hardware-stage{min-height:400px}.hardware-scene{height:400px}.hardware-toolbar{top:.7rem;left:.7rem;right:.7rem}.hardware-toolbar button{font-size:.8125rem;min-height:38px;padding:.4rem .6rem}.hardware-help{font-size:.75rem;bottom:.7rem;left:.7rem}.hardware-label{font-size:.75rem;padding:.3rem .4rem;min-height:29px}.hardware-label span{display:none}.hardware-panel{padding:1.1rem;max-height:550px}.device-specs{grid-template-columns:1fr;gap:.6rem}.hardware-device-list{grid-template-columns:repeat(auto-fit,minmax(min(100%,8rem),1fr))}.device-pick{padding:.6rem .7rem;font-size:.875rem}.hardware-caption{font-size:.8125rem}.device-tabs{gap:1.2rem}}
 
 .device-port-table,.device-port-table td:first-child,.device-port-table th{font-size:.875rem}.device-description{font-size:1rem}
+
+
+/* Keep the viewer and inspector aligned with the case-study reading rhythm. */
+.hardware-section { padding-block: 3rem 3.5rem; }
+.hardware-heading { margin-bottom: 1.6rem; }
+.hardware-heading h2 { margin-block: .65rem; }
+.hardware-layout { border-radius: 10px; }
+.hardware-panel { padding: 1.6rem; }
+.device-description { line-height: 1.95; }
+.device-kicker { letter-spacing: .015em; }
+.device-specs dt { line-height: 1.6; }
+.device-specs dd { line-height: 1.8; }
+.hardware-toolbar button { min-height: 44px; }
+.hardware-device-list { gap: .65rem; margin-top: 1.2rem; }
+.device-pick { min-height: 48px; line-height: 1.6; }
+.hardware-caption { line-height: 1.8; }
+@media (max-width: 850px) { .hardware-panel { padding: 1.35rem; } }
+@media (max-width: 620px) {
+  .hardware-section { padding-block: 2rem 2.5rem; }
+  .hardware-panel { padding: 1.1rem; }
+  .hardware-toolbar button { min-height: 44px; }
+  .hardware-device-list { gap: .5rem; }
+}

@@ -6,146 +6,122 @@
   <meta name="theme-color" content="#f5f7fa">
   <meta name="description" content="雷樱者的个人主页：嵌入式系统、Linux 平台开发与无人自组织网络。">
   <title>LeiSHOW · 雷樱者</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://leishow.github.io/">
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #f5f7fa;
-      --surface: #fff;
-      --surface-soft: #f8faff;
-      --text: #172334;
-      --secondary: #536175;
-      --muted: #69778a;
-      --accent: #3559c7;
-      --accent-soft: #edf2ff;
-      --border: #dce3ed;
-      --shadow: 0 24px 70px rgba(25, 43, 74, .08);
-      --sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      --serif: "Noto Serif SC", "STSong", "Songti SC", serif;
+      --bg: #f4f6f8; --surface: #fff; --surface-soft: #edf2fc;
+      --text: #152536; --secondary: #526176; --muted: #607086;
+      --accent: #3559c7; --border: #dce3eb;
+      --sans: -apple-system, BlinkMacSystemFont, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #101722;
-        --surface: #192331;
-        --surface-soft: #1c293b;
-        --text: #edf2f8;
-        --secondary: #c0cad6;
-        --muted: #a5b2c1;
-        --accent: #91afff;
-        --accent-soft: #253654;
-        --border: #354457;
-        --shadow: 0 24px 70px rgba(0, 0, 0, .22);
-      }
+      :root { --bg: #101923; --surface: #182432; --surface-soft: #213350; --text: #edf2f8; --secondary: #bdc9d8; --muted: #adbdcf; --accent: #a6bcff; --border: #344558; }
     }
     * { box-sizing: border-box; }
     html { font-family: var(--sans); }
     body { min-height: 100vh; margin: 0; display: flex; flex-direction: column; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
-    a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
-    .site-header, .site-footer { width: min(100% - 3rem, 1040px); margin-inline: auto; }
-    .site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.65rem 0; }
-    .logo { color: var(--accent); font-size: 1.2rem; font-weight: 600; letter-spacing: .02em; text-decoration: none; }
-    .site-nav { display: flex; flex-wrap: wrap; gap: .35rem 1.6rem; align-items: center; }
-    .site-nav a { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--secondary); font-size: .96rem; text-decoration: none; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+    .skip-link { position: absolute; top: -5rem; left: 1rem; z-index: 10; padding: .8rem 1rem; background: var(--surface); border-radius: 6px; }
+    .skip-link:focus { top: 1rem; }
+    .site-header, .site-footer, main { width: min(100% - 4rem, 1120px); margin-inline: auto; }
+    .site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.2rem; border-bottom: 1px solid var(--border); }
+    .logo { color: var(--text); font-size: 1.2rem; font-weight: 650; letter-spacing: -.025em; }
+    .logo::before { content: 'L'; display: inline-grid; place-items: center; width: 30px; height: 30px; margin-right: .65rem; border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); font-family: var(--serif); font-weight: 500; }
+    .site-nav { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; align-items: center; }
+    .site-nav a { min-height: 44px; display: inline-flex; align-items: center; color: var(--secondary); font-size: .92rem; }
     .site-nav a:hover { color: var(--accent); }
-    main { flex: 1; width: min(100% - 3rem, 1040px); margin: auto; display: grid; align-items: center; padding: 1.5rem 0 3rem; }
-    .name-card { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(17rem, .82fr); overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); }
-    .identity { min-width: 0; padding: clamp(2rem, 5vw, 4.2rem); }
-    .hero-avatar { display: block; width: 84px; height: 84px; object-fit: cover; border-radius: 50%; border: 2px solid var(--border); margin-bottom: 2rem; }
-    .greeting { margin: 0 0 .6rem; color: var(--accent); font-size: .9rem; font-weight: 600; letter-spacing: .07em; }
-    h1 { margin: 0; font: 500 clamp(2.35rem, 5vw, 3.4rem)/1.25 var(--serif); letter-spacing: .025em; }
-    .role { margin: 1.1rem 0 0; font-size: 1.05rem; font-weight: 500; line-height: 1.7; }
-    .description { max-width: 31rem; margin: 1rem 0 0; color: var(--secondary); font-size: 1rem; line-height: 1.85; }
-    .actions { display: flex; flex-direction: column; justify-content: center; min-width: 0; padding: clamp(1.5rem, 3.6vw, 3rem); border-left: 1px solid var(--border); background: var(--surface-soft); }
-    .actions-label { margin: 0 0 1rem; color: var(--muted); font-size: .88rem; font-weight: 500; letter-spacing: .04em; }
-    .hero-links { display: grid; gap: .75rem; }
-    .hero-links a { display: flex; align-items: center; gap: .8rem; min-height: 3.5rem; padding: .7rem 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); font-size: 1rem; font-weight: 500; text-decoration: none; transition: border-color .16s ease, transform .16s ease, background .16s ease; }
-    .hero-links a:hover { transform: translateY(-2px); border-color: var(--accent); }
-    .hero-links a.primary { color: #fff; background: #3559c7; border-color: #3559c7; }
-    .hero-links a.primary:hover { background: #2e4eb2; }
-    .hero-links a svg { width: 1.1rem; height: 1.1rem; flex: none; color: var(--accent); }
-    .hero-links a.primary svg { color: #fff; }
-    .hero-links a .arrow { margin-left: auto; color: var(--muted); font-size: 1.15rem; font-weight: 400; }
-    .hero-links a.primary .arrow { color: rgba(255,255,255,.8); }
-    .site-footer { display: flex; justify-content: space-between; gap: .75rem; padding: 1rem 0 2rem; color: var(--muted); font-size: .88rem; }
-    .heart { color: var(--accent); }
-    @media (max-width: 760px) {
-      .name-card { grid-template-columns: 1fr; }
-      .identity { padding: 2.3rem 2.3rem 2rem; }
-      .actions { border-left: 0; border-top: 1px solid var(--border); padding: 1.6rem 2.3rem 2.3rem; }
+    main { flex: 1; display: grid; align-items: center; padding-block: clamp(2.75rem, 6vw, 5.5rem); }
+    .name-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(2rem, 7vw, 6rem); align-items: center; }
+    .identity { min-width: 0; padding-block: 1rem; }
+    .hero-avatar { display: block; width: 64px; height: 64px; object-fit: cover; border-radius: 50%; border: 1px solid var(--border); margin-bottom: 1.7rem; }
+    .greeting { margin: 0 0 .9rem; color: var(--secondary); font-size: .92rem; }
+    h1 { margin: 0; font: 500 clamp(3rem, 5.5vw, 4.5rem)/1.25 var(--serif); letter-spacing: .04em; }
+    .role { margin: 1.5rem 0 0; font-size: 1.12rem; font-weight: 550; line-height: 1.8; }
+    .description { max-width: 29rem; margin: .85rem 0 0; color: var(--secondary); font-size: 1rem; line-height: 1.95; }
+    .identity-links { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem 1.5rem; margin-top: 2rem; }
+    .identity-links a { display: inline-flex; align-items: center; min-height: 46px; color: var(--accent); font-size: .94rem; }
+    .identity-links .primary { padding: .65rem 1.15rem; color: #fff; border-radius: 8px; background: #3559c7; }
+    .identity-links .primary:hover { background: #2848a8; }
+    .identity-links a:not(.primary):hover { text-decoration: underline; text-underline-offset: 5px; }
+    .focus-list { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); color: var(--secondary); font-size: .8rem; }
+    .actions { min-width: 0; }
+    .actions-label { margin: 0 0 1rem; color: var(--secondary); font-size: .9rem; font-weight: 500; }
+    .hero-links { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+    .entry { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 1.55rem; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); transition: border-color .18s ease, box-shadow .18s ease; }
+    .entry:hover { border-color: var(--accent); box-shadow: 0 8px 24px #15253608; }
+    .entry.featured { grid-column: 1 / -1; background: var(--surface-soft); border-color: transparent; }
+    .entry.featured:hover { border-color: var(--accent); }
+    .entry svg { width: 25px; height: 25px; color: var(--accent); margin-bottom: 1.2rem; flex: none; }
+    .entry h2 { margin: 0 0 .55rem; font-size: 1.15rem; font-weight: 600; }
+    .entry p { margin: 0 0 1.4rem; color: var(--secondary); font-size: .9rem; line-height: 1.85; }
+    .entry span { display: flex; justify-content: space-between; gap: 1rem; width: 100%; margin-top: auto; color: var(--accent); font-size: .84rem; }
+    .entry span b { font-size: 1.1rem; font-weight: 400; }
+    .site-footer { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: .6rem 1rem; padding-block: 1.25rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .84rem; }
+    .footer-links { display: flex; align-items: center; gap: 1.5rem; }
+    .footer-links a { display: inline-flex; min-height: 44px; align-items: center; }
+    .footer-links a:hover { color: var(--accent); }
+    @media (max-width: 850px) {
+      .name-card { gap: 2rem; grid-template-columns: 1fr 1fr; }
+      .hero-links { grid-template-columns: 1fr; }
+      .entry { padding: 1.25rem; }
+      .entry svg { margin-bottom: .8rem; }
+      .entry p { margin-bottom: 1rem; }
+    }
+    @media (max-width: 650px) {
+      .site-header, .site-footer, main { width: calc(100% - 2.5rem); }
+      .site-header { flex-wrap: wrap; gap: .4rem 1rem; padding-block: .8rem; }
+      .site-nav { gap: .2rem 1.15rem; }
+      .site-nav a { font-size: .88rem; }
+      .name-card { grid-template-columns: 1fr; gap: 2.5rem; }
+      .identity { padding: 0; }
+      .role { font-size: 1.05rem; }
+      .hero-avatar { width: 56px; height: 56px; margin-bottom: 1.3rem; }
       .hero-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hero-links a:last-child:nth-child(odd) { grid-column: 1 / -1; }
-      .hero-avatar { margin-bottom: 1.4rem; }
+      .entry h2 { font-size: 1.05rem; }
     }
-    @media (max-width: 520px) {
-      .site-header, .site-footer, main { width: min(100% - 2rem, 1040px); }
-      .site-header { flex-wrap: wrap; padding: 1rem 0; }
-      .site-nav { gap: .2rem 1rem; }
-      .site-nav a { font-size: .9rem; }
-      main { padding: .7rem 0 2rem; }
-      .name-card { border-radius: 18px; }
-      .identity { padding: 1.65rem 1.4rem 1.55rem; }
-      .actions { padding: 1.35rem 1.4rem 1.55rem; }
-      .hero-avatar { width: 72px; height: 72px; margin-bottom: 1.2rem; }
-      .role { font-size: 1rem; }
-      .hero-links { gap: .6rem; }
-      .hero-links a { gap: .5rem; padding: .7rem .75rem; font-size: .92rem; }
-      .site-footer { flex-wrap: wrap; font-size: .82rem; }
-    }
-    @media (max-width: 360px) { .hero-links { grid-template-columns: 1fr; } }
-    @media (prefers-reduced-motion: reduce) { .hero-links a { transition: none; } }
+    @media (max-width: 380px) { .hero-links { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .entry { transition: none; } }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">跳到内容</a>
   <header class="site-header">
-    <a class="logo" href="/">LeiSHOW</a>
-    <nav class="site-nav" aria-label="主导航">
-      <a href="/blog/">博客</a>
-      <a href="/resume/">简历</a>
-      <a href="https://github.com/leiSHOW" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
+    <a class="logo" href="/" aria-label="LeiSHOW 首页">LeiSHOW</a>
+    <nav class="site-nav" aria-label="主导航"><a href="/blog/">博客</a><a href="/habit/">算法手记</a><a href="/show/">项目展示</a><a href="/resume/">简历</a></nav>
   </header>
-  <main>
+  <main id="main">
     <section class="name-card" aria-labelledby="name">
       <div class="identity">
-        <img class="hero-avatar" src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/avatar1.jpg" alt="雷樱者头像" onerror="this.style.display='none'">
-        <p class="greeting">Hello, I'm</p>
+        <img class="hero-avatar" src="https://skyme-1307417630.cos.ap-chengdu.myqcloud.com/avatar1.jpg" alt="雷樱者头像" width="64" height="64" onerror="this.style.display='none'">
+        <p class="greeting">欢迎来到我的个人主页</p>
         <h1 id="name">雷樱者</h1>
         <p class="role">嵌入式系统 · Linux 平台开发</p>
-        <p class="description">研究方向为无人自组织网络，关注网络通信、系统适配与工程落地。</p>
+        <p class="description">研究方向为无人自组织网络，关注网络通信、系统适配与工程落地。在这里记录学习过程，也展示项目如何工作。</p>
+        <div class="identity-links"><a class="primary" href="/show/">探索项目</a><a href="/resume/">查看简历 ↗</a></div>
+        <div class="focus-list" aria-label="关注领域"><span>嵌入式与物联网</span><span>网络仿真</span><span>算法实践</span></div>
       </div>
       <div class="actions">
-        <p class="actions-label">链接</p>
+        <p class="actions-label">项目、文章与学习记录</p>
         <div class="hero-links">
-          <a href="/blog/" class="primary">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2zm2 1v2h8V3H4zm0 4v1h8V7H4zm0 3v1h5v-1H4z"/></svg>
-            阅读博客 <span class="arrow" aria-hidden="true">↗</span>
+          <a class="entry featured" href="/show/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12h18M10 12v3h4v-3"/></svg>
+            <h2>项目展示</h2><p>从物联网设备到空天异构组网仿真，查看系统架构与交互演示。</p><span>探索工程实践 <b aria-hidden="true">↗</b></span>
           </a>
-          <a href="/habit/">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M3 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H3a2 2 0 0 0-2 2zm2 4h6v1H5V5zm0 3h6v1H5V8zm0 3h4v1H5v-1z"/></svg>
-            算法手记 <span class="arrow" aria-hidden="true">↗</span>
+          <a class="entry" href="/blog/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 3h15v18H5a2 2 0 0 1 0-4h15M5 3a2 2 0 0 0-2 2v14M8 7h8M8 11h6"/></svg>
+            <h2>技术博客</h2><p>记录开发问题、解决过程与技术积累。</p><span>阅读文章 <b aria-hidden="true">↗</b></span>
           </a>
-          <a href="/show/">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.5" y="4" width="13" height="10" rx="1.5"/><path d="M5 4V2h6v2M1.5 8h13M7 8v2h2V8"/></svg>
-            项目展示
-          </a>
-          <a href="/resume/">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm1 3v1h6V5H5zm0 3v1h6V8H5zm0 3v1h4v-1H5z"/></svg>
-            查看简历 <span class="arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href="https://github.com/leiSHOW" target="_blank" rel="noopener noreferrer">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-            GitHub <span class="arrow" aria-hidden="true">↗</span>
+          <a class="entry" href="/habit/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></svg>
+            <h2>算法手记</h2><p>整理算法笔记，保留每日解题思路与代码。</p><span>翻阅学习记录 <b aria-hidden="true">↗</b></span>
           </a>
         </div>
       </div>
     </section>
   </main>
-  <footer class="site-footer">
-    <span>&copy; 2026 LeiSHOW</span>
-    <span>Built with <span class="heart">♥</span> &amp; curiosity</span>
-  </footer>
+  <footer class="site-footer"><span>© 2026 LeiSHOW</span><div class="footer-links"><a href="/blog/about/">关于我</a><a href="https://github.com/leiSHOW" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div></footer>
 </body>
 </html>

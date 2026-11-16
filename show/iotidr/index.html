@@ -15,7 +15,7 @@
   <script type="module" src="/show/iotidr/assets/system-flow.js"></script>
   <title>IoTIDR · 物联网智能晾衣架 · LeiSHOW</title>
 </head>
-<body>
+<body class="project-detail project-iotidr">
   <a class="skip-link" href="#main">跳到内容</a>
   <header class="site-header"><div class="shell header-inner">
     <a class="brand" href="/">LeiSHOW<span>项目展示</span></a>
@@ -32,7 +32,7 @@
         <div class="hero-actions"><a class="button" href="#hardware">探索三维系统</a><a class="button secondary" href="#architecture">系统架构</a></div>
       </div>
       <figure class="system-exhibit">
-        <p class="eyebrow">SYSTEM AT A GLANCE</p>
+        <p class="eyebrow">感知、控制与执行</p>
         <div class="signal-row"><div><strong>温湿度</strong><small>DHT11</small></div><div><strong>相对光照</strong><small>ADC 采样</small></div><div><strong>控制请求</strong><small>LCD / IR / APP</small></div></div>
         <div class="signal-connector" aria-hidden="true"></div>
         <div class="controller"><strong>STM32F103ZE</strong><span>采集 · 状态管理 · 控制仲裁</span></div>
@@ -46,7 +46,7 @@
 
 
     <section class="hardware-section" id="hardware" aria-labelledby="hardware-title">
-      <div class="hardware-heading"><div><p class="eyebrow">INTERACTIVE SYSTEM</p><h2 id="hardware-title">探索设备与连接</h2><p>点击三维模型中的外设，查看设备信息与端口连线。</p></div><span class="hardware-count">10 个设备模块</span></div>
+      <div class="hardware-heading"><div><p class="eyebrow">三维设备查看器</p><h2 id="hardware-title">探索设备与连接</h2><p>点击三维模型中的外设，查看设备信息与端口连线。</p></div><span class="hardware-count">10 个设备模块</span></div>
       <div class="hardware-layout" id="hardware-layout">
         <div class="hardware-stage">
           <div class="hardware-scene" id="hardware-scene"><p class="hardware-state" id="hardware-state" role="status">三维系统载入中…</p></div>
@@ -69,16 +69,16 @@
     </section>
 
     <section class="project-section" id="capabilities" aria-labelledby="capabilities-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">01</span><div><h2 id="capabilities-title">感知、控制与交互</h2><p>将环境信息、设备动作和控制端连接成一套完整的应用逻辑。</p></div></div>
+      <div class="section-title"><div><h2 id="capabilities-title">感知、控制与交互</h2><p>将环境信息、设备动作和控制端连接成一套完整的应用逻辑。</p></div></div>
       <div class="features">
-        <article class="feature"><span class="feature-label">SENSING</span><h3>环境感知</h3><p>温湿度与相对光照采集，供屏端和 APP 展示。</p></article>
-        <article class="feature"><span class="feature-label">CONTROL</span><h3>多端控制</h3><p>LCD、红外、Android 共用档位请求入口。</p></article>
-        <article class="feature"><span class="feature-label">ACTUATION</span><h3>动作与保护</h3><p>四档展开、独立灯光与高湿环境保护。</p></article>
+        <article class="feature"><h3>环境感知</h3><p>温湿度与相对光照采集，供屏端和 APP 展示。</p></article>
+        <article class="feature"><h3>多端控制</h3><p>LCD、红外、Android 共用档位请求入口。</p></article>
+        <article class="feature"><h3>动作与保护</h3><p>四档展开、独立灯光与高湿环境保护。</p></article>
       </div>
     </section>
 
     <section class="project-section" id="architecture" aria-labelledby="architecture-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">02</span><div><h2 id="architecture-title">数据如何流动</h2><p>切换链路，查看采集、控制与回传的路径。</p></div></div>
+      <div class="section-title"><div><h2 id="architecture-title">数据如何流动</h2><p>切换链路，查看采集、控制与回传的路径。</p></div></div>
       <div class="flow-controls"><div class="flow-modes" role="group" aria-label="选择系统链路"><button type="button" data-flow="sensing" aria-pressed="true">环境采集</button><button type="button" data-flow="control" aria-pressed="false">远程控制</button><button type="button" data-flow="report" aria-pressed="false">状态回传</button></div><button type="button" class="flow-play" id="flow-play" aria-pressed="true">暂停动画</button></div>
       <div class="flow-map" id="flow-map" aria-label="系统数据链路图">
         <svg class="flow-lines" id="flow-lines" aria-hidden="true"><g id="flow-paths"></g><circle id="flow-packet-halo" r="11"/><circle id="flow-packet" r="5"/></svg>
@@ -95,7 +95,7 @@
     </section>
 
     <section class="project-section" id="control" aria-labelledby="control-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">03</span><div><h2 id="control-title">四档展开与环境保护</h2><p>多种控制来源共享同一套设备状态，控制请求先经过状态检查，再进入电机执行。</p></div></div>
+      <div class="section-title"><div><h2 id="control-title">四档展开与环境保护</h2><p>多种控制来源共享同一套设备状态，控制请求先经过状态检查，再进入电机执行。</p></div></div>
       <div class="control-layout">
         <div class="degree-panel"><h3>展开档位</h3><div class="degree-scale" aria-label="四个展开档位及协议值"><div class="degree-item"><span>1/4 开</span><div class="degree-track" aria-hidden="true"><i class="quarter"></i></div><span>值 0</span></div><div class="degree-item"><span>1/2 开</span><div class="degree-track" aria-hidden="true"><i class="half"></i></div><span>值 1</span></div><div class="degree-item"><span>3/4 开</span><div class="degree-track" aria-hidden="true"><i class="three-quarter"></i></div><span>值 2</span></div><div class="degree-item"><span>全开</span><div class="degree-track" aria-hidden="true"><i class="full"></i></div><span>值 3</span></div></div><p class="figure-caption">条形表示档位比例。档位 0 对应 1/4 开，保护动作请求这一档位。</p></div>
         <div class="control-details"><div><h3>一个控制入口，多种操作方式</h3><p>Android 档位选择、LCD 触摸、红外数字键以及自动保护均提交目标档位。应用层检查机械参考、忙状态与保护条件，减少重复指令造成的额外动作。</p></div><div><h3>位置状态与运动完成</h3><p>电机上电后需要确认机械参考位置，随后按步数估算位置。运动状态与已完成档位分别维护，动作结束后再更新完成状态。</p></div><div><h3>本地配网与灯光操作</h3><p>LCD 提供 AirLink、SoftAP 与 WiFi 重置入口，红外支持配网及复位操作。两路 LED 独立下发与回显，WiFi 重置需要确认。</p></div></div>
@@ -106,14 +106,14 @@
     </section>
 
     <section class="project-section" id="data" aria-labelledby="data-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">04</span><div><h2 id="data-title">设备与应用共享的数据</h2><p>七个机智云数据点定义控制指令和设备上报内容，板端与 Android 应用保持一致。</p></div></div>
+      <div class="section-title"><div><h2 id="data-title">设备与应用共享的数据</h2><p>七个机智云数据点定义控制指令和设备上报内容，板端与 Android 应用保持一致。</p></div></div>
       <div class="table-wrap"><table><caption>机智云设备数据点</caption><thead><tr><th scope="col">数据点</th><th scope="col">方向</th><th scope="col">内容</th></tr></thead><tbody>
         <tr><td>LED0</td><td>下发 / 回显</td><td>第一路灯光开关</td></tr><tr><td>LED1</td><td>下发 / 回显</td><td>第二路灯光开关</td></tr><tr><td>degree</td><td>下发 / 回显</td><td>四档展开，0–3 对应 1/4 开至全开</td></tr><tr><td>careMODE</td><td>设备上报</td><td>环境保护是否触发，由设备计算</td></tr><tr><td>light</td><td>设备上报</td><td>0–100 相对光照刻度</td></tr><tr><td>humidity</td><td>设备上报</td><td>相对湿度，单位 %RH</td></tr><tr><td>tempr</td><td>设备上报</td><td>温度，单位 °C；保留协议中的原标识名</td></tr>
       </tbody></table></div>
     </section>
 
     <section class="project-section" id="implementation" aria-labelledby="implementation-title">
-      <div class="section-title"><span class="section-number" aria-hidden="true">05</span><div><h2 id="implementation-title">实现情况</h2></div></div>
+      <div class="section-title"><div><h2 id="implementation-title">实现情况</h2></div></div>
       <div class="status-copy"><p><strong>项目包含板端固件与 Android 控制工程。</strong> 环境采集、四档控制、LCD/触摸、红外、灯光、机智云协议与保护逻辑均有对应实现。</p><p>板端完整固件已构建，协议、电机与 LCD/触摸的主机回归通过；已有电机点动和部分红外按键的实物反馈。完整机械行程、最新按键映射与手机—云端—设备的整链路效果仍需实物确认。</p></div>
     </section>
     <div class="project-end"><a href="/show/">返回项目展示</a><a href="#project-title">回到项目开头</a></div>
