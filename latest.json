@@ -1,6 +1,6 @@
 {
   "repository": "leiSHOW/leiSHOW.github.io",
-  "pages_commit": "ed93acc31fd0342b78956ceb07eb433b1bebb8e5",
+  "pages_commit": "e26a541fff5d7171a1064547e39f889018c2b8e3",
   "site_url": "https://leishow.github.io/",
   "status": "verified",
   "checks": [
@@ -621,6 +621,20 @@
       "matches": true
     },
     {
+      "path": "exhibition/exhibition.bin",
+      "status": 200,
+      "expected": "92e0207f40d71894029883e70ea94a1453eef36f89d05bf1906c4111ec39694d",
+      "actual": "92e0207f40d71894029883e70ea94a1453eef36f89d05bf1906c4111ec39694d",
+      "matches": true
+    },
+    {
+      "path": "exhibition/index.html",
+      "status": 200,
+      "expected": "d60364191493297d4b02242dc003ba98b31e92601195095bb0a6c9bad28a4757",
+      "actual": "d60364191493297d4b02242dc003ba98b31e92601195095bb0a6c9bad28a4757",
+      "matches": true
+    },
+    {
       "path": "habit/index.html",
       "status": 200,
       "expected": "e5d1717dd5856db990ab6b5e5cb71eed910fab375bfda9eff4dc09e6562f47ce",
@@ -637,8 +651,8 @@
     {
       "path": "index.html",
       "status": 200,
-      "expected": "c97a2e41a453110223de4fd2f3c04843c5515570c45f6da141f3da7885ee5e79",
-      "actual": "c97a2e41a453110223de4fd2f3c04843c5515570c45f6da141f3da7885ee5e79",
+      "expected": "e2cc0f6b96ef9da93e0c980016145759384269c5ad71d0f39707781a4e7604dc",
+      "actual": "e2cc0f6b96ef9da93e0c980016145759384269c5ad71d0f39707781a4e7604dc",
       "matches": true
     },
     {
@@ -1123,9 +1137,11 @@
     "blog/tags/蓝桥杯/index.html": "b57a9c8df9e8de8dba58b057a568eb421a9b442dfe3805c48b279ea3792758de",
     "blog/tags/部署/index.html": "7d2586c1d2fe38597a778847821b4d3770e08d1747f02107a2e695c2e49face6",
     "blog/图片插入说明.txt": "a0702c644e54a0436d78806ea4b6905d391c1a2acda81db1582f076794ad7f2e",
+    "exhibition/exhibition.bin": "92e0207f40d71894029883e70ea94a1453eef36f89d05bf1906c4111ec39694d",
+    "exhibition/index.html": "d60364191493297d4b02242dc003ba98b31e92601195095bb0a6c9bad28a4757",
     "habit/index.html": "e5d1717dd5856db990ab6b5e5cb71eed910fab375bfda9eff4dc09e6562f47ce",
     "habit/style.css": "ec6cf558827af6c2c27e9cb1422af4b4a735c6a670ae54b0b73fbfec11888b3e",
-    "index.html": "c97a2e41a453110223de4fd2f3c04843c5515570c45f6da141f3da7885ee5e79",
+    "index.html": "e2cc0f6b96ef9da93e0c980016145759384269c5ad71d0f39707781a4e7604dc",
     "resume/index.html": "9434b76e5023449ac1fd1b1a94390514e67a98b4aeb915f5b3baf1a1cc71ce9a",
     "show/index.html": "ae6d8e4c01f29cd17a0975eef57adbde0c505e31d8783b7cd1d2666e5b9302a1",
     "show/iotidr/assets/hardware-data.js": "4275e9dcb3d25892a310282f034029b18f1af6bfc0aac5f8c29743d00b146421",
@@ -1183,13 +1199,13 @@
     "show/multiuav/index.html": "69c8ce8971a0546f9b1c818d2208a41533b06b21d47c65aa206df4bdef7aac56",
     "show/style.css": "2996974f1cb2715f1df515cec83f0a5b6d585f0a988067c1810fa5a8ec2c6880"
   },
-  "pages_tree": "b2be86fa0258643eb62887ae9ff296807667636e",
+  "pages_tree": "cc9c9a0bf8127004cd9eeb4dffd48565c6a3a2ad",
   "pages_build": {
-    "commit": "ed93acc31fd0342b78956ceb07eb433b1bebb8e5",
+    "commit": "e26a541fff5d7171a1064547e39f889018c2b8e3",
     "status": "built",
-    "updated_at": "2026-11-16T15:08:46Z"
+    "updated_at": "2026-11-20T18:18:51Z"
   },
-  "verified_at": "2026-11-16T15:08:57.325642+00:00",
-  "run_url": "https://github.com/leiSHOW/leiSHOW.github.io/actions/runs/43893117921",
-  "previous_verified_commit": "f974ff2ec7896d6cfb53003cf97ab55d259cf990"
+  "verified_at": "2026-11-20T18:19:07.680152+00:00",
+  "run_url": "https://github.com/leiSHOW/leiSHOW.github.io/actions/runs/44791466675",
+  "previous_verified_commit": "ed93acc31fd0342b78956ceb07eb433b1bebb8e5"
 }
