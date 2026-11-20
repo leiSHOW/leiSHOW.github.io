@@ -1,0 +1,100 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f4f2e8"><meta name="robots" content="noindex"><link rel="icon" href="data:,"><title>相册 · LeiSHOW 展览室</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#f4f2e8;color:#213b2c;font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{width:min(88vw,26rem);margin:clamp(4rem,16vh,11rem) auto}header{font:600 1.1rem Georgia,serif;padding-bottom:1.3rem;border-bottom:1px solid #b0baac}h1{font:600 2.4rem/1.22 "Songti SC","SimSun",serif;margin:2rem 0 1.5rem}label{display:block;font-size:.9rem;margin:0 0 .35rem}input{display:block;width:100%;padding:.7rem .85rem;border:1px solid #809182;border-radius:2px;background:#fcfbf5;color:inherit;font:inherit}button{padding:.55rem 1.15rem;border-radius:2px;font:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid #446e4b;outline-offset:3px}.actions{display:flex;gap:.75rem;margin-top:1.05rem}#unlock{background:#284333;color:#fff;border:1px solid #284333}#cancel{border:1px solid #abb3a6;background:transparent;color:#364c3d}button:disabled{opacity:.65;cursor:wait}#message{min-height:1.7em;font-size:.9rem;color:#4d584d}</style></head>
+<body><main><header>LeiSHOW · 展览室</header><h1>打开相册</h1><form id="gate"><label for="pass">相册口令</label><input type="password" id="pass" required autocomplete="current-password" autofocus>
+<div class="actions"><button type="submit" id="unlock">进入相册</button><button type="button" id="cancel">取消</button></div><p id="message" role="status" aria-live="polite"></p></form><noscript>请启用 JavaScript，以便在此浏览器中解锁相册。</noscript></main>
+<script>(function unlockPage(spec) {
+  const form = document.getElementById('gate');
+  const password = document.getElementById('pass');
+  const submit = document.getElementById('unlock');
+  const message = document.getElementById('message');
+  const cacheKey = 'leishow:exhibition:key:' + location.pathname.replace(/\/index\.html$/, '/');
+  let pending;
+  let attempt = 0;
+  const hex = bytes => Array.from(bytes, n => n.toString(16).padStart(2,'0')).join('');
+  function forget() { try { sessionStorage.removeItem(cacheKey); } catch {} }
+  function idle(text) {
+    submit.disabled = false;
+    message.textContent = text;
+    form.removeAttribute('aria-busy');
+  }
+  async function fetchPackage() {
+    const response = await fetch(new URL('exhibition.bin', location.href), {cache:'no-cache'});
+    if (!response.ok) throw Error('暂时无法读取相册，请重试。');
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (bytes.length <= spec.headerSize + 16 + 32 ||
+        new TextDecoder().decode(bytes.subarray(0,8)) !== spec.magic ||
+        new DataView(bytes.buffer).getUint32(8) !== spec.iterations) throw Error('相册包格式异常，请刷新后重试。');
+    const body = bytes.subarray(0,-32);
+    const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', body));
+    if (!digest.every((n,i) => n === bytes[body.length+i])) throw Error('相册包未完整加载，请重试。');
+    return {header:body.subarray(0,spec.headerSize), salt:body.subarray(12,28),
+      iv:body.subarray(28,40), ciphertext:body.subarray(spec.headerSize)};
+  }
+  async function unlock(pass, cached) {
+    const ticket = ++attempt;
+    submit.disabled = true;
+    form.setAttribute('aria-busy','true');
+    message.textContent = '正在打开相册…';
+    let pkg;
+    let raw;
+    try {
+      if (!window.crypto?.subtle) throw Error('请通过 HTTPS 或本机预览地址打开相册。');
+      if (!pending) pending = fetchPackage().catch(error => { pending = null; throw error; });
+      pkg = await pending;
+      if (attempt !== ticket) return;
+      const saltName = hex(pkg.salt);
+      if (cached) {
+        const [edition, encoded] = cached.split('.');
+        if (edition !== saltName || !encoded) throw Error('请重新输入相册口令。');
+        raw = Uint8Array.from(atob(encoded), c => c.charCodeAt(0));
+      } else {
+        const encoded = new TextEncoder().encode(pass);
+        pass = '';
+        let material;
+        try { material = await crypto.subtle.importKey('raw', encoded, 'PBKDF2', false, ['deriveBits']); }
+        finally { encoded.fill(0); }
+        raw = new Uint8Array(await crypto.subtle.deriveBits({
+          name:'PBKDF2', salt:pkg.salt, iterations:spec.iterations, hash:'SHA-256'
+        }, material, 256));
+      }
+      if (attempt !== ticket) return;
+      const key = await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['decrypt']);
+      const decrypted = await crypto.subtle.decrypt({
+        name:'AES-GCM', iv:pkg.iv, additionalData:pkg.header, tagLength:128
+      }, key, pkg.ciphertext);
+      if (attempt !== ticket) return;
+      try { sessionStorage.setItem(cacheKey, saltName + '.' + btoa(String.fromCharCode(...raw))); } catch {}
+      const html = new TextDecoder().decode(decrypted);
+      new Uint8Array(decrypted).fill(0);
+      document.open();
+      document.write(html);
+      document.close();
+    } catch (error) {
+      if (attempt !== ticket) return;
+      forget();
+      const text = pkg ? (cached ? '请重新输入相册口令。' : '口令不正确，请重试。') :
+        (error instanceof TypeError ? '暂时无法读取相册，请重试。' : error.message);
+      idle(text);
+      password.focus();
+    } finally { raw?.fill(0); }
+  }
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const value = password.value;
+    password.value = '';
+    if (value) unlock(value, null);
+  });
+  function cancel() {
+    ++attempt;
+    forget();
+    password.value = '';
+    idle('已取消，相册仍然锁定。');
+    password.focus();
+  }
+  document.getElementById('cancel').addEventListener('click', cancel);
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') cancel(); });
+  let saved;
+  try { saved = sessionStorage.getItem(cacheKey); } catch {}
+  if (saved) unlock('', saved);
+})({"magic":"LEIGAL01","iterations":600000,"headerSize":72});</script></body></html>

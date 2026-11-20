@@ -67,7 +67,7 @@ def manifest(root):
     paths = git(root, 'ls-files', '-z').split('\0')
     result = {}
     for name in paths:
-        if name != 'index.html' and not name.startswith(('blog/', 'habit/', 'resume/', 'show/')):
+        if name != 'index.html' and not name.startswith(('blog/', 'habit/', 'resume/', 'show/', 'exhibition/')):
             continue
         path = root / name
         if path.is_symlink() or not path.is_file():
@@ -76,6 +76,10 @@ def manifest(root):
     missing = set(REQUIRED) - result.keys()
     if missing:
         raise ReleaseError(f'成品缺少已有网址：{sorted(missing)}')
+    exhibit = {name for name in result if name.startswith('exhibition/')}
+    linked = 'href="/exhibition/"' in (root / 'index.html').read_text(encoding='utf-8')
+    if (linked or exhibit) and (not linked or exhibit != {'exhibition/index.html', 'exhibition/exhibition.bin'}):
+        raise ReleaseError('展览室需要首页入口、密码页与加密展品包。')
     return dict(sorted(result.items()))
 
 
